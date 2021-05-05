@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Network
+namespace Common.Network.Shared
 {
     public class StateBuffer
     {

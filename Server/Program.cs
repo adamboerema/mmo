@@ -1,5 +1,5 @@
 using System;
-using Common.Network.Server;
+using Common.Network.Server.Socket;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -7,12 +7,12 @@ namespace Server
 {
     public class Program
     {
-        private static SocketServer socketServer;
+        private static TcpSocketServer server;
 
         public static void Main(string[] args)
         {
-            socketServer = new SocketServer("127.0.0.1", 7777);
-            socketServer.Listen();
+            server = new TcpSocketServer(7777);
+            server.Start();
 
             Console.ReadKey();
             //CreateHostBuilder(args).Build().Run();
