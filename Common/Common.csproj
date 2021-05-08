@@ -13,5 +13,10 @@
     <Folder Include="Network\Server\Manager\" />
     <Folder Include="Network\Client\Socket\" />
     <Folder Include="Network\Server\Socket\" />
+    <Folder Include="Network\Packet\" />
+    <Folder Include="Network\Packet\Manager\" />
+    <Folder Include="Network\Packet\IO\" />
+    <Folder Include="Network\Packet\Definitions\" />
+    <Folder Include="Network\Packet\Exceptions\" />
   </ItemGroup>
 </Project>

@@ -39,9 +39,6 @@ namespace Common.Network.Client
                 remotePort,
                 new AsyncCallback(HandleConnect),
                 stateBuffer);
-
-            //stream = socket.GetStream();
-            //BeginStreamRead(stateBuffer);
         }
 
         /// <summary>
@@ -58,7 +55,9 @@ namespace Common.Network.Client
         /// <param name="result"></param>
         private void HandleConnect(IAsyncResult result)
         {
-
+            socket.EndConnect(result);
+            stream = socket.GetStream();
+            BeginStreamRead(result.AsyncState as StateBuffer);
         }
 
         /// <summary>
