@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Exceptions;
 
-namespace Common.Network.Packet.Manager
+namespace Common.Network.Packet.Definitions
 {
-    public static class ConvertManager
+    public static class PacketDefinitions
     {
         public static IPacketDefinition GetDefinition(int packetId)
         {

@@ -2,13 +2,15 @@
 using System.Net;
 using System.Net.Sockets;
 using Common.Network.Client.Socket;
+using Common.Network.Packet.Manager;
 using Common.Network.Shared;
 
 namespace Common.Network.Client
 {
-    public class TcpSocketClient: IClient
+    public class TcpSocketClient : IClient
     {
         private TcpClient socket;
+        private IPacketManager packetManager;
         private readonly IPAddress remoteIPAddress;
         private readonly int remotePort;
         private StateBuffer stateBuffer;
@@ -22,6 +24,7 @@ namespace Common.Network.Client
             readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
             stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
 
+            packetManager = new PacketManager();
             socket = new TcpClient();
             socket.NoDelay = false;
             socket.SendBufferSize = Constants.BUFFER_CLIENT_SIZE;
@@ -39,6 +42,15 @@ namespace Common.Network.Client
                 remotePort,
                 new AsyncCallback(HandleConnect),
                 stateBuffer);
+        }
+
+        /// <summary>
+        /// Sends data to the stream
+        /// </summary>
+        /// <param name="data">Byte array data</param>
+        public void SendData(byte[] data) {
+            var packetBytes = packetManager.Write(data);
+            stream.Write(packetBytes, 0, packetBytes.Length);
         }
 
         /// <summary>
@@ -80,7 +92,7 @@ namespace Common.Network.Client
                 packetBytes,
                 offset,
                 readByteCount);
-
+            packetManager.Receive(packetBytes);
             BeginStreamRead(result.AsyncState as StateBuffer);
         }
 

@@ -18,5 +18,6 @@
     <Folder Include="Network\Packet\IO\" />
     <Folder Include="Network\Packet\Definitions\" />
     <Folder Include="Network\Packet\Exceptions\" />
+    <Folder Include="Network\Packet\Definitions\Schema\" />
   </ItemGroup>
 </Project>

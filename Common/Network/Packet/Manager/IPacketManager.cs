@@ -1,8 +1,12 @@
 ﻿using System;
+using Common.Network.Packet.Definitions;
+
 namespace Common.Network.Packet.Manager
 {
     public interface IPacketManager
     {
-        void HandleReceivePacket(byte[] bytes);
+        byte[] Write(byte[] bytes);
+
+        IPacketDefinition Receive(byte[] bytes);
     }
 }
