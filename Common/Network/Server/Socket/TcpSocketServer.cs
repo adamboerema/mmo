@@ -8,14 +8,14 @@ namespace Common.Network.Server.Socket
 {
     public class TcpSocketServer: IServer
     {
-        private IConnectionManager clientManager;
+        private IConnectionManager connectionManager;
         private readonly TcpListener socket;
         private readonly StateBuffer stateBuffer;
         private byte[] buffer;
 
         public TcpSocketServer(int port)
         {
-            clientManager = new ConnectionManager(Constants.MAX_PLAYERS);
+            connectionManager = new ConnectionManager(Constants.MAX_PLAYERS);
             socket = new TcpListener(IPAddress.Any, port);
             stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
         }
@@ -28,6 +28,11 @@ namespace Common.Network.Server.Socket
                 stateBuffer);
         }
 
+        public void CloseConnection()
+        {
+            connectionManager.CloseAllConnections();
+        }
+
         private void HandleClientConnect(IAsyncResult result)
         {
             var currentStateBuffer = result.AsyncState as StateBuffer;
@@ -37,7 +42,7 @@ namespace Common.Network.Server.Socket
             var uniqueId = Guid.NewGuid().ToString();
             var connection = new Connection(uniqueId, clientSocket);
             connection.Start();
-            clientManager.AddConnection(connection);
+            connectionManager.AddConnection(connection);
 
             // Allow for next client connection
             socket.BeginAcceptTcpClient(

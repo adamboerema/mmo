@@ -1,41 +1,49 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using Common.Network.Packet.Manager;
 using Common.Network.Shared;
 
 namespace Common.Network.Server.Socket
 {
     public class Connection: IConnection
     {
-        public string Id => _id;
-        public TcpClient Socket => _socket;
+        public string Id => id;
 
-        private string _id;
-        private TcpClient _socket;
+        private string id;
+        private TcpClient socket;
         private StateBuffer stateBuffer;
         private NetworkStream stream;
+        private IPacketManager packetManager;
         private byte[] readBuffer;
 
-        public Connection(string id, TcpClient socket)
+        public Connection(string connectionId, TcpClient connectionSocket)
         {
-            _id = id;
-            _socket = socket;
-            _socket.NoDelay = true;
-            readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
+            id = connectionId;
+            socket = connectionSocket;
+            socket.NoDelay = true;
             socket.SendBufferSize = Constants.BUFFER_CLIENT_SIZE;
             socket.ReceiveBufferSize = Constants.BUFFER_CLIENT_SIZE;
+            readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
             stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
+            packetManager = new PacketManager();
         }
 
         public void Start()
         {
-            stream = _socket.GetStream();
+            stream = socket.GetStream();
             BeginStreamRead(stateBuffer);
         }
 
         public void CloseConnection()
         {
-            _socket.Close();
+            socket.Close();
+        }
+
+        public void Send(byte[] bytes)
+        {
+            var writeBytes = packetManager.Write(bytes);
+            stream.Write(writeBytes, 0, writeBytes.Length);
         }
 
         /// <summary>

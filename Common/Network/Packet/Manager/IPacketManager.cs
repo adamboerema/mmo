@@ -7,6 +7,6 @@ namespace Common.Network.Packet.Manager
     {
         byte[] Write(byte[] bytes);
 
-        IPacketDefinition Receive(byte[] bytes);
+        IPacket Receive(byte[] bytes);
     }
 }

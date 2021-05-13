@@ -7,24 +7,30 @@ namespace Common.Network.Packet.Manager
 {
     public class PacketManager: IPacketManager
     {
+        private IPacketParser packetParser;
+
         public PacketManager()
         {
+            packetParser = new PacketParser();
         }
 
-        public IPacketDefinition Receive(byte[] bytes)
+        public IPacket Receive(byte[] bytes)
         {
             var reader = new PacketReader(bytes);
             var packetId = reader.ReadInteger();
+            var packet = packetParser.ParsePacket(packetId, reader);
             reader.Dispose();
 
-            return PacketDefinitions.GetDefinition(packetId);
+            return packet;
         }
 
         public byte[] Write(byte[] bytes)
         {
             var writer = new PacketWriter(bytes.Length);
             writer.WriteBytes(bytes);
-            return writer.ToArray();
+            var output = writer.ToArray();
+            writer.Dispose();
+            return output;
         }
     }
 }

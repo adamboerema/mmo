@@ -1,4 +1,4 @@
-﻿using Common.Network.Client.Socket;
+﻿using Common.Network.Client;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;

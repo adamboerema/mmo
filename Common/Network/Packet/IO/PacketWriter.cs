@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Common.Network.Packet.IO
 {
-    public class PacketWriter
+    public class PacketWriter: IDisposable
     {
         private BinaryWriter binaryWriter;
         private MemoryStream memoryStream;
@@ -30,6 +30,12 @@ namespace Common.Network.Packet.IO
         public byte[] ToArray()
         {
             return memoryStream.ToArray();
+        }
+
+        public void Dispose()
+        {
+            binaryWriter.Dispose();
+            memoryStream.Dispose();
         }
     }
 }

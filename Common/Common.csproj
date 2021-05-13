@@ -18,6 +18,7 @@
     <Folder Include="Network\Packet\IO\" />
     <Folder Include="Network\Packet\Definitions\" />
     <Folder Include="Network\Packet\Exceptions\" />
-    <Folder Include="Network\Packet\Definitions\Schema\" />
+    <Folder Include="Network\Packet\Definitions\Client\" />
+    <Folder Include="Network\Packet\Definitions\Server\" />
   </ItemGroup>
 </Project>

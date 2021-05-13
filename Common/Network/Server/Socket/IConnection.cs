@@ -5,12 +5,12 @@ namespace Common.Network.Server.Socket
 {
     public interface IConnection
     {
-        string Id { get; }
+        public string Id { get; }
 
-        TcpClient Socket { get;  }
+        public void Start();
 
-        void Start();
+        public void CloseConnection();
 
-        void CloseConnection();
+        public void Send(byte[] bytes);
     }
 }
