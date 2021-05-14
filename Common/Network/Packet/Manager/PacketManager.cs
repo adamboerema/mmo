@@ -21,6 +21,8 @@ namespace Common.Network.Packet.Manager
             var packet = packetParser.ParsePacket(packetId, reader);
             reader.Dispose();
 
+            Console.WriteLine($"Packet Id: {packetId} -- Packet {packet}");
+
             return packet;
         }
 

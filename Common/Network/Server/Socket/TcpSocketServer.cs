@@ -44,6 +44,8 @@ namespace Common.Network.Server.Socket
             connection.Start();
             connectionManager.AddConnection(connection);
 
+            Console.WriteLine($"Connected client connection: {uniqueId}");
+
             // Allow for next client connection
             socket.BeginAcceptTcpClient(
                 new AsyncCallback(HandleClientConnect),

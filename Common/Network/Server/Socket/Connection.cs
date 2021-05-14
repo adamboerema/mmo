@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Sockets;
 using Common.Network.Packet.Manager;
 using Common.Network.Shared;
