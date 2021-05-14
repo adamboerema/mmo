@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Manager;
 using Common.Network.Shared;
 
@@ -39,9 +40,9 @@ namespace Common.Network.Server.Socket
             socket.Close();
         }
 
-        public void Send(byte[] bytes)
+        public void Send(IPacket packet)
         {
-            var writeBytes = packetManager.Write(bytes);
+            var writeBytes = packetManager.Write(packet);
             stream.Write(writeBytes, 0, writeBytes.Length);
         }
 

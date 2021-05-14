@@ -5,6 +5,10 @@ namespace Common.Network.Packet.Definitions
 {
     public interface IPacket
     {
-        IPacket ParseData(PacketReader packetReader);
+        public ServerPacketType Type { get; }
+
+        public IPacket ReadData(PacketReader packetReader);
+
+        public byte[] WriteData(PacketWriter packetWriter);
     }
 }

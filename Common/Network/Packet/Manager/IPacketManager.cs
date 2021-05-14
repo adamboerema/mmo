@@ -5,7 +5,7 @@ namespace Common.Network.Packet.Manager
 {
     public interface IPacketManager
     {
-        byte[] Write(byte[] bytes);
+        byte[] Write(IPacket bytes);
 
         IPacket Receive(byte[] bytes);
     }

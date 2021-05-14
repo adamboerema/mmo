@@ -4,11 +4,16 @@ using Common.Network.Packet.Definitions.Server;
 
 namespace Common.Network.Packet.Definitions
 {
+    public enum ServerPacketType : int
+    {
+        LOGIN = 0
+    }
+
     public static class ServerDefinitions
     {
-        public static Dictionary<int, IPacket> Packets = new Dictionary<int, IPacket>
+        public static Dictionary<ServerPacketType, IPacket> Packets = new Dictionary<ServerPacketType, IPacket>
         {
-            { 0, new LoginPacket() }
+            { ServerPacketType.LOGIN, new LoginPacket() }
         };
     }
 }

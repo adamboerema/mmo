@@ -5,6 +5,8 @@ namespace Common.Network.Packet.Definitions
 {
     public interface IPacketParser
     {
-        public IPacket ParsePacket(int packetId, PacketReader packetReader);
+        public IPacket ReadPacket(int packetId, PacketReader packetReader);
+
+        public byte[] WritePacket(IPacket packet, PacketWriter packetWriter);
     }
 }

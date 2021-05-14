@@ -5,13 +5,20 @@ namespace Common.Network.Packet.Definitions.Server
 {
     public class LoginPacket: IPacket
     {
+        public ServerPacketType Type => ServerPacketType.LOGIN;
+
         public LoginPacket()
         {
         }
 
-        public IPacket ParseData(PacketReader packetReader)
+        public IPacket ReadData(PacketReader packetReader)
         {
             return this;
+        }
+
+        public byte[] WriteData(PacketWriter packetWriter)
+        {
+            return new byte[] { };
         }
     }
 }

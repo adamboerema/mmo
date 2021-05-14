@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using Common.Network.Packet.Definitions;
 using Common.Network.Server.Socket;
 
 namespace Common.Network.Server.Manager
@@ -12,6 +13,6 @@ namespace Common.Network.Server.Manager
 
         void CloseAllConnections();
 
-        void Send(string id, byte[] bytes);
+        void Send(string connectionId, IPacket packet);
     }
 }

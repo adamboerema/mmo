@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using Common.Network.Packet.Definitions;
 
 namespace Common.Network.Server.Socket
 {
@@ -11,6 +12,6 @@ namespace Common.Network.Server.Socket
 
         public void CloseConnection();
 
-        public void Send(byte[] bytes);
+        public void Send(IPacket bytes);
     }
 }

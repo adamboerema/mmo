@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Common.Network.Packet.Definitions;
 using Common.Network.Server.Socket;
 
 namespace Common.Network.Server.Manager
@@ -30,10 +31,10 @@ namespace Common.Network.Server.Manager
             }
         }
 
-        public void Send(string id, byte[] bytes)
+        public void Send(string connectionId, IPacket packet)
         {
-            var connection = connections[id];
-            connection.Send(bytes);
+            var connection = connections[connectionId];
+            connection.Send(packet);
         }
     }
 }
