@@ -9,7 +9,7 @@ namespace Common.Network.Packet.IO
         private BinaryWriter binaryWriter;
         private MemoryStream memoryStream;
 
-        public PacketWriter(int capacity)
+        public PacketWriter(int capacity = 0)
         {
             memoryStream = new MemoryStream(capacity);
             binaryWriter = new BinaryWriter(memoryStream, Encoding.ASCII);

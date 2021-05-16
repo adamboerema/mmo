@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Common.Network.Packet.Definitions;
 using Common.Network.Packet.IO;
 
@@ -9,16 +8,16 @@ namespace Common.Network.Packet.Manager
     {
         private IPacketParser packetParser;
 
-        public PacketManager()
+        public PacketManager(IPacketDefinitions packetDefinitions)
         {
-            packetParser = new PacketParser();
+            packetParser = new PacketParser(packetDefinitions);
         }
 
         public IPacket Receive(byte[] bytes)
         {
             var reader = new PacketReader(bytes);
             var packetId = reader.ReadInteger();
-            var packet = packetParser.ParsePacket(packetId, reader);
+            var packet = packetParser.ReadPacket(packetId, reader);
             reader.Dispose();
 
             Console.WriteLine($"Packet Id: {packetId} -- Packet {packet}");
@@ -26,11 +25,10 @@ namespace Common.Network.Packet.Manager
             return packet;
         }
 
-        public byte[] Write(byte[] bytes)
+        public byte[] Write(IPacket packet)
         {
-            var writer = new PacketWriter(bytes.Length);
-            writer.WriteBytes(bytes);
-            var output = writer.ToArray();
+            var writer = new PacketWriter();
+            var output = packetParser.WritePacket(packet, writer);
             writer.Dispose();
             return output;
         }

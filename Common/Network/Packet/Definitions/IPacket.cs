@@ -5,7 +5,7 @@ namespace Common.Network.Packet.Definitions
 {
     public interface IPacket
     {
-        public ServerPacketType Type { get; }
+        public int Id { get; }
 
         public IPacket ReadData(PacketReader packetReader);
 

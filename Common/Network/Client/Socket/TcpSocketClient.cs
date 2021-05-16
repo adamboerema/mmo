@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using Common.Network.Client.Socket;
+using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Manager;
 using Common.Network.Shared;
 
@@ -24,7 +25,8 @@ namespace Common.Network.Client
             readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
             stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
 
-            packetManager = new PacketManager();
+            var packetDefinitions = new ClientDefinitions();
+            packetManager = new PacketManager(packetDefinitions);
             socket = new TcpClient();
             socket.NoDelay = false;
             socket.SendBufferSize = Constants.BUFFER_CLIENT_SIZE;
@@ -48,8 +50,8 @@ namespace Common.Network.Client
         /// Sends data to the stream
         /// </summary>
         /// <param name="data">Byte array data</param>
-        public void SendData(byte[] data) {
-            var packetBytes = packetManager.Write(data);
+        public void SendData(IPacket packet) {
+            var packetBytes = packetManager.Write(packet);
             stream.Write(packetBytes, 0, packetBytes.Length);
         }
 

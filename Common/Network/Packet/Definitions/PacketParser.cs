@@ -6,11 +6,18 @@ namespace Common.Network.Packet.Definitions
 {
     public class PacketParser : IPacketParser
     {
+        private IPacketDefinitions definitions;
+
+        public PacketParser(IPacketDefinitions packetDefinitions)
+        {
+            definitions = packetDefinitions;
+        }
+
         public IPacket ReadPacket(int packetId, PacketReader packetReader)
         {
             try
             {
-                var packet = ServerDefinitions.Packets[(ServerPacketType)packetId];
+                var packet = definitions.Packets[packetId];
                 packet.ReadData(packetReader);
                 return packet;
             }
@@ -28,7 +35,7 @@ namespace Common.Network.Packet.Definitions
             }
             catch (Exception exception)
             {
-                throw new PacketDefinitionException((int)packet.Type, exception);
+                throw new PacketDefinitionException(packet.Id, exception);
             }
         }
     }

@@ -3,13 +3,9 @@ using Common.Network.Packet.IO;
 
 namespace Common.Network.Packet.Definitions.Server
 {
-    public class LoginPacket: IPacket
+    public class LoginResponsePacket: IPacket
     {
-        public ServerPacketType Type => ServerPacketType.LOGIN;
-
-        public LoginPacket()
-        {
-        }
+        public int Id => ServerDefinitions.LOGIN_RESPONSE;
 
         public IPacket ReadData(PacketReader packetReader)
         {

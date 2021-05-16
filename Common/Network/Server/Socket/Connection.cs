@@ -26,7 +26,9 @@ namespace Common.Network.Server.Socket
             socket.ReceiveBufferSize = Constants.BUFFER_CLIENT_SIZE;
             readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
             stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
-            packetManager = new PacketManager();
+
+            var serverDefinitions = new ServerDefinitions();
+            packetManager = new PacketManager(serverDefinitions);
         }
 
         public void Start()
