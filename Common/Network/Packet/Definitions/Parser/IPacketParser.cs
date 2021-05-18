@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Network.Packet.IO;
 
-namespace Common.Network.Packet.Definitions
+namespace Common.Network.Packet.Definitions.Parser
 {
     public interface IPacketParser
     {

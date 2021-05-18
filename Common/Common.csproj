@@ -20,5 +20,8 @@
     <Folder Include="Network\Packet\Exceptions\" />
     <Folder Include="Network\Packet\Definitions\Client\" />
     <Folder Include="Network\Packet\Definitions\Server\" />
+    <Folder Include="Network\Client\Configuration\" />
+    <Folder Include="Network\Server\Configuration\" />
+    <Folder Include="Network\Packet\Definitions\Parser\" />
   </ItemGroup>
 </Project>

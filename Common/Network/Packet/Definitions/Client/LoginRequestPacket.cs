@@ -5,16 +5,23 @@ namespace Common.Network.Packet.Definitions.Client
 {
     public class LoginRequestPacket: IPacket
     {
-        public int Id => ClientDefinitions.LOGIN_REQUEST;
+        public int Header => ClientDefinitions.LOGIN_REQUEST;
+        public string Username { get; set; }
+        public string Password { get; set; }
 
         public IPacket ReadData(PacketReader packetReader)
         {
+            Username = packetReader.ReadString();
+            Password = packetReader.ReadString();
             return this;
         }
 
         public byte[] WriteData(PacketWriter packetWriter)
         {
-            return new byte[] { };
+            packetWriter.WriteInteger(Id);
+            packetWriter.WriteString(Username);
+            packetWriter.WriteString(Password);
+            return packetWriter.ToBytes();
         }
     }
 }

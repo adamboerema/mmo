@@ -1,5 +1,6 @@
 ﻿using System;
 using Common.Network.Packet.Definitions;
+using Common.Network.Packet.Definitions.Parser;
 using Common.Network.Packet.IO;
 
 namespace Common.Network.Packet.Manager

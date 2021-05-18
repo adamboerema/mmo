@@ -2,7 +2,7 @@
 using Common.Network.Packet.Exceptions;
 using Common.Network.Packet.IO;
 
-namespace Common.Network.Packet.Definitions
+namespace Common.Network.Packet.Definitions.Parser
 {
     public class PacketParser : IPacketParser
     {

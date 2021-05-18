@@ -27,7 +27,7 @@ namespace Common.Network.Packet.IO
             binaryWriter.Write(value);
         }
 
-        public byte[] ToArray()
+        public byte[] ToBytes()
         {
             return memoryStream.ToArray();
         }

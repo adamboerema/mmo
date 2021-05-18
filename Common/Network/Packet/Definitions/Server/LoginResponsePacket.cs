@@ -7,8 +7,10 @@ namespace Common.Network.Packet.Definitions.Server
     {
         public int Id => ServerDefinitions.LOGIN_RESPONSE;
 
+
         public IPacket ReadData(PacketReader packetReader)
         {
+
             return this;
         }
 

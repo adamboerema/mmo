@@ -10,8 +10,8 @@ namespace Common.Network.Client
 {
     public class TcpSocketClient : IClient
     {
-        private TcpClient socket;
-        private IPacketManager packetManager;
+        private readonly TcpClient socket;
+        private readonly IPacketManager packetManager;
         private readonly IPAddress remoteIPAddress;
         private readonly int remotePort;
         private StateBuffer stateBuffer;
@@ -27,6 +27,7 @@ namespace Common.Network.Client
 
             var packetDefinitions = new ClientDefinitions();
             packetManager = new PacketManager(packetDefinitions);
+
             socket = new TcpClient();
             socket.NoDelay = false;
             socket.SendBufferSize = Constants.BUFFER_CLIENT_SIZE;
@@ -50,7 +51,7 @@ namespace Common.Network.Client
         /// Sends data to the stream
         /// </summary>
         /// <param name="data">Byte array data</param>
-        public void SendData(IPacket packet) {
+        public void Send(IPacket packet) {
             var packetBytes = packetManager.Write(packet);
             stream.Write(packetBytes, 0, packetBytes.Length);
         }
