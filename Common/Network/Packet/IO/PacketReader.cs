@@ -18,6 +18,7 @@ namespace Common.Network.Packet.IO
         public int ReadInteger() => binaryReader.ReadInt32();
         public float ReadFloat() => binaryReader.ReadSingle();
         public short ReadShort() => binaryReader.ReadInt16();
+        public bool ReadBool() => binaryReader.ReadBoolean();
         public byte ReadByte() => binaryReader.ReadByte();
         public byte[] ReadBytes(int count) => binaryReader.ReadBytes(count);
         public string ReadString() => binaryReader.ReadString();

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Common.Network.Client.Configuration
+namespace Common.Client.Configuration
 {
     public interface IGameConfiguration
     {

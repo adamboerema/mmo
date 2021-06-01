@@ -10,18 +10,16 @@
   <ItemGroup>
     <Folder Include="Network\Client\" />
     <Folder Include="Network\Shared\" />
-    <Folder Include="Network\Server\Manager\" />
     <Folder Include="Network\Client\Socket\" />
-    <Folder Include="Network\Server\Socket\" />
     <Folder Include="Network\Packet\" />
     <Folder Include="Network\Packet\Manager\" />
     <Folder Include="Network\Packet\IO\" />
     <Folder Include="Network\Packet\Definitions\" />
     <Folder Include="Network\Packet\Exceptions\" />
-    <Folder Include="Network\Packet\Definitions\Client\" />
-    <Folder Include="Network\Packet\Definitions\Server\" />
-    <Folder Include="Network\Client\Configuration\" />
-    <Folder Include="Network\Server\Configuration\" />
     <Folder Include="Network\Packet\Definitions\Parser\" />
+    <Folder Include="Client\" />
+    <Folder Include="Network\Packet\Definitions\Schema\" />
+    <Folder Include="Network\Packet\Definitions\Schema\Auth\" />
+    <Folder Include="Client\Configuration\" />
   </ItemGroup>
 </Project>

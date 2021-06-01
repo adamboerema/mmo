@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Net.Sockets;
 using Common.Network.Packet.Definitions;
-using Common.Network.Server.Socket;
 
-namespace Common.Network.Server.Manager
+namespace Server.Network.Connection
 {
     public interface IConnectionManager
     {

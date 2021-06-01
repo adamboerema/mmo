@@ -2,11 +2,13 @@
 using System.Net.Sockets;
 using Common.Network.Packet.Definitions;
 
-namespace Common.Network.Server.Socket
+namespace Server.Network.Connection
 {
     public interface IConnection
     {
         public string Id { get; }
+
+        public delegate void OnReceive(string id, IPacket packet);
 
         public void Start();
 

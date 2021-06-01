@@ -18,6 +18,7 @@ namespace Common.Network.Packet.IO
         public void WriteInteger(int value) => binaryWriter.Write(value);
         public void WriteFloat(float value) => binaryWriter.Write(value);
         public void WriteShort(short value) => binaryWriter.Write(value);
+        public void WriteBool(bool value) => binaryWriter.Write(value);
         public void WriteByte(byte value) => binaryWriter.Write(value);
         public void WriteBytes(byte[] value) => binaryWriter.Write(value);
         

@@ -1,23 +1,28 @@
 ﻿using System;
 using System.Net.Sockets;
+using Common.Network;
 using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Manager;
 using Common.Network.Shared;
 
-namespace Common.Network.Server.Socket
+namespace Server.Network.Connection
 {
-    public class Connection: IConnection
+    public class TcpSocketConnection: IConnection
     {
         public string Id => id;
 
         private string id;
-        private TcpClient socket;
-        private StateBuffer stateBuffer;
+        private readonly TcpClient socket;
+        private readonly StateBuffer stateBuffer;
+        private readonly IPacketManager packetManager;
+        private readonly IConnectionReceiver receiver;
         private NetworkStream stream;
-        private IPacketManager packetManager;
         private byte[] readBuffer;
 
-        public Connection(string connectionId, TcpClient connectionSocket)
+        public TcpSocketConnection(
+            string connectionId,
+            TcpClient connectionSocket,
+            IConnectionReceiver connectionReceiver)
         {
             id = connectionId;
             socket = connectionSocket;
@@ -27,8 +32,9 @@ namespace Common.Network.Server.Socket
             readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
             stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
 
-            var serverDefinitions = new ServerDefinitions();
+            var serverDefinitions = new Definitions();
             packetManager = new PacketManager(serverDefinitions);
+            receiver = connectionReceiver;
         }
 
         public void Start()
@@ -69,6 +75,8 @@ namespace Common.Network.Server.Socket
                 offset,
                 readByteCount);
 
+            var packet = packetManager.Receive(packetBytes);
+            receiver.Receive(Id, packet);
             BeginStreamRead(result.AsyncState as StateBuffer);
         }
 

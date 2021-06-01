@@ -1,17 +1,19 @@
 using System;
-using Common.Network.Server.Socket;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Server.Configuration;
+using Sever;
 
 namespace Server
 {
     public class Program
     {
-        private static TcpSocketServer server;
+        private static GameServer server;
 
         public static void Main(string[] args)
         {
-            server = new TcpSocketServer(7777);
+            var configuration = new ServerConfiguration();
+            server = new GameServer(configuration);
             server.Start();
 
             Console.ReadKey();

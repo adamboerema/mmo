@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Common.Network.Client.Socket;
 using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Manager;
@@ -25,7 +26,7 @@ namespace Common.Network.Client
             readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
             stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
 
-            var packetDefinitions = new ClientDefinitions();
+            var packetDefinitions = new Definitions();
             packetManager = new PacketManager(packetDefinitions);
 
             socket = new TcpClient();
@@ -38,13 +39,11 @@ namespace Common.Network.Client
         /// <summary>
         /// Start the client connection
         /// </summary>
-        public void Start()
+        public async Task Start()
         {
-            socket.BeginConnect(
-                remoteIPAddress,
-                remotePort,
-                new AsyncCallback(HandleConnect),
-                stateBuffer);
+            await socket.ConnectAsync(remoteIPAddress, remotePort);
+            stream = socket.GetStream();
+            BeginStreamRead(stateBuffer);
         }
 
         /// <summary>
@@ -52,8 +51,11 @@ namespace Common.Network.Client
         /// </summary>
         /// <param name="data">Byte array data</param>
         public void Send(IPacket packet) {
-            var packetBytes = packetManager.Write(packet);
-            stream.Write(packetBytes, 0, packetBytes.Length);
+            if(socket.Connected)
+            {
+                var packetBytes = packetManager.Write(packet);
+                stream.Write(packetBytes, 0, packetBytes.Length);
+            }
         }
 
         /// <summary>
@@ -62,17 +64,6 @@ namespace Common.Network.Client
         public void CloseSocket()
         {
             socket.Close();
-        }
-
-        /// <summary>
-        /// Handle the incoming connection request
-        /// </summary>
-        /// <param name="result"></param>
-        private void HandleConnect(IAsyncResult result)
-        {
-            socket.EndConnect(result);
-            stream = socket.GetStream();
-            BeginStreamRead(result.AsyncState as StateBuffer);
         }
 
         /// <summary>
@@ -95,7 +86,9 @@ namespace Common.Network.Client
                 packetBytes,
                 offset,
                 readByteCount);
-            packetManager.Receive(packetBytes);
+            var packet = packetManager.Receive(packetBytes);
+
+            Console.WriteLine($"Packet {packet.Id}: {packet}");
             BeginStreamRead(result.AsyncState as StateBuffer);
         }
 

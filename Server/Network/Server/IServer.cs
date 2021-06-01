@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Common.Network.Server.Socket
+namespace Server.Network.Server
 {
     public interface IServer
     {

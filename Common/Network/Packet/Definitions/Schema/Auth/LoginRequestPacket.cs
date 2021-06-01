@@ -1,11 +1,11 @@
 ﻿using System;
 using Common.Network.Packet.IO;
 
-namespace Common.Network.Packet.Definitions.Client
+namespace Common.Network.Packet.Definitions.Schema.Auth
 {
     public class LoginRequestPacket: IPacket
     {
-        public int Header => ClientDefinitions.LOGIN_REQUEST;
+        public int Id => Definitions.LOGIN_REQUEST;
         public string Username { get; set; }
         public string Password { get; set; }
 

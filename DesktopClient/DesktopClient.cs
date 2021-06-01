@@ -1,4 +1,6 @@
-﻿using Common.Network.Client;
+﻿using Common.Client;
+using Common.Network.Client;
+using DesktopClient.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,11 +11,12 @@ namespace DesktopClient
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private TcpSocketClient gameClient;
+        private GameClient gameClient;
 
         public DesktopClient()
         {
-            gameClient = new TcpSocketClient("127.0.0.1", 7777);
+            var configuration = new ClientConfiguration();
+            gameClient = new GameClient(configuration);
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -22,6 +25,7 @@ namespace DesktopClient
         protected override void Initialize()
         {
             gameClient.Start();
+            gameClient.Login("test", "test12345");
             base.Initialize();
         }
 

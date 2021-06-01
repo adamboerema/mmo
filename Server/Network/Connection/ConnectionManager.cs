@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common.Network.Packet.Definitions;
-using Common.Network.Server.Socket;
 
-namespace Common.Network.Server.Manager
+namespace Server.Network.Connection
 {
-    public class ConnectionManager: IConnectionManager
+    public class ConnectionManager: IConnectionManager, IConnectionReceiver
     {
         private Dictionary<string, IConnection> connections;
 
@@ -35,6 +35,11 @@ namespace Common.Network.Server.Manager
         {
             var connection = connections[connectionId];
             connection.Send(packet);
+        }
+
+        public void Receive(string connectionId, IPacket packet)
+        {
+            Console.WriteLine($"Received Packet {packet} from connection {connectionId}");
         }
     }
 }

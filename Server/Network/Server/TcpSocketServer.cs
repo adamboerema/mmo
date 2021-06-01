@@ -1,22 +1,27 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using Common.Network.Server.Manager;
+using Common.Network;
 using Common.Network.Shared;
+using Server.Configuration;
+using Server.Network.Connection;
 
-namespace Common.Network.Server.Socket
+namespace Server.Network.Server
 {
     public class TcpSocketServer: IServer
     {
         private IConnectionManager connectionManager;
+        private IConnectionReceiver connectionReceiver;
         private readonly TcpListener socket;
         private readonly StateBuffer stateBuffer;
-        private byte[] buffer;
 
-        public TcpSocketServer(int port)
+        public TcpSocketServer(
+            IServerConfiguration configuration,
+            IConnectionManager connectionManager,
+            IConnectionReceiver connectionReceiver)
         {
-            connectionManager = new ConnectionManager(Constants.MAX_PLAYERS);
-            socket = new TcpListener(IPAddress.Any, port);
+            this.connectionManager = connectionManager;
+            socket = new TcpListener(IPAddress.Any, configuration.Port);
             stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
         }
 
@@ -40,7 +45,7 @@ namespace Common.Network.Server.Socket
 
             // Store client in memory
             var uniqueId = Guid.NewGuid().ToString();
-            var connection = new Connection(uniqueId, clientSocket);
+            var connection = new TcpSocketConnection(uniqueId, clientSocket, connectionReceiver);
             connection.Start();
             connectionManager.AddConnection(connection);
 

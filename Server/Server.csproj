@@ -9,4 +9,12 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+    <Folder Include="Network\" />
+    <Folder Include="Network\Connection\" />
+    <Folder Include="Network\Server\" />
+    <Folder Include="Engine\" />
+    <Folder Include="Network\Handler\" />
+  </ItemGroup>
 </Project>
