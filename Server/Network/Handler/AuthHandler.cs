@@ -8,9 +8,9 @@ namespace Server.Network.Handler
 {
     public class AuthHandler: IServerHandler<LoginRequestPacket>
     {
-        private readonly PacketBus packetBus;
+        private readonly IReceiverPacketBus packetBus;
 
-        public AuthHandler(PacketBus eventBus)
+        public AuthHandler(IReceiverPacketBus eventBus)
         {
             packetBus = eventBus;
         }

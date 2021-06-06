@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Network.Packet.Definitions;
+using Server.Configuration;
 
 namespace Server.Network.Connection
 {
@@ -8,9 +9,9 @@ namespace Server.Network.Connection
     {
         private Dictionary<string, IConnection> _connections;
 
-        public ConnectionManager(int maxConnections)
+        public ConnectionManager(IServerConfiguration configuration)
         {
-            _connections = new Dictionary<string, IConnection>(maxConnections);
+            _connections = new Dictionary<string, IConnection>(configuration.MaxConnections);
         }
 
         public void AddConnection(IConnection connection)
@@ -34,7 +35,7 @@ namespace Server.Network.Connection
         public void Send(string connectionId, IPacket packet)
         {
             var connection = _connections[connectionId];
-            connection.Send(packet);
+            connection?.Send(packet);
         }
 
         public void Receive(string connectionId, IPacket packet)

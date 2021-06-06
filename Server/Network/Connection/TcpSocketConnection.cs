@@ -4,7 +4,6 @@ using Common.Network;
 using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Manager;
 using Common.Network.Shared;
-using Server.Bus;
 using Server.Bus.Packet;
 
 namespace Server.Network.Connection
@@ -16,15 +15,15 @@ namespace Server.Network.Connection
         private string id;
         private readonly TcpClient _socket;
         private readonly StateBuffer _stateBuffer;
-        private readonly PacketBus _packetBus;
         private readonly IPacketManager _packetManager;
+        private readonly IReceiverPacketBus _receiverPacketBus;
         private NetworkStream _stream;
         private byte[] _readBuffer;
 
         public TcpSocketConnection(
             string connectionId,
             TcpClient connectionSocket,
-            PacketBus eventBus)
+            IReceiverPacketBus receiverPacketBus)
         {
             id = connectionId;
             _socket = connectionSocket;
@@ -36,7 +35,7 @@ namespace Server.Network.Connection
 
             var serverDefinitions = new Definitions();
             _packetManager = new PacketManager(serverDefinitions);
-            _packetBus = eventBus;
+            _receiverPacketBus = receiverPacketBus;
         }
 
         public void Start()
@@ -78,7 +77,7 @@ namespace Server.Network.Connection
                 readByteCount);
 
             var packet = _packetManager.Receive(packetBytes);
-            receiver.Receive(Id, packet);
+            _receiverPacketBus.Publish(Id, packet);
             BeginStreamRead(result.AsyncState as StateBuffer);
         }
 

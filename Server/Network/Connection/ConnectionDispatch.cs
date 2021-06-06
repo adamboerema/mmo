@@ -14,7 +14,7 @@ namespace Server.Network.Connection
 
         public void Dispatch(string connectionId, IPacket packet)
         {
-
+            _connectionManager.Send(connectionId, packet);
         }
     }
 }

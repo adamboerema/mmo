@@ -1,15 +1,15 @@
 ﻿using System;
 using Common.Network.Packet.Definitions;
 
-namespace Server.Network.Connection
+namespace Server.Bus.Packet
 {
-    public interface IConnectionDispatch
+    public interface IDispatchPacketBus
     {
         /// <summary>
-        /// Dispatch packet to the connection manager
+        /// Dispatch a packet with connection id information
         /// </summary>
         /// <param name="connectionId"></param>
         /// <param name="packet"></param>
-        public void Dispatch(string connectionId, IPacket packet);
+        public void Publish(string connectionId, IPacket packet);
     }
 }

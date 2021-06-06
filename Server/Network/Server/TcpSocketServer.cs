@@ -11,50 +11,50 @@ namespace Server.Network.Server
 {
     public class TcpSocketServer: IServer
     {
-        private IConnectionManager connectionManager;
-        private PacketBus packetBus;
-        private readonly TcpListener socket;
-        private readonly StateBuffer stateBuffer;
+        private IConnectionManager _connectionManager;
+        private IReceiverPacketBus _receiverPacketBus;
+        private readonly TcpListener _socket;
+        private readonly StateBuffer _stateBuffer;
 
         public TcpSocketServer(
             IServerConfiguration configuration,
             IConnectionManager connectionManager,
-            PacketBus packetBus)
+            IReceiverPacketBus receiverPacketBus)
         {
-            this.connectionManager = connectionManager;
-            this.packetBus = packetBus;
-            socket = new TcpListener(IPAddress.Any, configuration.Port);
-            stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
+            _connectionManager = connectionManager;
+            _receiverPacketBus = receiverPacketBus;
+            _socket = new TcpListener(IPAddress.Any, configuration.Port);
+            _stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
         }
 
         public void Start()
         {
-            socket.Start();
-            socket.BeginAcceptTcpClient(
+            _socket.Start();
+            _socket.BeginAcceptTcpClient(
                 new AsyncCallback(HandleClientConnect),
-                stateBuffer);
+                _stateBuffer);
         }
 
         public void CloseConnection()
         {
-            connectionManager.CloseAllConnections();
+            _connectionManager.CloseAllConnections();
         }
 
         private void HandleClientConnect(IAsyncResult result)
         {
             var currentStateBuffer = result.AsyncState as StateBuffer;
-            var clientSocket = socket.EndAcceptTcpClient(result);
+            var clientSocket = _socket.EndAcceptTcpClient(result);
 
             // Store client in memory
             var uniqueId = Guid.NewGuid().ToString();
-            var connection = new TcpSocketConnection(uniqueId, clientSocket, packetBus);
+            var connection = new TcpSocketConnection(uniqueId, clientSocket, _receiverPacketBus);
             connection.Start();
-            connectionManager.AddConnection(connection);
+            _connectionManager.AddConnection(connection);
 
             Console.WriteLine($"Connected client connection: {uniqueId}");
 
             // Allow for next client connection
-            socket.BeginAcceptTcpClient(
+            _socket.BeginAcceptTcpClient(
                 new AsyncCallback(HandleClientConnect),
                 currentStateBuffer);
         }

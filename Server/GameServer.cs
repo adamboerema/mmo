@@ -8,26 +8,16 @@ namespace Sever
 {
     public class GameServer
     {
-        private readonly IServerConfiguration configuration;
-        private readonly TcpSocketServer socketServer;
-        private readonly IConnectionManager connectionManager;
-        private readonly IConnectionDispatch connectionDispatch;
-        private readonly IConnectionReceiver connectionReceiver;
+        private readonly IServer _socketServer;
 
-        private readonly PacketBus receiverBus = new PacketBus();
-        private readonly PacketBus dispatchBus = new PacketBus();
-
-        public GameServer(IServerConfiguration serverConfiguration)
+        public GameServer(IServer socketServer)
         {
-            configuration = serverConfiguration;
-            connectionReceiver = new ConnectionReceiver();
-            connectionManager = new ConnectionManager(configuration.MaxConnections);
-            socketServer = new TcpSocketServer(serverConfiguration, connectionManager, receiverBus);
+            _socketServer = socketServer;
         }
 
         public void Start()
         {
-            socketServer.Start();
+            _socketServer.Start();
         }
     }
 }

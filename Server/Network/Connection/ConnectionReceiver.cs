@@ -9,10 +9,11 @@ namespace Server.Network.Connection
 {
     public class ConnectionReceiver: IConnectionReceiver
     {
-        private readonly PacketBus _packetBus;
+        private readonly IReceiverPacketBus _packetBus;
 
-        public ConnectionReceiver()
+        public ConnectionReceiver(IReceiverPacketBus packetBus)
         {
+            _packetBus = packetBus;
         }
 
         public void Receive(string connectionId, IPacket packet)
