@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using Common.Network;
 using Common.Network.Shared;
+using Server.Bus.Packet;
 using Server.Configuration;
 using Server.Network.Connection;
 
@@ -11,16 +12,17 @@ namespace Server.Network.Server
     public class TcpSocketServer: IServer
     {
         private IConnectionManager connectionManager;
-        private IConnectionReceiver connectionReceiver;
+        private PacketBus packetBus;
         private readonly TcpListener socket;
         private readonly StateBuffer stateBuffer;
 
         public TcpSocketServer(
             IServerConfiguration configuration,
             IConnectionManager connectionManager,
-            IConnectionReceiver connectionReceiver)
+            PacketBus packetBus)
         {
             this.connectionManager = connectionManager;
+            this.packetBus = packetBus;
             socket = new TcpListener(IPAddress.Any, configuration.Port);
             stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
         }
@@ -45,7 +47,7 @@ namespace Server.Network.Server
 
             // Store client in memory
             var uniqueId = Guid.NewGuid().ToString();
-            var connection = new TcpSocketConnection(uniqueId, clientSocket, connectionReceiver);
+            var connection = new TcpSocketConnection(uniqueId, clientSocket, packetBus);
             connection.Start();
             connectionManager.AddConnection(connection);
 

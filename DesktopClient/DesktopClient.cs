@@ -9,29 +9,29 @@ namespace DesktopClient
 {
     public class DesktopClient : Game
     {
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
-        private GameClient gameClient;
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+        private GameClient _gameClient;
 
         public DesktopClient()
         {
             var configuration = new ClientConfiguration();
-            gameClient = new GameClient(configuration);
-            graphics = new GraphicsDeviceManager(this);
+            _gameClient = new GameClient(configuration);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            gameClient.Start();
-            gameClient.Login("test", "test12345");
+            _gameClient.Start();
+            _gameClient.Login("test", "test12345");
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)

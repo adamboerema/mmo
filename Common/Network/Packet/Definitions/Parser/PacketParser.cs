@@ -6,18 +6,18 @@ namespace Common.Network.Packet.Definitions.Parser
 {
     public class PacketParser : IPacketParser
     {
-        private IPacketDefinitions definitions;
+        private IPacketDefinitions _definitions;
 
         public PacketParser(IPacketDefinitions packetDefinitions)
         {
-            definitions = packetDefinitions;
+            _definitions = packetDefinitions;
         }
 
         public IPacket ReadPacket(int packetId, PacketReader packetReader)
         {
             try
             {
-                var packet = definitions.Packets[packetId];
+                var packet = _definitions.Packets[packetId];
                 packet.ReadData(packetReader);
                 return packet;
             }

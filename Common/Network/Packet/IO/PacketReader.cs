@@ -14,7 +14,6 @@ namespace Common.Network.Packet.IO
             memoryStream = new MemoryStream(bytes);
             binaryReader = new BinaryReader(memoryStream, Encoding.ASCII);
         }
-
         public int ReadInteger() => binaryReader.ReadInt32();
         public float ReadFloat() => binaryReader.ReadSingle();
         public short ReadShort() => binaryReader.ReadInt16();

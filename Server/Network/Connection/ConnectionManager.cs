@@ -6,26 +6,26 @@ namespace Server.Network.Connection
 {
     public class ConnectionManager: IConnectionManager, IConnectionReceiver
     {
-        private Dictionary<string, IConnection> connections;
+        private Dictionary<string, IConnection> _connections;
 
         public ConnectionManager(int maxConnections)
         {
-            connections = new Dictionary<string, IConnection>(maxConnections);
+            _connections = new Dictionary<string, IConnection>(maxConnections);
         }
 
         public void AddConnection(IConnection connection)
         {
-            connections.Add(connection.Id, connection);
+            _connections.Add(connection.Id, connection);
         }
 
         public IConnection GetConnection(string id)
         {
-            return connections[id];
+            return _connections[id];
         }
 
         public void CloseAllConnections()
         {
-            foreach(IConnection connection in connections.Values)
+            foreach(IConnection connection in _connections.Values)
             {
                 connection.CloseConnection();
             }
@@ -33,7 +33,7 @@ namespace Server.Network.Connection
 
         public void Send(string connectionId, IPacket packet)
         {
-            var connection = connections[connectionId];
+            var connection = _connections[connectionId];
             connection.Send(packet);
         }
 

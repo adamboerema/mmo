@@ -11,28 +11,28 @@ namespace Common.Network.Client
 {
     public class TcpSocketClient : IClient
     {
-        private readonly TcpClient socket;
-        private readonly IPacketManager packetManager;
-        private readonly IPAddress remoteIPAddress;
-        private readonly int remotePort;
-        private StateBuffer stateBuffer;
-        private NetworkStream stream;
-        private byte[] readBuffer;
+        private readonly TcpClient _socket;
+        private readonly IPacketManager _packetManager;
+        private readonly IPAddress _remoteIPAddress;
+        private readonly int _remotePort;
+        private StateBuffer _stateBuffer;
+        private NetworkStream _stream;
+        private byte[] _readBuffer;
 
         public TcpSocketClient(string ipAddress, int port)
         {
-            remoteIPAddress = IPAddress.Parse(ipAddress);
-            remotePort = port;
-            readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
-            stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
+            _remoteIPAddress = IPAddress.Parse(ipAddress);
+            _remotePort = port;
+            _readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
+            _stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
 
             var packetDefinitions = new Definitions();
-            packetManager = new PacketManager(packetDefinitions);
+            _packetManager = new PacketManager(packetDefinitions);
 
-            socket = new TcpClient();
-            socket.NoDelay = false;
-            socket.SendBufferSize = Constants.BUFFER_CLIENT_SIZE;
-            socket.ReceiveBufferSize = Constants.BUFFER_CLIENT_SIZE;
+            _socket = new TcpClient();
+            _socket.NoDelay = false;
+            _socket.SendBufferSize = Constants.BUFFER_CLIENT_SIZE;
+            _socket.ReceiveBufferSize = Constants.BUFFER_CLIENT_SIZE;
 
         }
 
@@ -41,9 +41,9 @@ namespace Common.Network.Client
         /// </summary>
         public async Task Start()
         {
-            await socket.ConnectAsync(remoteIPAddress, remotePort);
-            stream = socket.GetStream();
-            BeginStreamRead(stateBuffer);
+            await _socket.ConnectAsync(_remoteIPAddress, _remotePort);
+            _stream = _socket.GetStream();
+            BeginStreamRead(_stateBuffer);
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace Common.Network.Client
         /// </summary>
         /// <param name="data">Byte array data</param>
         public void Send(IPacket packet) {
-            if(socket.Connected)
+            if(_socket.Connected)
             {
-                var packetBytes = packetManager.Write(packet);
-                stream.Write(packetBytes, 0, packetBytes.Length);
+                var packetBytes = _packetManager.Write(packet);
+                _stream.Write(packetBytes, 0, packetBytes.Length);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Common.Network.Client
         /// </summary>
         public void CloseSocket()
         {
-            socket.Close();
+            _socket.Close();
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Common.Network.Client
         private void HandleDataReceive(IAsyncResult result)
         {
             var offset = 0;
-            var readByteCount = stream.EndRead(result);
+            var readByteCount = _stream.EndRead(result);
             if(readByteCount <= 0)
             {
                 CloseSocket();
@@ -81,12 +81,12 @@ namespace Common.Network.Client
 
             var packetBytes = new byte[readByteCount];
             Buffer.BlockCopy(
-                readBuffer,
+                _readBuffer,
                 offset,
                 packetBytes,
                 offset,
                 readByteCount);
-            var packet = packetManager.Receive(packetBytes);
+            var packet = _packetManager.Receive(packetBytes);
 
             Console.WriteLine($"Packet {packet.Id}: {packet}");
             BeginStreamRead(result.AsyncState as StateBuffer);
@@ -99,8 +99,8 @@ namespace Common.Network.Client
         private void BeginStreamRead(StateBuffer state)
         {
             var offset = 0;
-            stream.BeginRead(
-                readBuffer,
+            _stream.BeginRead(
+                _readBuffer,
                 offset,
                 Constants.BUFFER_CLIENT_SIZE,
                 new AsyncCallback(HandleDataReceive),

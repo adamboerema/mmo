@@ -4,6 +4,8 @@ using Common.Network;
 using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Manager;
 using Common.Network.Shared;
+using Server.Bus;
+using Server.Bus.Packet;
 
 namespace Server.Network.Connection
 {
@@ -12,46 +14,46 @@ namespace Server.Network.Connection
         public string Id => id;
 
         private string id;
-        private readonly TcpClient socket;
-        private readonly StateBuffer stateBuffer;
-        private readonly IPacketManager packetManager;
-        private readonly IConnectionReceiver receiver;
-        private NetworkStream stream;
-        private byte[] readBuffer;
+        private readonly TcpClient _socket;
+        private readonly StateBuffer _stateBuffer;
+        private readonly PacketBus _packetBus;
+        private readonly IPacketManager _packetManager;
+        private NetworkStream _stream;
+        private byte[] _readBuffer;
 
         public TcpSocketConnection(
             string connectionId,
             TcpClient connectionSocket,
-            IConnectionReceiver connectionReceiver)
+            PacketBus eventBus)
         {
             id = connectionId;
-            socket = connectionSocket;
-            socket.NoDelay = true;
-            socket.SendBufferSize = Constants.BUFFER_CLIENT_SIZE;
-            socket.ReceiveBufferSize = Constants.BUFFER_CLIENT_SIZE;
-            readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
-            stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
+            _socket = connectionSocket;
+            _socket.NoDelay = true;
+            _socket.SendBufferSize = Constants.BUFFER_CLIENT_SIZE;
+            _socket.ReceiveBufferSize = Constants.BUFFER_CLIENT_SIZE;
+            _readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
+            _stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
 
             var serverDefinitions = new Definitions();
-            packetManager = new PacketManager(serverDefinitions);
-            receiver = connectionReceiver;
+            _packetManager = new PacketManager(serverDefinitions);
+            _packetBus = eventBus;
         }
 
         public void Start()
         {
-            stream = socket.GetStream();
-            BeginStreamRead(stateBuffer);
+            _stream = _socket.GetStream();
+            BeginStreamRead(_stateBuffer);
         }
 
         public void CloseConnection()
         {
-            socket.Close();
+            _socket.Close();
         }
 
         public void Send(IPacket packet)
         {
-            var writeBytes = packetManager.Write(packet);
-            stream.Write(writeBytes, 0, writeBytes.Length);
+            var writeBytes = _packetManager.Write(packet);
+            _stream.Write(writeBytes, 0, writeBytes.Length);
         }
 
         /// <summary>
@@ -61,7 +63,7 @@ namespace Server.Network.Connection
         private void HandleDataReceive(IAsyncResult result)
         {
             var offset = 0;
-            var readByteCount = stream.EndRead(result);
+            var readByteCount = _stream.EndRead(result);
             if (readByteCount <= 0)
             {
                 CloseConnection();
@@ -69,13 +71,13 @@ namespace Server.Network.Connection
 
             var packetBytes = new byte[readByteCount];
             Buffer.BlockCopy(
-                readBuffer,
+                _readBuffer,
                 offset,
                 packetBytes,
                 offset,
                 readByteCount);
 
-            var packet = packetManager.Receive(packetBytes);
+            var packet = _packetManager.Receive(packetBytes);
             receiver.Receive(Id, packet);
             BeginStreamRead(result.AsyncState as StateBuffer);
         }
@@ -87,8 +89,8 @@ namespace Server.Network.Connection
         private void BeginStreamRead(StateBuffer state)
         {
             var offset = 0;
-            stream.BeginRead(
-                readBuffer,
+            _stream.BeginRead(
+                _readBuffer,
                 offset,
                 Constants.BUFFER_CLIENT_SIZE,
                 new AsyncCallback(HandleDataReceive),

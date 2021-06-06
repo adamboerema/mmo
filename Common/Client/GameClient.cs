@@ -9,13 +9,13 @@ namespace Common.Client
 {
     public class GameClient
     {
-        private readonly IGameConfiguration configuration;
-        private readonly TcpSocketClient client;
+        private readonly IGameConfiguration _configuration;
+        private readonly TcpSocketClient _client;
 
         public GameClient(IGameConfiguration gameConfiguration)
         {
-            configuration = gameConfiguration;
-            client = new TcpSocketClient(gameConfiguration.IpAddress, gameConfiguration.Port);
+            _configuration = gameConfiguration;
+            _client = new TcpSocketClient(gameConfiguration.IpAddress, gameConfiguration.Port);
         }
 
         public void Start()
@@ -27,7 +27,7 @@ namespace Common.Client
         {
             try
             {
-                await client.Start();
+                await _client.Start();
             }
             catch(Exception error)
             {
@@ -45,7 +45,7 @@ namespace Common.Client
                 Username = username,
                 Password = password
             };
-            client.Send(packet);
+            _client.Send(packet);
         }
     }
 }
