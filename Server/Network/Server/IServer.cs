@@ -5,6 +5,6 @@ namespace Server.Network.Server
     {
         public void Start();
 
-        public void CloseConnection();
+        public void Close();
     }
 }

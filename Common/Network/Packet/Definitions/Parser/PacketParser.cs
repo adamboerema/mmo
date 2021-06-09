@@ -13,7 +13,7 @@ namespace Common.Network.Packet.Definitions.Parser
             _definitions = packetDefinitions;
         }
 
-        public IPacket ReadPacket(int packetId, PacketReader packetReader)
+        public IPacketEvent ReadPacket(int packetId, PacketReader packetReader)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace Common.Network.Packet.Definitions.Parser
             }
         }
 
-        public byte[] WritePacket(IPacket packet, PacketWriter packetWriter)
+        public byte[] WritePacket(IPacketEvent packet, PacketWriter packetWriter)
         {
             try
             {

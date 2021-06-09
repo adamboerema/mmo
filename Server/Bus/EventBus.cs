@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Server.Bus
 {
-    public class EventBus<T> : IEventBus<T>
+    public abstract class EventBus<T> : IEventBus<T>
     {
         private readonly IList<IEventBusListener<T>> listeners = new List<IEventBusListener<T>>();
 

@@ -35,7 +35,7 @@ namespace Server.Network.Server
                 _stateBuffer);
         }
 
-        public void CloseConnection()
+        public void Close()
         {
             _connectionManager.CloseAllConnections();
         }

@@ -10,6 +10,6 @@ namespace Server.Network.Connection
         /// </summary>
         /// <param name="connectionId"></param>
         /// <param name="packet"></param>
-        public void Dispatch(string connectionId, IPacket packet);
+        public void Dispatch(string connectionId, IPacketEvent packet);
     }
 }

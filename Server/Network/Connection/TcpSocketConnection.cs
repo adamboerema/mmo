@@ -49,7 +49,7 @@ namespace Server.Network.Connection
             _socket.Close();
         }
 
-        public void Send(IPacket packet)
+        public void Send(IPacketEvent packet)
         {
             var writeBytes = _packetManager.Write(packet);
             _stream.Write(writeBytes, 0, writeBytes.Length);

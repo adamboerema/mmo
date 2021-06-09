@@ -50,7 +50,7 @@ namespace Common.Network.Client
         /// Sends data to the stream
         /// </summary>
         /// <param name="data">Byte array data</param>
-        public void Send(IPacket packet) {
+        public void Send(IPacketEvent packet) {
             if(_socket.Connected)
             {
                 var packetBytes = _packetManager.Write(packet);

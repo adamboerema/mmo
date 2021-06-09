@@ -16,7 +16,7 @@ namespace Server.Network.Connection
             _packetBus = packetBus;
         }
 
-        public void Receive(string connectionId, IPacket packet)
+        public void Receive(string connectionId, IPacketEvent packet)
         {
             switch(packet.Id)
             {

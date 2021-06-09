@@ -28,6 +28,6 @@ namespace Server.Network.Connection
         /// </summary>
         /// <param name="connectionId"></param>
         /// <param name="packet"></param>
-        void Send(string connectionId, IPacket packet);
+        void Send(string connectionId, IPacketEvent packet);
     }
 }

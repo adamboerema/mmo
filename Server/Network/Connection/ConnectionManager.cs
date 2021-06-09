@@ -32,13 +32,13 @@ namespace Server.Network.Connection
             }
         }
 
-        public void Send(string connectionId, IPacket packet)
+        public void Send(string connectionId, IPacketEvent packet)
         {
             var connection = _connections[connectionId];
             connection?.Send(packet);
         }
 
-        public void Receive(string connectionId, IPacket packet)
+        public void Receive(string connectionId, IPacketEvent packet)
         {
             Console.WriteLine($"Received Packet {packet} from connection {connectionId}");
         }

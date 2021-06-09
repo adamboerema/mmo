@@ -5,6 +5,6 @@ namespace Server.Network.Connection
 {
     public interface IConnectionReceiver
     {
-        public void Receive(string connectionId, IPacket packet);
+        public void Receive(string connectionId, IPacketEvent packet);
     }
 }

@@ -5,8 +5,8 @@ namespace Common.Network.Packet.Manager
 {
     public interface IPacketManager
     {
-        byte[] Write(IPacket packet);
+        byte[] Write(IPacketEvent packet);
 
-        IPacket Receive(byte[] bytes);
+        IPacketEvent Receive(byte[] bytes);
     }
 }

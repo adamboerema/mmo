@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common.Network.Packet.Definitions;
 
 namespace Server.Bus.Packet
 {
-    public class ReceiverPacketBus: IReceiverPacketBus
+    public class DispatchPacketBus : IDispatchPacketBus
     {
         private readonly IList<IEventBusListener<PacketEvent>> listeners = new List<IEventBusListener<PacketEvent>>();
 
-        public void Publish(string connectionId, PacketEvent packetEvent)
+        public void Publish(string connectionId, PacketEvent packet)
         {
             Publish(new PacketEvent
             {
                 ConnectionId = connectionId,
-                Packet = packetEvent.Packet
+                Packet = packet.Packet
             });
         }
 
         public void Publish(PacketEvent eventObject)
         {
-            foreach(var listener in listeners)
+            foreach (var listener in listeners)
             {
                 listener.Handle(eventObject);
             }

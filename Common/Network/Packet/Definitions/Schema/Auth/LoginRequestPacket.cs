@@ -3,13 +3,13 @@ using Common.Network.Packet.IO;
 
 namespace Common.Network.Packet.Definitions.Schema.Auth
 {
-    public class LoginRequestPacket: IPacket
+    public class LoginRequestPacket: IPacketEvent
     {
         public int Id => Definitions.LOGIN_REQUEST;
         public string Username { get; set; }
         public string Password { get; set; }
 
-        public IPacket ReadData(PacketReader packetReader)
+        public IPacketEvent ReadData(PacketReader packetReader)
         {
             Username = packetReader.ReadString();
             Password = packetReader.ReadString();

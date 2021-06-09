@@ -3,11 +3,11 @@ using Common.Network.Packet.IO;
 
 namespace Common.Network.Packet.Definitions
 {
-    public interface IPacket
+    public interface IPacketEvent
     {
         public int Id { get; }
 
-        public IPacket ReadData(PacketReader packetReader);
+        public IPacketEvent ReadData(PacketReader packetReader);
 
         public byte[] WriteData(PacketWriter packetWriter);
     }
