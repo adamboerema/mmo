@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Server.Bus
+namespace Common.Bus
 {
     public interface IEventBusListener<T>
     {

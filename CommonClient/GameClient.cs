@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Timers;
 using Common.Client.Configuration;
 using Common.Network.Client;
 using Common.Network.Packet.Definitions.Schema.Auth;

@@ -17,9 +17,11 @@
     <Folder Include="Network\Packet\Definitions\" />
     <Folder Include="Network\Packet\Exceptions\" />
     <Folder Include="Network\Packet\Definitions\Parser\" />
-    <Folder Include="Client\" />
     <Folder Include="Network\Packet\Definitions\Schema\" />
     <Folder Include="Network\Packet\Definitions\Schema\Auth\" />
-    <Folder Include="Client\Configuration\" />
+    <Folder Include="Bus\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Bus\" />
   </ItemGroup>
 </Project>

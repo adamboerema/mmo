@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\CommonClient\CommonClient.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
