@@ -5,7 +5,7 @@ using Server.Configuration;
 
 namespace Server.Network.Connection
 {
-    public class ConnectionManager: IConnectionManager, IConnectionReceiver
+    public class ConnectionManager: IConnectionManager
     {
         private Dictionary<string, IConnection> _connections;
 
@@ -32,15 +32,18 @@ namespace Server.Network.Connection
             }
         }
 
-        public void Send(string connectionId, IPacketEvent packet)
+        public void Send(string connectionId, IPacket packet)
         {
             var connection = _connections[connectionId];
             connection?.Send(packet);
         }
 
-        public void Receive(string connectionId, IPacketEvent packet)
+        public void SendAll(IPacket packet)
         {
-            Console.WriteLine($"Received Packet {packet} from connection {connectionId}");
+            foreach(IConnection connection in _connections.Values)
+            {
+                connection.Send(packet);
+            }
         }
     }
 }

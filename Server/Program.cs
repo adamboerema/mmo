@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Server.Bus.Packet;
 using Server.Configuration;
 using Server.Network.Connection;
+using Server.Network.Handler;
 using Server.Network.Server;
 using Sever;
 
@@ -42,6 +43,8 @@ namespace Server
                     services.AddSingleton<IConnectionManager, ConnectionManager>();
                     services.AddSingleton<IConnectionDispatch, ConnectionDispatch>();
                     services.AddSingleton<IConnectionReceiver, ConnectionReceiver>();
+
+                    services.AddSingleton<AuthHandler>();
                 });
         }
             

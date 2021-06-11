@@ -12,6 +12,6 @@ namespace Server.Bus.Packet
         /// <summary>
         /// Packet to be sent or received
         /// </summary>
-        public IPacketEvent Packet { get; set; }
+        public IPacket Packet { get; set; }
     }
 }

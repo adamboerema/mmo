@@ -1,18 +1,16 @@
 ﻿using System;
-using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Definitions.Schema.Auth;
-using Server.Bus;
 using Server.Bus.Packet;
 
 namespace Server.Network.Handler
 {
     public class AuthHandler: IServerHandler<LoginRequestPacket>
     {
-        private readonly IReceiverPacketBus packetBus;
+        private readonly IDispatchPacketBus _packetBus;
 
-        public AuthHandler(IReceiverPacketBus eventBus)
+        public AuthHandler(IDispatchPacketBus eventBus)
         {
-            packetBus = eventBus;
+            _packetBus = eventBus;
         }
 
         public void Handle(string connectionId, LoginRequestPacket packet)
@@ -26,7 +24,7 @@ namespace Server.Network.Handler
                 Success = true,
                 UserId = Guid.NewGuid().ToString()
             };
-            packetBus.Publish(connectionId, response);
+            _packetBus.Publish(connectionId, response);
         }
 
     }

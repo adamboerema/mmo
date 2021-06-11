@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Network.Packet.Definitions;
 
 namespace Server.Bus.Packet
 {
@@ -9,6 +10,6 @@ namespace Server.Bus.Packet
         /// </summary>
         /// <param name="connectionId"></param>
         /// <param name="packet"></param>
-        public void Publish(string connectionId, PacketEvent packet);
+        public void Publish(string connectionId, IPacket packet);
     }
 }

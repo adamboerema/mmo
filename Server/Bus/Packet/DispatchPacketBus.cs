@@ -8,12 +8,12 @@ namespace Server.Bus.Packet
     {
         private readonly IList<IEventBusListener<PacketEvent>> listeners = new List<IEventBusListener<PacketEvent>>();
 
-        public void Publish(string connectionId, PacketEvent packet)
+        public void Publish(string connectionId, IPacket packet)
         {
             Publish(new PacketEvent
             {
                 ConnectionId = connectionId,
-                Packet = packet.Packet
+                Packet = packet
             });
         }
 

@@ -28,6 +28,12 @@ namespace Server.Network.Connection
         /// </summary>
         /// <param name="connectionId"></param>
         /// <param name="packet"></param>
-        void Send(string connectionId, IPacketEvent packet);
+        void Send(string connectionId, IPacket packet);
+
+        /// <summary>
+        /// Broadcast to all connections
+        /// </summary>
+        /// <param name="packet"></param>
+        void SendAll(IPacket packet);
     }
 }

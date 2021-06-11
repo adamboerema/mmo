@@ -1,4 +1,5 @@
 ﻿using System;
+using Server.Network.Connection;
 using Server.Network.Server;
 
 namespace Sever
@@ -6,8 +7,13 @@ namespace Sever
     public class GameServer
     {
         private readonly IServer _socketServer;
+        private readonly IConnectionReceiver _connectionReceiver;
+        private readonly IConnectionDispatch _connectionDispatch;
 
-        public GameServer(IServer socketServer)
+        public GameServer(
+            IServer socketServer,
+            IConnectionReceiver connectionReceiver,
+            IConnectionDispatch connectionDispatch)
         {
             _socketServer = socketServer;
         }
@@ -15,6 +21,11 @@ namespace Sever
         public void Start()
         {
             _socketServer.Start();
+        }
+
+        public void Close()
+        {
+
         }
     }
 }

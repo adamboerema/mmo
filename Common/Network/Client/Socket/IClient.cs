@@ -9,7 +9,7 @@ namespace Common.Network.Client.Socket
     {
         public Task Start();
 
-        public void Send(IPacketEvent packet);
+        public void Send(IPacket packet);
 
         public void CloseSocket();
 

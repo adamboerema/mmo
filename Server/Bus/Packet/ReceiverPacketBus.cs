@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common.Network.Packet.Definitions;
 
 namespace Server.Bus.Packet
 {
@@ -7,21 +8,21 @@ namespace Server.Bus.Packet
     {
         private readonly IList<IEventBusListener<PacketEvent>> listeners = new List<IEventBusListener<PacketEvent>>();
 
-        public void Publish(string connectionId, PacketEvent packetEvent)
-        {
-            Publish(new PacketEvent
-            {
-                ConnectionId = connectionId,
-                Packet = packetEvent.Packet
-            });
-        }
-
         public void Publish(PacketEvent eventObject)
         {
             foreach(var listener in listeners)
             {
                 listener.Handle(eventObject);
             }
+        }
+
+        public void Publish(string connectionId, IPacket packetEvent)
+        {
+            Publish(new PacketEvent
+            {
+                ConnectionId = connectionId,
+                Packet = packetEvent
+            });
         }
 
         public void Subscribe(IEventBusListener<PacketEvent> listener)

@@ -5,6 +5,16 @@ namespace Server.Network.Connection
 {
     public interface IConnectionReceiver
     {
-        public void Receive(string connectionId, IPacketEvent packet);
+        /// <summary>
+        /// Re
+        /// </summary>
+        /// <param name="connectionId"></param>
+        /// <param name="packet"></param>
+        public void Receive(string connectionId, IPacket packet);
+
+        /// <summary>
+        /// Close the Receiver
+        /// </summary>
+        public void Close();
     }
 }

@@ -3,14 +3,14 @@ using Common.Network.Packet.IO;
 
 namespace Common.Network.Packet.Definitions.Schema.Auth
 {
-    public class LoginResponsePacket: IPacketEvent
+    public class LoginResponsePacket: IPacket
     {
         public int Id => Definitions.LOGIN_RESPONSE;
         public bool Success { get; set; }
         public string UserId { get; set; }
 
 
-        public IPacketEvent ReadData(PacketReader packetReader)
+        public IPacket ReadData(PacketReader packetReader)
         {
             Success = packetReader.ReadBool();
             UserId = packetReader.ReadString();

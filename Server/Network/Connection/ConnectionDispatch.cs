@@ -5,13 +5,13 @@ using Server.Bus.Packet;
 
 namespace Server.Network.Connection
 {
-    public class ConnectionDispatch: IConnectionDispatch, IEventBusListener<IPacketEvent>
+    public class ConnectionDispatch: IConnectionDispatch, IEventBusListener<PacketEvent>
     {
-        private readonly ConnectionManager _connectionManager;
+        private readonly IConnectionManager _connectionManager;
         private readonly IDispatchPacketBus _dispatchBus;
 
         public ConnectionDispatch(
-            ConnectionManager connectionManager,
+            IConnectionManager connectionManager,
             IDispatchPacketBus dispatchBus)
         {
             _connectionManager = connectionManager;
@@ -19,14 +19,19 @@ namespace Server.Network.Connection
             _dispatchBus.Subscribe(this);
         }
 
-        public void Dispatch(string connectionId, IPacketEvent packet)
+        public void Dispatch(string connectionId, IPacket packet)
         {
             _connectionManager.Send(connectionId, packet);
         }
 
-        public void Handle(IPacketEvent eventObject)
+        public void Handle(PacketEvent eventObject)
         {
-            Dispatch(pac)
+            _connectionManager.Send(eventObject.ConnectionId, eventObject.Packet);
+        }
+
+        public void Close()
+        {
+            _dispatchBus.Unsubscribe(this);
         }
     }
 }

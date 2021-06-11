@@ -7,24 +7,39 @@ using Server.Network.Handler;
 
 namespace Server.Network.Connection
 {
-    public class ConnectionReceiver: IConnectionReceiver
+    public class ConnectionReceiver: IConnectionReceiver, IEventBusListener<PacketEvent>
     {
         private readonly IReceiverPacketBus _packetBus;
+        private readonly AuthHandler _authHandler;
 
-        public ConnectionReceiver(IReceiverPacketBus packetBus)
+        public ConnectionReceiver(
+            IReceiverPacketBus packetBus,
+            AuthHandler authHandler)
         {
             _packetBus = packetBus;
+            _authHandler = authHandler;
+            _packetBus.Subscribe(this);
         }
 
-        public void Receive(string connectionId, IPacketEvent packet)
+        public void Close()
+        {
+            _packetBus.Unsubscribe(this);
+        }
+
+        public void Handle(PacketEvent eventObject)
+        {
+            Receive(eventObject.ConnectionId, eventObject.Packet);
+        }
+
+        public void Receive(string connectionId, IPacket packet)
         {
             switch(packet.Id)
             {
                 case Definitions.LOGIN_REQUEST:
-                    var handler = new AuthHandler(_packetBus);
-                    handler.Handle(connectionId, packet as LoginRequestPacket);
+                    _authHandler.Handle(connectionId, packet as LoginRequestPacket);
                     break;
             }
         }
+
     }
 }

@@ -10,6 +10,6 @@ namespace Server.Bus.Packet
         /// </summary>
         /// <param name="connectionId"></param>
         /// <param name="packet"></param>
-        public void Publish(string connectionId, PacketEvent packetEvent);
+        public void Publish(string connectionId, IPacket packetEvent);
     }
 }

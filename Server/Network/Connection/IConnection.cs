@@ -16,7 +16,7 @@ namespace Server.Network.Connection
         /// </summary>
         /// <param name="id"></param>
         /// <param name="packet"></param>
-        public delegate void OnReceive(string id, IPacketEvent packet);
+        public delegate void OnReceive(string id, IPacket packet);
 
         /// <summary>
         /// Start the Connection
@@ -32,6 +32,6 @@ namespace Server.Network.Connection
         /// 
         /// </summary>
         /// <param name="bytes">Packet bytes</param>
-        public void Send(IPacketEvent bytes);
+        public void Send(IPacket bytes);
     }
 }

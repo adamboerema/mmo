@@ -3,7 +3,7 @@ using Common.Network.Packet.Definitions;
 
 namespace Server.Network.Handler
 {
-    public interface IServerHandler<T> where T : IPacketEvent
+    public interface IServerHandler<T> where T : IPacket
     {
         public void Handle(string connectionId, T packet);
     }

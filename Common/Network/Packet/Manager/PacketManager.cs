@@ -14,7 +14,7 @@ namespace Common.Network.Packet.Manager
             packetParser = new PacketParser(packetDefinitions);
         }
 
-        public IPacketEvent Receive(byte[] bytes)
+        public IPacket Receive(byte[] bytes)
         {
             var reader = new PacketReader(bytes);
             var packetId = reader.ReadInteger();
@@ -26,7 +26,7 @@ namespace Common.Network.Packet.Manager
             return packet;
         }
 
-        public byte[] Write(IPacketEvent packet)
+        public byte[] Write(IPacket packet)
         {
             var writer = new PacketWriter();
             var output = packetParser.WritePacket(packet, writer);
