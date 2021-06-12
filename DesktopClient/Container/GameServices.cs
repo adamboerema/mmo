@@ -1,20 +1,40 @@
 ﻿using System;
-using CommonClient.Bus.Packet;
+using CommonClient;
+using CommonClient.Configuration;
+using DesktopClient.Configuration;
 
 namespace DesktopClient.Container
 {
     public static class GameServices
     {
-        private static Lazy<DispatchPacketBus> _dispatchPacketBus
-            = new Lazy<DispatchPacketBus>(() => new DispatchPacketBus());
+        private static bool isInitialized = false;
 
-        private static Lazy<ReceiverPacketBus> _receiverPacketBus
-            = new Lazy<ReceiverPacketBus>(() => new ReceiverPacketBus());
+        private static IGameConfiguration _gameConfiguration = new ClientConfiguration();
 
+        private static IGameClient _gameClient = new GameClient(_gameConfiguration);
+            
         public static void Initialize()
         {
-            GameContainer.AddLazyService(_dispatchPacketBus);
-            GameContainer.AddLazyService(_receiverPacketBus);
+            isInitialized = true;
+            GameContainer.AddService(_gameClient);
+        }
+
+        public static T GetService<T>()
+        {
+            if(!isInitialized)
+            {
+                throw new Exception("Game Services must be initalized");
+            }
+            return GameContainer.GetService<T>();
+        }
+
+        public static T GetLazyService<T>()
+        {
+            if (!isInitialized)
+            {
+                throw new Exception("Game Services must be initalized");
+            }
+            return GameContainer.GetLazyService<T>();
         }
     }
 }

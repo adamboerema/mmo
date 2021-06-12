@@ -49,16 +49,6 @@ namespace CommonClient
             _receiverPacketBus.Unsubscribe(eventListener);
         }
 
-        public void Login(string username, string password)
-        {
-            var packet = new LoginRequestPacket
-            {
-                Username = username,
-                Password = password
-            };
-            _client.Send(packet);
-        }
-
         private async Task initializeConnection()
         {
             try

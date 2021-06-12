@@ -1,4 +1,5 @@
-﻿using CommonClient;
+﻿using Common.Network.Packet.Definitions.Schema.Auth;
+using CommonClient;
 using DesktopClient.Configuration;
 using DesktopClient.Container;
 using Microsoft.Xna.Framework;
@@ -11,12 +12,10 @@ namespace DesktopClient
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private GameClient _gameClient;
+        private IGameClient _gameClient;
 
         public DesktopClient()
         {
-            var configuration = new ClientConfiguration();
-            _gameClient = new GameClient(configuration);
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -25,8 +24,9 @@ namespace DesktopClient
         protected override void Initialize()
         {
             GameServices.Initialize();
+            _gameClient = GameServices.GetService<IGameClient>();
             _gameClient.Start();
-            _gameClient.Login("test", "test12345");
+            Login("test", "test12345");
             base.Initialize();
         }
 
@@ -48,6 +48,16 @@ namespace DesktopClient
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
+        }
+
+        private void Login(string username, string password)
+        {
+            var packet = new LoginRequestPacket
+            {
+                Username = username,
+                Password = password
+            };
+            _gameClient.Send(packet);
         }
     }
 }
