@@ -19,9 +19,16 @@ namespace Server.Network.Connection
             _connections.Add(connection.Id, connection);
         }
 
-        public IConnection GetConnection(string id)
+        public IConnection GetConnection(string connectionId)
         {
-            return _connections[id];
+            return _connections[connectionId];
+        }
+
+        public void CloseConnection(string connectionId)
+        {
+            var connection = _connections[connectionId];
+            connection?.CloseConnection();
+            _connections.Remove(connectionId);
         }
 
         public void CloseAllConnections()

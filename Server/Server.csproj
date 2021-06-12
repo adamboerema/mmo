@@ -18,8 +18,10 @@
     <Folder Include="Network\Handler\" />
     <Folder Include="Bus\" />
     <Folder Include="Bus\Packet\" />
+    <Folder Include="Bus\Connection\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\Packet\" />
+    <None Remove="Bus\Connection\" />
   </ItemGroup>
 </Project>

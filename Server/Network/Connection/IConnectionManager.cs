@@ -16,7 +16,13 @@ namespace Server.Network.Connection
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        IConnection GetConnection(string id);
+        IConnection GetConnection(string connectionId);
+
+        /// <summary>
+        /// Close connection
+        /// </summary>
+        /// <param name="id"></param>
+        void CloseConnection(string connectionId);
 
         /// <summary>
         /// Close all Connections in pool

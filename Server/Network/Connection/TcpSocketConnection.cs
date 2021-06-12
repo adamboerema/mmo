@@ -4,28 +4,34 @@ using Common.Network;
 using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Manager;
 using Common.Network.Shared;
+using Server.Bus.Connection;
 using Server.Bus.Packet;
 
 namespace Server.Network.Connection
 {
     public class TcpSocketConnection: IConnection
     {
-        public string Id => id;
+        public string Id => _id;
+        private readonly string _id;
+        private bool _isClosing = false;
 
-        private string id;
         private readonly TcpClient _socket;
         private readonly StateBuffer _stateBuffer;
         private readonly IPacketManager _packetManager;
         private readonly IReceiverPacketBus _receiverPacketBus;
+        private readonly IConnectionBus _connectionBus;
+
+
         private NetworkStream _stream;
         private byte[] _readBuffer;
 
         public TcpSocketConnection(
             string connectionId,
             TcpClient connectionSocket,
+            IConnectionBus connectionBus,
             IReceiverPacketBus receiverPacketBus)
         {
-            id = connectionId;
+            _id = connectionId;
             _socket = connectionSocket;
             _socket.NoDelay = true;
             _socket.SendBufferSize = Constants.BUFFER_CLIENT_SIZE;
@@ -36,16 +42,20 @@ namespace Server.Network.Connection
             var serverDefinitions = new Definitions();
             _packetManager = new PacketManager(serverDefinitions);
             _receiverPacketBus = receiverPacketBus;
+            _connectionBus = connectionBus;
         }
 
         public void Start()
         {
+            _isClosing = false;
             _stream = _socket.GetStream();
+            _connectionBus.Publish(Id, ConnectionState.CONNECTED);
             BeginStreamRead(_stateBuffer);
         }
 
         public void CloseConnection()
         {
+            _connectionBus.Publish(Id, ConnectionState.DISCONNECTED);
             _socket.Close();
         }
 

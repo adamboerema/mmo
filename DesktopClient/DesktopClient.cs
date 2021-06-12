@@ -1,6 +1,5 @@
 ﻿using Common.Network.Packet.Definitions.Schema.Auth;
 using CommonClient;
-using DesktopClient.Configuration;
 using DesktopClient.Container;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Server.Bus.Connection;
 using Server.Bus.Packet;
 using Server.Configuration;
 using Server.Network.Connection;
@@ -14,8 +15,6 @@ namespace Server
 {
     public class Program
     {
-        private static GameServer _server;
-
         public static void Main(string[] args)
         {
             CreateHostBuilder(args)
@@ -38,6 +37,7 @@ namespace Server
 
                     services.AddSingleton<IReceiverPacketBus, ReceiverPacketBus>();
                     services.AddSingleton<IDispatchPacketBus, DispatchPacketBus>();
+                    services.AddSingleton<IConnectionBus, ConnectionBus>();
 
                     services.AddSingleton<IConnectionManager, ConnectionManager>();
                     services.AddSingleton<IConnectionDispatch, ConnectionDispatch>();
