@@ -16,16 +16,22 @@ namespace Sever
             IConnectionDispatch connectionDispatch)
         {
             _socketServer = socketServer;
+            _connectionReceiver = connectionReceiver;
+            _connectionDispatch = connectionDispatch;
         }
 
         public void Start()
         {
+            Console.WriteLine("Starting Game Server");
             _socketServer.Start();
         }
 
         public void Close()
         {
-
+            Console.WriteLine("Closing Game Server");
+            _socketServer.Close();
+            _connectionDispatch.Close();
+            _connectionReceiver.Close();
         }
     }
 }

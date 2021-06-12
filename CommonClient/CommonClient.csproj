@@ -7,10 +7,14 @@
   <ItemGroup>
     <None Remove="Bus\" />
     <None Remove="Configuration\" />
+    <None Remove="Network\" />
+    <None Remove="Network\Socket\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bus\" />
     <Folder Include="Configuration\" />
+    <Folder Include="Network\" />
+    <Folder Include="Network\Socket\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />

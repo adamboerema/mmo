@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Client.Configuration;
+using CommonClient.Configuration;
 
 namespace DesktopClient.Configuration
 {

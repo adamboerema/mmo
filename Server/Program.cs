@@ -18,20 +18,19 @@ namespace Server
 
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-
-            //Task.Run(() =>
-            //{
-                _server = host.Services.GetService<GameServer>();
-                _server.Start();
-            //});
-            host.Run();
+            CreateHostBuilder(args)
+                .Build()
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-                .ConfigureServices((_, services) =>
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddHostedService<GameServerWorker>();
+                })
+                .ConfigureServices((context, services) =>
                 {
                     services.AddSingleton<IServerConfiguration, ServerConfiguration>();
                     services.AddSingleton<IServer, TcpSocketServer>();
@@ -47,7 +46,5 @@ namespace Server
                     services.AddSingleton<AuthHandler>();
                 });
         }
-            
-                    
     }
 }

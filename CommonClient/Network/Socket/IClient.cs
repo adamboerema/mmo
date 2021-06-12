@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using Common.Network.Packet.Definitions;
 
-namespace Common.Network.Client.Socket
+namespace CommonClient.Network.Socket
 {
     public interface IClient
     {
-        public Task Start();
+        public Task Start(string ipAddress, int port);
 
         public void Send(IPacket packet);
 
-        public void CloseSocket();
+        public void Close();
 
     }
 }

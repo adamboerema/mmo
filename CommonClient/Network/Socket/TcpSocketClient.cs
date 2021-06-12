@@ -2,29 +2,33 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Common.Network.Client.Socket;
 using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Manager;
 using Common.Network.Shared;
+using Common.Network;
+using CommonClient.Bus.Packet;
+using Common.Bus;
 
-namespace Common.Network.Client
+namespace CommonClient.Network.Socket
 {
-    public class TcpSocketClient : IClient
+    public class TcpSocketClient : IClient, IEventBusListener<PacketEvent>
     {
         private readonly TcpClient _socket;
         private readonly IPacketManager _packetManager;
-        private readonly IPAddress _remoteIPAddress;
-        private readonly int _remotePort;
-        private StateBuffer _stateBuffer;
-        private NetworkStream _stream;
-        private byte[] _readBuffer;
+        private readonly ReceiverPacketBus _receiverPacketBus;
+        private readonly DispatchPacketBus _dispatchPacketBus;
 
-        public TcpSocketClient(string ipAddress, int port)
+        private NetworkStream _stream;
+        private StateBuffer _stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
+        private byte[] _readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
+
+        public TcpSocketClient(
+            ReceiverPacketBus receiverPacketBus,
+            DispatchPacketBus dispatchPacketBus)
         {
-            _remoteIPAddress = IPAddress.Parse(ipAddress);
-            _remotePort = port;
-            _readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
-            _stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
+            _receiverPacketBus = receiverPacketBus;
+            _dispatchPacketBus = dispatchPacketBus;
+            _dispatchPacketBus.Subscribe(this);
 
             var packetDefinitions = new Definitions();
             _packetManager = new PacketManager(packetDefinitions);
@@ -39,9 +43,9 @@ namespace Common.Network.Client
         /// <summary>
         /// Start the client connection
         /// </summary>
-        public async Task Start()
+        public async Task Start(string ipAddress, int port)
         {
-            await _socket.ConnectAsync(_remoteIPAddress, _remotePort);
+            await _socket.ConnectAsync(ipAddress, port);
             _stream = _socket.GetStream();
             BeginStreamRead(_stateBuffer);
         }
@@ -61,9 +65,18 @@ namespace Common.Network.Client
         /// <summary>
         /// Close the socket connection
         /// </summary>
-        public void CloseSocket()
+        public void Close()
         {
             _socket.Close();
+        }
+
+        /// <summary>
+        /// Handle the incoming packets
+        /// </summary>
+        /// <param name="eventObject"></param>
+        public void Handle(PacketEvent eventObject)
+        {
+            Send(eventObject.Packet);
         }
 
         /// <summary>
@@ -76,7 +89,7 @@ namespace Common.Network.Client
             var readByteCount = _stream.EndRead(result);
             if(readByteCount <= 0)
             {
-                CloseSocket();
+                Close();
             }
 
             var packetBytes = new byte[readByteCount];
@@ -87,7 +100,7 @@ namespace Common.Network.Client
                 offset,
                 readByteCount);
             var packet = _packetManager.Receive(packetBytes);
-
+            _receiverPacketBus.Publish(packet);
             Console.WriteLine($"Packet {packet.Id}: {packet}");
             BeginStreamRead(result.AsyncState as StateBuffer);
         }
@@ -106,5 +119,6 @@ namespace Common.Network.Client
                 new AsyncCallback(HandleDataReceive),
                 state);
         }
+
     }
 }

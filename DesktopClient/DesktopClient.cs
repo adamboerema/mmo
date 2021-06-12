@@ -1,6 +1,6 @@
-﻿using Common.Client;
-using Common.Network.Client;
+﻿using CommonClient;
 using DesktopClient.Configuration;
+using DesktopClient.Container;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -24,6 +24,7 @@ namespace DesktopClient
 
         protected override void Initialize()
         {
+            GameServices.Initialize();
             _gameClient.Start();
             _gameClient.Login("test", "test12345");
             base.Initialize();

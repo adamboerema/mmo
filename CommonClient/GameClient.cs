@@ -1,40 +1,52 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Common.Client.Configuration;
-using Common.Network.Client;
+using Common.Bus;
+using Common.Network.Packet.Definitions;
 using Common.Network.Packet.Definitions.Schema.Auth;
+using CommonClient.Bus.Packet;
+using CommonClient.Configuration;
+using CommonClient.Network.Socket;
 
-namespace Common.Client
+namespace CommonClient
 {
-    public class GameClient
+    public class GameClient: IGameClient
     {
         private readonly IGameConfiguration _configuration;
-        private readonly TcpSocketClient _client;
+        private readonly IClient _client;
+        private readonly ReceiverPacketBus _receiverPacketBus;
+        private readonly DispatchPacketBus _dispatchPacketBus;
 
         public GameClient(IGameConfiguration gameConfiguration)
         {
+            _receiverPacketBus = new ReceiverPacketBus();
+            _dispatchPacketBus = new DispatchPacketBus();
             _configuration = gameConfiguration;
-            _client = new TcpSocketClient(gameConfiguration.IpAddress, gameConfiguration.Port);
+            _client = new TcpSocketClient(_receiverPacketBus, _dispatchPacketBus);
         }
 
         public void Start()
         {
-            InitializeConnection().Wait();
+            initializeConnection().Wait();
         }
 
-        public async Task InitializeConnection()
+        public void Close()
         {
-            try
-            {
-                await _client.Start();
-            }
-            catch(Exception error)
-            {
-                var delayMs = 5000;
-                Console.WriteLine($"Failed connection with error: {error.Message}");
-                Console.WriteLine("Retrying Connection attempt in 5 seconds");
-                await Task.Delay(delayMs).ContinueWith(_ => InitializeConnection());
-            }
+            _client.Close();
+        }
+
+        public void Send(IPacket packet)
+        {
+            _dispatchPacketBus.Publish(packet);
+        }
+
+        public void RegisterListener(IEventBusListener<PacketEvent> eventListener)
+        {
+            _receiverPacketBus.Subscribe(eventListener);
+        }
+
+        public void UnregisterListener(IEventBusListener<PacketEvent> eventListener)
+        {
+            _receiverPacketBus.Unsubscribe(eventListener);
         }
 
         public void Login(string username, string password)
@@ -45,6 +57,21 @@ namespace Common.Client
                 Password = password
             };
             _client.Send(packet);
+        }
+
+        private async Task initializeConnection()
+        {
+            try
+            {
+                await _client.Start(_configuration.IpAddress, _configuration.Port);
+            }
+            catch(Exception error)
+            {
+                var delayMs = 5000;
+                Console.WriteLine($"Failed connection with error: {error.Message}");
+                Console.WriteLine("Retrying Connection attempt in 5 seconds");
+                await Task.Delay(delayMs).ContinueWith(_ => initializeConnection());
+            }
         }
     }
 }
