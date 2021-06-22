@@ -1,12 +1,11 @@
 ﻿using System;
 using Common.Bus;
 using Common.Network.Packet.Definitions;
-using Server.Bus;
 using Server.Bus.Packet;
 
 namespace Server.Network.Connection
 {
-    public class ConnectionDispatch: IConnectionDispatch, IEventBusListener<PacketEvent>
+    public class ConnectionDispatch: IConnectionDispatch, IEventBusListener<DispatchPacketEvent>
     {
         private readonly IConnectionManager _connectionManager;
         private readonly IDispatchPacketBus _dispatchBus;
@@ -25,9 +24,18 @@ namespace Server.Network.Connection
             _connectionManager.Send(connectionId, packet);
         }
 
-        public void Handle(PacketEvent eventObject)
+        public void Handle(DispatchPacketEvent eventObject)
         {
-            _connectionManager.Send(eventObject.ConnectionId, eventObject.Packet);
+            switch(eventObject.Type)
+            {
+                case DispatchType.ALL:
+                    _connectionManager.SendAll(eventObject.Packet);
+                    break;
+                case DispatchType.CONNECTION:
+                    _connectionManager.Send(eventObject.ConnectionId, eventObject.Packet);
+                    break;
+            }
+
         }
 
         public void Close()

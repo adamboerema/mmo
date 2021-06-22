@@ -7,18 +7,19 @@ namespace Server.Bus.Packet
 {
     public class DispatchPacketBus : IDispatchPacketBus
     {
-        private readonly IList<IEventBusListener<PacketEvent>> listeners = new List<IEventBusListener<PacketEvent>>();
+        private readonly IList<IEventBusListener<DispatchPacketEvent>> listeners
+            = new List<IEventBusListener<DispatchPacketEvent>>();
 
         public void Publish(string connectionId, IPacket packet)
         {
-            Publish(new PacketEvent
+            Publish(new DispatchPacketEvent
             {
                 ConnectionId = connectionId,
                 Packet = packet
             });
         }
 
-        public void Publish(PacketEvent eventObject)
+        public void Publish(DispatchPacketEvent eventObject)
         {
             foreach (var listener in listeners)
             {
@@ -26,12 +27,12 @@ namespace Server.Bus.Packet
             }
         }
 
-        public void Subscribe(IEventBusListener<PacketEvent> listener)
+        public void Subscribe(IEventBusListener<DispatchPacketEvent> listener)
         {
             listeners.Add(listener);
         }
 
-        public void Unsubscribe(IEventBusListener<PacketEvent> listener)
+        public void Unsubscribe(IEventBusListener<DispatchPacketEvent> listener)
         {
             listeners.Remove(listener);
         }

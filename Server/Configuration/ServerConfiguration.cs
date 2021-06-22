@@ -7,5 +7,8 @@ namespace Server.Configuration
         public int Port => 7777;
 
         public int MaxConnections => 10;
+
+        public double ServerTickRate => 1000.0 / 30.0;
+
     }
 }

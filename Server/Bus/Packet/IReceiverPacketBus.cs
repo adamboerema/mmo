@@ -4,7 +4,7 @@ using Common.Network.Packet.Definitions;
 
 namespace Server.Bus.Packet
 {
-    public interface IReceiverPacketBus: IEventBus<PacketEvent>
+    public interface IReceiverPacketBus: IEventBus<ReceiverPacketEvent>
     {
         /// <summary>
         /// Receive a packet with connection id information

@@ -8,7 +8,7 @@ using Server.Network.Handler;
 
 namespace Server.Network.Connection
 {
-    public class ConnectionReceiver: IConnectionReceiver, IEventBusListener<PacketEvent>
+    public class ConnectionReceiver: IConnectionReceiver, IEventBusListener<DispatchPacketEvent>
     {
         private readonly IReceiverPacketBus _packetBus;
         private readonly AuthHandler _authHandler;
@@ -27,7 +27,7 @@ namespace Server.Network.Connection
             _packetBus.Unsubscribe(this);
         }
 
-        public void Handle(PacketEvent eventObject)
+        public void Handle(DispatchPacketEvent eventObject)
         {
             Receive(eventObject.ConnectionId, eventObject.Packet);
         }

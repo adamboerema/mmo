@@ -2,7 +2,7 @@
 
 namespace Server.Bus.Packet
 {
-    public class PacketEvent
+    public class ReceiverPacketEvent
     {
         /// <summary>
         /// Id of the connection to a client

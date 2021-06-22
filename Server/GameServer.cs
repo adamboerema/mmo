@@ -24,6 +24,7 @@ namespace Sever
         {
             Console.WriteLine("Starting Game Server");
             _socketServer.Start();
+            
         }
 
         public void Close()

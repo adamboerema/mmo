@@ -4,7 +4,7 @@ using Common.Network.Packet.Definitions;
 
 namespace Server.Bus.Packet
 {
-    public interface IDispatchPacketBus: IEventBus<PacketEvent>
+    public interface IDispatchPacketBus: IEventBus<DispatchPacketEvent>
     {
         /// <summary>
         /// Dispatch a packet with connection id information

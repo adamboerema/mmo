@@ -55,8 +55,12 @@ namespace Server.Network.Connection
 
         public void CloseConnection()
         {
-            _connectionBus.Publish(Id, ConnectionState.DISCONNECTED);
-            _socket.Close();
+            if(!_isClosing)
+            {
+                _isClosing = true;
+                _connectionBus.Publish(Id, ConnectionState.DISCONNECTED);
+                _socket.Close();
+            }
         }
 
         public void Send(IPacket packet)
@@ -76,6 +80,7 @@ namespace Server.Network.Connection
             if (readByteCount <= 0)
             {
                 CloseConnection();
+                return;
             }
 
             var packetBytes = new byte[readByteCount];
