@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
 using Server.Configuration;
+using Server.Engine.Player;
 using Server.Network.Connection;
 using Server.Network.Handler;
 using Server.Network.Server;
@@ -43,7 +44,7 @@ namespace Server
                     services.AddScoped<IConnectionDispatch, ConnectionDispatch>();
                     services.AddScoped<IConnectionReceiver, ConnectionReceiver>();
 
-                    services.AddScoped<IPlayerManager>()
+                    services.AddScoped<IPlayerManager, PlayerManager>();
 
                     services.AddSingleton<AuthHandler>();
                 });
