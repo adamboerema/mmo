@@ -31,17 +31,19 @@ namespace Server
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddSingleton<IServerConfiguration, ServerConfiguration>();
-                    services.AddSingleton<IServer, TcpSocketServer>();
-                    services.AddSingleton<GameServer>();
+                    services.AddScoped<IServerConfiguration, ServerConfiguration>();
+                    services.AddScoped<IServer, TcpSocketServer>();
+                    services.AddScoped<GameServer>();
 
-                    services.AddSingleton<IReceiverPacketBus, ReceiverPacketBus>();
-                    services.AddSingleton<IDispatchPacketBus, DispatchPacketBus>();
-                    services.AddSingleton<IConnectionBus, ConnectionBus>();
+                    services.AddScoped<IReceiverPacketBus, ReceiverPacketBus>();
+                    services.AddScoped<IDispatchPacketBus, DispatchPacketBus>();
+                    services.AddScoped<IConnectionBus, ConnectionBus>();
 
-                    services.AddSingleton<IConnectionManager, ConnectionManager>();
-                    services.AddSingleton<IConnectionDispatch, ConnectionDispatch>();
-                    services.AddSingleton<IConnectionReceiver, ConnectionReceiver>();
+                    services.AddScoped<IConnectionManager, ConnectionManager>();
+                    services.AddScoped<IConnectionDispatch, ConnectionDispatch>();
+                    services.AddScoped<IConnectionReceiver, ConnectionReceiver>();
+
+                    services.AddScoped<IPlayerManager>()
 
                     services.AddSingleton<AuthHandler>();
                 });

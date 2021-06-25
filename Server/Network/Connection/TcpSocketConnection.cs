@@ -49,7 +49,7 @@ namespace Server.Network.Connection
         {
             _isClosing = false;
             _stream = _socket.GetStream();
-            _connectionBus.Publish(Id, ConnectionState.CONNECTED);
+            _connectionBus.Publish(Id, ConnectionState.CONNECT);
             BeginStreamRead(_stateBuffer);
         }
 
@@ -58,7 +58,7 @@ namespace Server.Network.Connection
             if(!_isClosing)
             {
                 _isClosing = true;
-                _connectionBus.Publish(Id, ConnectionState.DISCONNECTED);
+                _connectionBus.Publish(Id, ConnectionState.DISCONNECT);
                 _socket.Close();
             }
         }

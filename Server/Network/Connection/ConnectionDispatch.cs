@@ -5,7 +5,8 @@ using Server.Bus.Packet;
 
 namespace Server.Network.Connection
 {
-    public class ConnectionDispatch: IConnectionDispatch, IEventBusListener<DispatchPacketEvent>
+    public class ConnectionDispatch: IConnectionDispatch,
+        IEventBusListener<DispatchPacketEvent>
     {
         private readonly IConnectionManager _connectionManager;
         private readonly IDispatchPacketBus _dispatchBus;
@@ -35,7 +36,6 @@ namespace Server.Network.Connection
                     _connectionManager.Send(eventObject.ConnectionId, eventObject.Packet);
                     break;
             }
-
         }
 
         public void Close()

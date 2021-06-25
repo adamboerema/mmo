@@ -74,10 +74,10 @@ namespace Server.Network.Server
             var connectionId = eventObject.Id;
             switch (eventObject.State)
             {
-                case ConnectionState.CONNECTED:
+                case ConnectionState.CONNECT:
                     Console.WriteLine($"Client Connected: {connectionId}");
                     break;
-                case ConnectionState.DISCONNECTED:
+                case ConnectionState.DISCONNECT:
                     Console.WriteLine($"Client Disconnected: {connectionId}");
                     _connectionManager.CloseConnection(connectionId);
                     break;

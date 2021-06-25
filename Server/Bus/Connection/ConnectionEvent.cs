@@ -3,8 +3,8 @@ namespace Server.Bus.Connection
 {
     public enum ConnectionState
     {
-        CONNECTED,
-        DISCONNECTED
+        CONNECT,
+        DISCONNECT,
     }
 
     public class ConnectionEvent
