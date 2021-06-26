@@ -27,7 +27,8 @@ namespace Server.Engine.Player
         {
             _players.Add(player.Id, player);
             DispatchConnectPlayer(player);
-            DispatchStartMovement(player);
+            DispatchAllStartMovement(player);
+            DispatchPlayerStartMovement(player);
         }
 
         public void RemovePlayer(string connectionId)
@@ -54,24 +55,42 @@ namespace Server.Engine.Player
             }
         }
 
-        private void DispatchStartMovement(Player player)
+        /// <summary>
+        /// Dispatch all current player location to new player
+        /// </summary>
+        /// <param name="player">New Player</param>
+        private void DispatchAllStartMovement(Player player)
         {
-            foreach(var connectedPlayer in _players)
+            foreach(var playerValue in _players)
             {
+                var connectedPlayer = playerValue.Value;
                 var packet = new MovementOutputPacket
                 {
-                    PlayerId = player.Id,
-                    X = player.Character.X,
-                    Y = player.Character.Y,
-                    Z = player.Character.Z
+                    PlayerId = connectedPlayer.Id,
+                    X = connectedPlayer.Character.X,
+                    Y = connectedPlayer.Character.Y,
+                    Z = connectedPlayer.Character.Z,
+                    MovementType = connectedPlayer.Character.MovementType
                 };
-                _dispatchBus.Publish()
+                _dispatchBus.Publish(player.Id, packet);
             }
+        }
 
-            if(_players.ContainsKey(player.Id))
+        /// <summary>
+        /// Dispatch player start movement to all players
+        /// </summary>
+        /// <param name="player">New Player</param>
+        private void DispatchPlayerStartMovement(Player player)
+        {
+            var packet = new MovementOutputPacket
             {
-
-            }
+                PlayerId = player.Id,
+                X = player.Character.X,
+                Y = player.Character.Y,
+                Z = player.Character.Z,
+                MovementType = player.Character.MovementType
+            };
+            _dispatchBus.Publish(packet);
         }
 
         /// <summary>
@@ -84,7 +103,7 @@ namespace Server.Engine.Player
             {
                 PlayerId = player.Id
             };
-            _dispatchBus.Publish(player.Id, packet, DispatchType.ALL);
+            _dispatchBus.Publish(packet);
         }
 
         /// <summary>
@@ -97,7 +116,7 @@ namespace Server.Engine.Player
             {
                 PlayerId = player.Id
             };
-            _dispatchBus.Publish(player.Id, packet, DispatchType.ALL);
+            _dispatchBus.Publish(packet);
         }
 
         /// <summary>

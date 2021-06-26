@@ -10,12 +10,21 @@ namespace Server.Bus.Packet
         private readonly IList<IEventBusListener<DispatchPacketEvent>> listeners
             = new List<IEventBusListener<DispatchPacketEvent>>();
 
-        public void Publish(string connectionId, IPacket packet, DispatchType dispatchType)
+        public void Publish(string connectionId, IPacket packet)
         {
             Publish(new DispatchPacketEvent
             {
-                Type = dispatchType,
+                Type = DispatchType.CONNECTION,
                 ConnectionId = connectionId,
+                Packet = packet
+            });
+        }
+
+        public void Publish(IPacket packet)
+        {
+            Publish(new DispatchPacketEvent
+            {
+                Type = DispatchType.ALL,
                 Packet = packet
             });
         }
