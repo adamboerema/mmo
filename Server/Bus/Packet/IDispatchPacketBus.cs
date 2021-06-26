@@ -11,6 +11,7 @@ namespace Server.Bus.Packet
         /// </summary>
         /// <param name="connectionId"></param>
         /// <param name="packet"></param>
-        public void Publish(string connectionId, IPacket packet);
+        public void Publish(string connectionId, IPacket packet, DispatchType dispatchType);
+
     }
 }

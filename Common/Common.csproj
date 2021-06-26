@@ -18,10 +18,12 @@
     <Folder Include="Network\Packet\Definitions\Schema\" />
     <Folder Include="Network\Packet\Definitions\Schema\Auth\" />
     <Folder Include="Bus\" />
-    <Folder Include="Network\Packet\Definitions\Schema\Character\" />
+    <Folder Include="Network\Packet\Definitions\Schema\Player\" />
+    <Folder Include="Network\Packet\Definitions\Schema\Movement\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\" />
-    <None Remove="Network\Packet\Definitions\Schema\Character\" />
+    <None Remove="Network\Packet\Definitions\Schema\Player\" />
+    <None Remove="Network\Packet\Definitions\Schema\Movement\" />
   </ItemGroup>
 </Project>
