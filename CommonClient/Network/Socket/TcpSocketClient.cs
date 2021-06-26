@@ -68,6 +68,7 @@ namespace CommonClient.Network.Socket
         public void Close()
         {
             _socket.Close();
+            _dispatchPacketBus.Unsubscribe(this);
         }
 
         /// <summary>
@@ -90,6 +91,7 @@ namespace CommonClient.Network.Socket
             if(readByteCount <= 0)
             {
                 Close();
+                return;
             }
 
             var packetBytes = new byte[readByteCount];

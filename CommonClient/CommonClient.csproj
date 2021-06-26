@@ -9,12 +9,14 @@
     <None Remove="Configuration\" />
     <None Remove="Network\" />
     <None Remove="Network\Socket\" />
+    <None Remove="Player\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bus\" />
     <Folder Include="Configuration\" />
     <Folder Include="Network\" />
     <Folder Include="Network\Socket\" />
+    <Folder Include="Player\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
