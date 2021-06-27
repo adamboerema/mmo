@@ -5,7 +5,7 @@ namespace Common.Network.Packet.Definitions.Schema.Movement
 {
     public class MovementOutputPacket: IPacket
     {
-        public int Id => Definitions.MOVEMENT_OUTPUT;
+        public PacketType Id => PacketType.MOVEMENT_OUTPUT;
 
         public string PlayerId { get; set; }
 
@@ -16,6 +16,7 @@ namespace Common.Network.Packet.Definitions.Schema.Movement
 
         public IPacket ReadData(PacketReader packetReader)
         {
+            PlayerId = packetReader.ReadString();
             X = packetReader.ReadInteger();
             Y = packetReader.ReadInteger();
             Z = packetReader.ReadInteger();
@@ -25,6 +26,8 @@ namespace Common.Network.Packet.Definitions.Schema.Movement
 
         public byte[] WriteData(PacketWriter packetWriter)
         {
+            packetWriter.WriteInteger((int)Id);
+            packetWriter.WriteString(PlayerId);
             packetWriter.WriteInteger(X);
             packetWriter.WriteInteger(Y);
             packetWriter.WriteInteger(Z);

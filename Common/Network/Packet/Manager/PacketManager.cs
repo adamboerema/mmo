@@ -18,7 +18,7 @@ namespace Common.Network.Packet.Manager
         {
             var reader = new PacketReader(bytes);
             var packetId = reader.ReadInteger();
-            var packet = packetParser.ReadPacket(packetId, reader);
+            var packet = packetParser.ReadPacket((PacketType)packetId, reader);
             reader.Dispose();
 
             Console.WriteLine($"Packet Id: {packetId} -- Packet {packet}");

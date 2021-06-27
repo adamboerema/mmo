@@ -13,7 +13,7 @@ namespace Common.Network.Packet.Definitions.Parser
             _definitions = packetDefinitions;
         }
 
-        public IPacket ReadPacket(int packetId, PacketReader packetReader)
+        public IPacket ReadPacket(PacketType packetId, PacketReader packetReader)
         {
             try
             {
@@ -23,7 +23,7 @@ namespace Common.Network.Packet.Definitions.Parser
             }
             catch (Exception exception)
             {
-                throw new PacketDefinitionException(packetId, exception);
+                throw new PacketDefinitionException((int)packetId, exception);
             }
         }
 
@@ -35,7 +35,7 @@ namespace Common.Network.Packet.Definitions.Parser
             }
             catch (Exception exception)
             {
-                throw new PacketDefinitionException(packet.Id, exception);
+                throw new PacketDefinitionException((int)packet.Id, exception);
             }
         }
     }

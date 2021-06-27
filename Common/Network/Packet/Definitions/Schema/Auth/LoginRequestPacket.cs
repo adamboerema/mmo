@@ -5,7 +5,7 @@ namespace Common.Network.Packet.Definitions.Schema.Auth
 {
     public class LoginRequestPacket: IPacket
     {
-        public int Id => Definitions.LOGIN_REQUEST;
+        public PacketType Id => PacketType.LOGIN_REQUEST;
         public string Username { get; set; }
         public string Password { get; set; }
 
@@ -18,7 +18,7 @@ namespace Common.Network.Packet.Definitions.Schema.Auth
 
         public byte[] WriteData(PacketWriter packetWriter)
         {
-            packetWriter.WriteInteger(Id);
+            packetWriter.WriteInteger((int)Id);
             packetWriter.WriteString(Username);
             packetWriter.WriteString(Password);
             return packetWriter.ToBytes();

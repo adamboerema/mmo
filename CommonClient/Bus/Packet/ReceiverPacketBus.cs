@@ -5,7 +5,7 @@ using Common.Network.Packet.Definitions;
 
 namespace CommonClient.Bus.Packet
 {
-    public class ReceiverPacketBus: IEventBus<PacketEvent>
+    public class ReceiverPacketBus: IEventBus<PacketEvent>, IReceiverPacketBus
     {
         private readonly IList<IEventBusListener<PacketEvent>> listeners = new List<IEventBusListener<PacketEvent>>();
 

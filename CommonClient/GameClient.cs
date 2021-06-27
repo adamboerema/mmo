@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Common.Bus;
 using Common.Network.Packet.Definitions;
-using Common.Network.Packet.Definitions.Schema.Auth;
 using CommonClient.Bus.Packet;
 using CommonClient.Configuration;
 using CommonClient.Network.Socket;

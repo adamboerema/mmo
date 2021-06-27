@@ -5,7 +5,7 @@ namespace Common.Network.Packet.Definitions.Schema.Auth
 {
     public class LoginResponsePacket: IPacket
     {
-        public int Id => Definitions.LOGIN_RESPONSE;
+        public PacketType Id => PacketType.LOGIN_RESPONSE;
         public bool Success { get; set; }
         public string UserId { get; set; }
 
@@ -19,7 +19,7 @@ namespace Common.Network.Packet.Definitions.Schema.Auth
 
         public byte[] WriteData(PacketWriter packetWriter)
         {
-            packetWriter.WriteInteger(Id);
+            packetWriter.WriteInteger((int)Id);
             packetWriter.WriteBool(Success);
             packetWriter.WriteString(UserId);
             return packetWriter.ToBytes();

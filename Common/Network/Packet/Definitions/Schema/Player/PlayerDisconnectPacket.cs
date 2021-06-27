@@ -5,11 +5,8 @@ namespace Common.Network.Packet.Definitions.Schema.Player
 {
     public class PlayerDisconnectPacket : IPacket
     {
-        public PlayerDisconnectPacket()
-        {
-        }
 
-        public int Id => Definitions.PLAYER_DISCONNECTED;
+        public PacketType Id => PacketType.PLAYER_DISCONNECTED;
 
         public string PlayerId { get; set; }
 
@@ -21,7 +18,7 @@ namespace Common.Network.Packet.Definitions.Schema.Player
 
         public byte[] WriteData(PacketWriter packetWriter)
         {
-            packetWriter.WriteInteger(Id);
+            packetWriter.WriteInteger((int)Id);
             packetWriter.WriteString(PlayerId);
             return packetWriter.ToBytes();
         }

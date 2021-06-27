@@ -5,11 +5,7 @@ namespace Common.Network.Packet.Definitions.Schema.Player
 {
     public class PlayerConnectPacket: IPacket
     {
-        public PlayerConnectPacket()
-        {
-        }
-
-        public int Id => Definitions.PLAYER_CONNECTED;
+        public PacketType Id => PacketType.PLAYER_CONNECTED;
 
         public string PlayerId { get; set; }
 
@@ -21,7 +17,7 @@ namespace Common.Network.Packet.Definitions.Schema.Player
 
         public byte[] WriteData(PacketWriter packetWriter)
         {
-            packetWriter.WriteInteger(Id);
+            packetWriter.WriteInteger((int)Id);
             packetWriter.WriteString(PlayerId);
             return packetWriter.ToBytes();
         }

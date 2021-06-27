@@ -1,22 +1,26 @@
 ﻿using System;
-using CommonClient;
+using CommonClient.Bus.Packet;
 using CommonClient.Configuration;
-using DesktopClient.Configuration;
 
-namespace DesktopClient.Container
+namespace CommonClient.Container
 {
     public static class GameServices
     {
         private static bool isInitialized = false;
 
-        private static IGameConfiguration _gameConfiguration = new ClientConfiguration();
+        private static IGameClient _gameClient;
 
-        private static IGameClient _gameClient = new GameClient(_gameConfiguration);
+        private static IDispatchPacketBus _dispatchPacketBus = new DispatchPacketBus();
+
+        private static IReceiverPacketBus _receiverPacketBus = new ReceiverPacketBus();
             
-        public static void Initialize()
+        public static void Initialize(IGameConfiguration configuration)
         {
             isInitialized = true;
+            _gameClient = new GameClient(configuration);
             GameContainer.AddService(_gameClient);
+            GameContainer.AddService(_dispatchPacketBus);
+            GameContainer.AddService(_receiverPacketBus);
         }
 
         public static T GetService<T>()

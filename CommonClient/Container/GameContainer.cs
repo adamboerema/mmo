@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace DesktopClient.Container
+namespace CommonClient.Container
 {
     public static class GameContainer
     {

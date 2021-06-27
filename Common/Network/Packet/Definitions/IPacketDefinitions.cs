@@ -5,6 +5,6 @@ namespace Common.Network.Packet.Definitions
 {
     public interface IPacketDefinitions
     {
-        public Dictionary<int, IPacket> Packets { get; }
+        public Dictionary<PacketType, IPacket> Packets { get; }
     }
 }

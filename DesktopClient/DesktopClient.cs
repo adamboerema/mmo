@@ -1,6 +1,7 @@
 ﻿using Common.Network.Packet.Definitions.Schema.Auth;
 using CommonClient;
-using DesktopClient.Container;
+using CommonClient.Container;
+using DesktopClient.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -22,7 +23,8 @@ namespace DesktopClient
 
         protected override void Initialize()
         {
-            GameServices.Initialize();
+            var configuration = new ClientConfiguration();
+            GameServices.Initialize(configuration);
             _gameClient = GameServices.GetService<IGameClient>();
             _gameClient.Start();
             Login("test", "test12345");

@@ -10,6 +10,8 @@
     <None Remove="Network\" />
     <None Remove="Network\Socket\" />
     <None Remove="Player\" />
+    <None Remove="MonoGame.Framework.DesktopGL" />
+    <None Remove="Container\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bus\" />
@@ -17,8 +19,12 @@
     <Folder Include="Network\" />
     <Folder Include="Network\Socket\" />
     <Folder Include="Player\" />
+    <Folder Include="Container\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
   </ItemGroup>
 </Project>
