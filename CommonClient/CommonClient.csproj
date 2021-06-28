@@ -12,6 +12,7 @@
     <None Remove="Player\" />
     <None Remove="MonoGame.Framework.DesktopGL" />
     <None Remove="Container\" />
+    <None Remove="Network\Receiver\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bus\" />
@@ -20,6 +21,7 @@
     <Folder Include="Network\Socket\" />
     <Folder Include="Player\" />
     <Folder Include="Container\" />
+    <Folder Include="Network\Receiver\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />

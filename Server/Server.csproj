@@ -15,13 +15,13 @@
     <Folder Include="Network\Connection\" />
     <Folder Include="Network\Server\" />
     <Folder Include="Engine\" />
-    <Folder Include="Network\Handler\" />
     <Folder Include="Bus\" />
     <Folder Include="Bus\Packet\" />
     <Folder Include="Bus\Connection\" />
     <Folder Include="Engine\World\" />
     <Folder Include="Engine\Player\" />
     <Folder Include="Engine\Movement\" />
+    <Folder Include="Auth\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\Packet\" />
@@ -29,5 +29,6 @@
     <None Remove="Engine\World\" />
     <None Remove="Engine\Player\" />
     <None Remove="Engine\Movement\" />
+    <None Remove="Auth\" />
   </ItemGroup>
 </Project>

@@ -11,14 +11,11 @@ namespace Server.Network.Connection
     public class ConnectionReceiver: IConnectionReceiver, IEventBusListener<ReceiverPacketEvent>
     {
         private readonly IReceiverPacketBus _packetBus;
-        private readonly AuthHandler _authHandler;
 
         public ConnectionReceiver(
-            IReceiverPacketBus packetBus,
-            AuthHandler authHandler)
+            IReceiverPacketBus packetBus)
         {
             _packetBus = packetBus;
-            _authHandler = authHandler;
             _packetBus.Subscribe(this);
         }
 
@@ -34,12 +31,6 @@ namespace Server.Network.Connection
 
         public void Receive(string connectionId, IPacket packet)
         {
-            switch(packet.Id)
-            {
-                case Definitions.LOGIN_REQUEST:
-                    _authHandler.Handle(connectionId, packet as LoginRequestPacket);
-                    break;
-            }
         }
 
     }

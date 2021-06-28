@@ -1,4 +1,6 @@
 ﻿using System;
+using Common.Model;
+
 namespace Server.Engine.Player
 {
     public interface IPlayerManager
@@ -7,7 +9,7 @@ namespace Server.Engine.Player
         /// Add Player to the player pool
         /// </summary>
         /// <param name="player">Player object</param>
-        public void AddPlayer(Player player);
+        public void AddPlayer(PlayerModel player);
 
         /// <summary>
         /// Remove player from pool

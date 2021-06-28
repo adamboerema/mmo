@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Bus;
+using Common.Model;
 using Common.Network.Packet.Definitions.Schema.Movement;
 using Common.Network.Packet.Definitions.Schema.Player;
 using Server.Bus.Connection;
@@ -10,7 +11,7 @@ namespace Server.Engine.Player
 {
     public class PlayerManager : IPlayerManager, IEventBusListener<ConnectionEvent>
     {
-        private Dictionary<string, Player> _players = new Dictionary<string, Player>();
+        private Dictionary<string, PlayerModel> _players = new Dictionary<string, PlayerModel>();
         private IConnectionBus _connectionBus;
         private IDispatchPacketBus _dispatchBus;
 
@@ -23,7 +24,7 @@ namespace Server.Engine.Player
             _connectionBus.Subscribe(this);
         }
 
-        public void AddPlayer(Player player)
+        public void AddPlayer(PlayerModel player)
         {
             _players.Add(player.Id, player);
             DispatchConnectPlayer(player);
@@ -59,7 +60,7 @@ namespace Server.Engine.Player
         /// Dispatch all current player location to new player
         /// </summary>
         /// <param name="player">New Player</param>
-        private void DispatchAllStartMovement(Player player)
+        private void DispatchAllStartMovement(PlayerModel player)
         {
             foreach(var playerValue in _players)
             {
@@ -80,7 +81,7 @@ namespace Server.Engine.Player
         /// Dispatch player start movement to all players
         /// </summary>
         /// <param name="player">New Player</param>
-        private void DispatchPlayerStartMovement(Player player)
+        private void DispatchPlayerStartMovement(PlayerModel player)
         {
             var packet = new MovementOutputPacket
             {
@@ -97,7 +98,7 @@ namespace Server.Engine.Player
         /// Dispatch to all that player connected.
         /// </summary>
         /// <param name="player"></param>
-        private void DispatchConnectPlayer(Player player)
+        private void DispatchConnectPlayer(PlayerModel player)
         {
             var packet = new PlayerConnectPacket
             {
@@ -110,7 +111,7 @@ namespace Server.Engine.Player
         /// Dispatch to player disconnected
         /// </summary>
         /// <param name="player"></param>
-        private void DispatchDisconnectPlayer(Player player)
+        private void DispatchDisconnectPlayer(PlayerModel player)
         {
             var packet = new PlayerDisconnectPacket
             {
@@ -124,11 +125,11 @@ namespace Server.Engine.Player
         /// </summary>
         /// <param name="connectionId">Connection id that connected</param>
         /// <returns></returns>
-        private Player CreateNewPlayer(string connectionId) => new Player
+        private PlayerModel CreateNewPlayer(string connectionId) => new PlayerModel
         {
             // TODO: Replace with persistent data
             Id = connectionId,
-            Character = new Character
+            Character = new CharacterModel
             {
                 Name = "Test",
                 MovementType = MovementType.STOPPED,

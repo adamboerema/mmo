@@ -20,10 +20,12 @@
     <Folder Include="Bus\" />
     <Folder Include="Network\Packet\Definitions\Schema\Player\" />
     <Folder Include="Network\Packet\Definitions\Schema\Movement\" />
+    <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\" />
     <None Remove="Network\Packet\Definitions\Schema\Player\" />
     <None Remove="Network\Packet\Definitions\Schema\Movement\" />
+    <None Remove="Model\" />
   </ItemGroup>
 </Project>

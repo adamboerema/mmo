@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Model;
 using Common.Network.Packet.IO;
 
 namespace Common.Network.Packet.Definitions.Schema.Movement
