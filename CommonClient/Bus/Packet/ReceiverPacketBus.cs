@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Bus;
-using Common.Network.Packet.Definitions;
+using Common.Network.Definitions;
 
 namespace CommonClient.Bus.Packet
 {

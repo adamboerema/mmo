@@ -1,11 +1,13 @@
 ﻿using System;
-using Common.Network.Packet.IO;
+using Common.Network.Definitions;
+using Common.Network.IO;
 
-namespace Common.Network.Packet.Definitions.Schema.Player
+namespace Common.Network.Schema.Player
 {
-    public class PlayerConnectPacket: IPacket
+    public class PlayerDisconnectPacket : IPacket
     {
-        public PacketType Id => PacketType.PLAYER_CONNECTED;
+
+        public PacketType Id => PacketType.PLAYER_DISCONNECTED;
 
         public string PlayerId { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using Common.Bus;
-using Common.Network.Packet.Definitions.Schema.Auth;
+using Common.Network.Schema.Auth;
 using Server.Bus.Packet;
 
 namespace Server.Auth

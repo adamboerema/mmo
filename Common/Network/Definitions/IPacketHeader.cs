@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Common.Network.Packet.Definitions
+namespace Common.Network.Definitions
 {
     public interface IPacketHeader
     {

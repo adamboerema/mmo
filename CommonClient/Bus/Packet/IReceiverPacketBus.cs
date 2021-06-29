@@ -1,6 +1,6 @@
 ﻿using System;
 using Common.Bus;
-using Common.Network.Packet.Definitions;
+using Common.Network.Definitions;
 
 namespace CommonClient.Bus.Packet
 {

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Common.Network.Packet.IO
+namespace Common.Network.IO
 {
     public class PacketReader: IDisposable
     {

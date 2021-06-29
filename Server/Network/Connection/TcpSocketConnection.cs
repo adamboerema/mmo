@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
 using Common.Network;
-using Common.Network.Packet.Definitions;
-using Common.Network.Packet.Manager;
+using Common.Network.Definitions;
+using Common.Network.Manager;
 using Common.Network.Shared;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
@@ -39,7 +39,7 @@ namespace Server.Network.Connection
             _readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
             _stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
 
-            var serverDefinitions = new Definitions();
+            var serverDefinitions = new PacketDefinitions();
             _packetManager = new PacketManager(serverDefinitions);
             _receiverPacketBus = receiverPacketBus;
             _connectionBus = connectionBus;

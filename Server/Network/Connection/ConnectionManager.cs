@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Bus;
-using Common.Network.Packet.Definitions;
-using Server.Bus.Connection;
+using Common.Network.Definitions;
 using Server.Configuration;
 
 namespace Server.Network.Connection

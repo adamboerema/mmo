@@ -1,4 +1,5 @@
-﻿using Common.Network.Packet.Definitions.Schema.Auth;
+﻿using System;
+using Common.Network.Schema.Auth;
 using CommonClient;
 using CommonClient.Container;
 using DesktopClient.Configuration;

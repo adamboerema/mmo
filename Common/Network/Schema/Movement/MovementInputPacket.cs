@@ -1,8 +1,9 @@
 ﻿using System;
 using Common.Model;
-using Common.Network.Packet.IO;
+using Common.Network.Definitions;
+using Common.Network.IO;
 
-namespace Common.Network.Packet.Definitions.Schema.Movement
+namespace Common.Network.Schema.Movement
 {
 
     public class MovementInputPacket: IPacket

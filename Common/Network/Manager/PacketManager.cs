@@ -1,9 +1,9 @@
 ﻿using System;
-using Common.Network.Packet.Definitions;
-using Common.Network.Packet.Definitions.Parser;
-using Common.Network.Packet.IO;
+using Common.Network.Definitions;
+using Common.Network.IO;
+using Common.Network.Parser;
 
-namespace Common.Network.Packet.Manager
+namespace Common.Network.Manager
 {
     public class PacketManager: IPacketManager
     {

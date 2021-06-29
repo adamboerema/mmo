@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Network.Packet.Definitions.Schema.Auth;
+using Common.Network.Schema.Auth;
 using Server.Bus.Packet;
 
 namespace Server.Network.Handler

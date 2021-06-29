@@ -1,19 +1,15 @@
 ﻿using System;
 using Common.Bus;
-using Common.Network.Packet.Definitions;
-using Common.Network.Packet.Definitions.Schema.Auth;
-using Server.Bus;
+using Common.Network.Definitions;
 using Server.Bus.Packet;
-using Server.Network.Handler;
 
 namespace Server.Network.Connection
 {
-    public class ConnectionReceiver: IConnectionReceiver, IEventBusListener<ReceiverPacketEvent>
+    public class ConnectionReceiver : IConnectionReceiver, IEventBusListener<ReceiverPacketEvent>
     {
         private readonly IReceiverPacketBus _packetBus;
 
-        public ConnectionReceiver(
-            IReceiverPacketBus packetBus)
+        public ConnectionReceiver(IReceiverPacketBus packetBus)
         {
             _packetBus = packetBus;
             _packetBus.Subscribe(this);

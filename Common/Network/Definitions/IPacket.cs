@@ -1,7 +1,7 @@
 ﻿using System;
-using Common.Network.Packet.IO;
+using Common.Network.IO;
 
-namespace Common.Network.Packet.Definitions
+namespace Common.Network.Definitions
 {
     public interface IPacket
     {

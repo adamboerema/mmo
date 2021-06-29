@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using Common.Bus;
 using CommonClient.Bus.Packet;
 using CommonClient.Container;
-using Common.Network.Packet.Definitions;
 using Common.Model;
-using Common.Network.Packet.Definitions.Schema.Player;
+using Common.Network.Schema.Player;
 
 namespace CommonClient.Player
 {

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Common.Bus;
 using Common.Model;
-using Common.Network.Packet.Definitions.Schema.Movement;
-using Common.Network.Packet.Definitions.Schema.Player;
+using Common.Network.Schema.Movement;
+using Common.Network.Schema.Player;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
 

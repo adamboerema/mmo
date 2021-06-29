@@ -1,8 +1,9 @@
 ﻿using System;
-using Common.Network.Packet.Exceptions;
-using Common.Network.Packet.IO;
+using Common.Network.Definitions;
+using Common.Network.Exceptions;
+using Common.Network.IO;
 
-namespace Common.Network.Packet.Definitions.Parser
+namespace Common.Network.Parser
 {
     public class PacketParser : IPacketParser
     {

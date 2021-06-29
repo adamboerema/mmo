@@ -1,7 +1,7 @@
 ﻿using System;
-using Common.Network.Packet.Definitions;
+using Common.Network.Definitions;
 
-namespace Common.Network.Packet.Manager
+namespace Common.Network.Manager
 {
     public interface IPacketManager
     {

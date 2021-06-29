@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Network.Packet.Definitions.Schema.Auth;
-using Common.Network.Packet.Definitions.Schema.Movement;
-using Common.Network.Packet.Definitions.Schema.Player;
+using Common.Network.Schema.Auth;
+using Common.Network.Schema.Movement;
+using Common.Network.Schema.Player;
 
-namespace Common.Network.Packet.Definitions
+namespace Common.Network.Definitions
 {
-    public class Definitions: IPacketDefinitions
+    public class PacketDefinitions: IPacketDefinitions
     {
         public Dictionary<PacketType, IPacket> Packets => new Dictionary<PacketType, IPacket>
         {

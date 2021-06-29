@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Bus;
-using Server.Bus.Packet;
 
 namespace Server.Bus.Connection
 {

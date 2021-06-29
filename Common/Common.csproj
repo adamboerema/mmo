@@ -9,23 +9,23 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Network\Shared\" />
-    <Folder Include="Network\Packet\" />
-    <Folder Include="Network\Packet\Manager\" />
-    <Folder Include="Network\Packet\IO\" />
-    <Folder Include="Network\Packet\Definitions\" />
-    <Folder Include="Network\Packet\Exceptions\" />
-    <Folder Include="Network\Packet\Definitions\Parser\" />
-    <Folder Include="Network\Packet\Definitions\Schema\" />
-    <Folder Include="Network\Packet\Definitions\Schema\Auth\" />
     <Folder Include="Bus\" />
-    <Folder Include="Network\Packet\Definitions\Schema\Player\" />
-    <Folder Include="Network\Packet\Definitions\Schema\Movement\" />
     <Folder Include="Model\" />
+    <Folder Include="Network\Definitions\" />
+    <Folder Include="Network\Schema\" />
+    <Folder Include="Network\Parser\" />
+    <Folder Include="Network\Exceptions\" />
+    <Folder Include="Network\IO\" />
+    <Folder Include="Network\Manager\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\" />
-    <None Remove="Network\Packet\Definitions\Schema\Player\" />
-    <None Remove="Network\Packet\Definitions\Schema\Movement\" />
     <None Remove="Model\" />
+    <None Remove="Network\Definitions\" />
+    <None Remove="Network\Schema\" />
+    <None Remove="Network\Parser\" />
+    <None Remove="Network\Exceptions\" />
+    <None Remove="Network\IO\" />
+    <None Remove="Network\Manager\" />
   </ItemGroup>
 </Project>

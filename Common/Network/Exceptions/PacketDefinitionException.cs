@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Common.Network.Packet.Exceptions
+namespace Common.Network.Exceptions
 {
     public class PacketDefinitionException: Exception
     {

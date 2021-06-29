@@ -2,12 +2,12 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Common.Network.Packet.Definitions;
-using Common.Network.Packet.Manager;
 using Common.Network.Shared;
 using Common.Network;
 using CommonClient.Bus.Packet;
 using Common.Bus;
+using Common.Network.Manager;
+using Common.Network.Definitions;
 
 namespace CommonClient.Network.Socket
 {
@@ -30,7 +30,7 @@ namespace CommonClient.Network.Socket
             _dispatchPacketBus = dispatchPacketBus;
             _dispatchPacketBus.Subscribe(this);
 
-            var packetDefinitions = new Definitions();
+            var packetDefinitions = new PacketDefinitions();
             _packetManager = new PacketManager(packetDefinitions);
 
             _socket = new TcpClient();

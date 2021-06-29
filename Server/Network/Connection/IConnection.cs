@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Net.Sockets;
-using Common.Network.Packet.Definitions;
+using Common.Network.Definitions;
 
 namespace Server.Network.Connection
 {

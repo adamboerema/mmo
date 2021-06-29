@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Network.Packet.Definitions.Schema.Auth;
+using Common.Network.Schema.Auth;
 
 namespace Server.Auth
 {
