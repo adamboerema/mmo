@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Common.Network.Definitions
+namespace Common.Definitions
 {
     public enum PacketType : int
     {

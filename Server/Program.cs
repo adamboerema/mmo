@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Common.Network.Definitions;
-using Common.Network.Packets.Auth;
-using Common.Network.Packets.Movement;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

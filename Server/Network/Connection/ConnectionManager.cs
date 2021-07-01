@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Network.Definitions;
+using Common.Definitions;
 using Server.Configuration;
 
 namespace Server.Network.Connection

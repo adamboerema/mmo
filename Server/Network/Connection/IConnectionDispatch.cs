@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Definitions;
 using Common.Network.Definitions;
 
 namespace Server.Network.Connection

@@ -1,6 +1,7 @@
 ﻿using System;
 using Common.Bus;
-using Common.Network.Packets.Auth;
+using Common.Packets.ClientToServer.Auth;
+using Common.Packets.ServerToClient.Auth;
 using Server.Bus.Packet;
 
 namespace Server.Auth

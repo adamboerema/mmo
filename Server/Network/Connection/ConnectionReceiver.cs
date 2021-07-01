@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Common.Bus;
-using Common.Network.Definitions;
-using Common.Network.Packets.Auth;
+using Common.Definitions;
 using Server.Bus.Packet;
-using Server.Network.Handler;
 using Server.Network.Handler.Factory;
 
 namespace Server.Network.Connection

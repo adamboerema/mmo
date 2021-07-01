@@ -1,4 +1,4 @@
-﻿using Common.Network.Definitions;
+﻿using Common.Definitions;
 
 namespace Server.Network.Handler.Factory
 {

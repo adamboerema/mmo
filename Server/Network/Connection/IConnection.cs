@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Network.Definitions;
+using Common.Definitions;
 
 namespace Server.Network.Connection
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Common.Network.Definitions
+namespace Common.Definitions
 {
     public interface IPacketDefinitions
     {

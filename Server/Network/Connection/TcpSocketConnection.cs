@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
+using Common.Definitions;
 using Common.Network;
-using Common.Network.Definitions;
 using Common.Network.Manager;
 using Common.Network.Shared;
 using Server.Bus.Connection;

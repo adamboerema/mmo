@@ -1,7 +1,7 @@
 ﻿using System;
-using Common.Network.Definitions;
-using Common.Network.Packets.Auth;
-using Common.Network.Packets.Movement;
+using Common.Definitions;
+using Common.Packets.ClientToServer.Auth;
+using Common.Packets.ClientToServer.Movement;
 
 namespace Server.Network.Handler.Factory
 {

@@ -1,12 +1,11 @@
 ﻿using System;
-using Common.Network.Definitions;
+using Common.Definitions;
 using Common.Network.IO;
 
-namespace Common.Network.Packets.Player
+namespace Common.Packets.ServerToClient.Player
 {
     public class PlayerDisconnectPacket : IPacket
     {
-
         public PacketType Id => PacketType.PLAYER_DISCONNECTED;
 
         public string PlayerId { get; set; }

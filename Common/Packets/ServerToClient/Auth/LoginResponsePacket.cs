@@ -1,8 +1,8 @@
 ﻿using System;
-using Common.Network.Definitions;
+using Common.Definitions;
 using Common.Network.IO;
 
-namespace Common.Network.Packets.Auth
+namespace Common.Packets.ServerToClient.Auth
 {
     public class LoginResponsePacket: IPacket
     {

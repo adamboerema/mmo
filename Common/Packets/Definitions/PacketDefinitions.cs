@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Network.Packets.Auth;
-using Common.Network.Packets.Movement;
-using Common.Network.Packets.Player;
+using Common.Packets.ClientToServer.Auth;
+using Common.Packets.ClientToServer.Movement;
+using Common.Packets.ServerToClient.Auth;
+using Common.Packets.ServerToClient.Movement;
+using Common.Packets.ServerToClient.Player;
 
-namespace Common.Network.Definitions
+namespace Common.Definitions
 {
     public class PacketDefinitions: IPacketDefinitions
     {

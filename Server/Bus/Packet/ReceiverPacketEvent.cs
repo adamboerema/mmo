@@ -1,4 +1,5 @@
-﻿using Common.Network.Definitions;
+﻿using Common.Definitions;
+using Common.Network.Definitions;
 
 namespace Server.Bus.Packet
 {

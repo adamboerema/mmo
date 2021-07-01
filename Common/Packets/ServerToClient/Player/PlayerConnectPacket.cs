@@ -1,8 +1,8 @@
 ﻿using System;
-using Common.Network.Definitions;
+using Common.Definitions;
 using Common.Network.IO;
 
-namespace Common.Network.Packets.Player
+namespace Common.Packets.ServerToClient.Player
 {
     public class PlayerConnectPacket: IPacket
     {
