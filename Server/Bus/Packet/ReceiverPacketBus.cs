@@ -7,7 +7,8 @@ namespace Server.Bus.Packet
 {
     public class ReceiverPacketBus: IReceiverPacketBus
     {
-        private readonly IList<IEventBusListener<ReceiverPacketEvent>> listeners = new List<IEventBusListener<ReceiverPacketEvent>>();
+        private readonly HashSet<IEventBusListener<ReceiverPacketEvent>> listeners
+            = new HashSet<IEventBusListener<ReceiverPacketEvent>>();
 
         public void Publish(ReceiverPacketEvent eventObject)
         {

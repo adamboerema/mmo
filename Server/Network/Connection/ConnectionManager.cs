@@ -41,8 +41,10 @@ namespace Server.Network.Connection
 
         public void Send(string connectionId, IPacket packet)
         {
-            var connection = _connections[connectionId];
-            connection?.Send(packet);
+            if(_connections.ContainsKey(connectionId))
+            {
+                _connections[connectionId].Send(packet);
+            }
         }
 
         public void SendAll(IPacket packet)

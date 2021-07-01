@@ -11,21 +11,38 @@
     <Folder Include="Network\Shared\" />
     <Folder Include="Bus\" />
     <Folder Include="Model\" />
-    <Folder Include="Network\Definitions\" />
-    <Folder Include="Network\Schema\" />
     <Folder Include="Network\Parser\" />
     <Folder Include="Network\Exceptions\" />
     <Folder Include="Network\IO\" />
     <Folder Include="Network\Manager\" />
+    <Folder Include="Packets\" />
+    <Folder Include="Packets\ServerToClient\" />
+    <Folder Include="Packets\ClientToServer\" />
+    <Folder Include="Packets\ClientToServer\Auth\" />
+    <Folder Include="Packets\ServerToClient\Auth\" />
+    <Folder Include="Packets\ServerToClient\Movement\" />
+    <Folder Include="Packets\ServerToClient\Player\" />
+    <Folder Include="Packets\ClientToServer\Movement\" />
+    <Folder Include="Packets\ClientToServer\Player\" />
+    <Folder Include="Packets\Definitions\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\" />
     <None Remove="Model\" />
-    <None Remove="Network\Definitions\" />
     <None Remove="Network\Schema\" />
     <None Remove="Network\Parser\" />
     <None Remove="Network\Exceptions\" />
     <None Remove="Network\IO\" />
     <None Remove="Network\Manager\" />
+    <None Remove="Packets\" />
+    <None Remove="Packets\ServerToClient\" />
+    <None Remove="Packets\ClientToServer\" />
+    <None Remove="Packets\ClientToServer\Auth\" />
+    <None Remove="Packets\ServerToClient\Auth\" />
+    <None Remove="Packets\ServerToClient\Movement\" />
+    <None Remove="Packets\ServerToClient\Player\" />
+    <None Remove="Packets\ClientToServer\Movement\" />
+    <None Remove="Packets\ClientToServer\Player\" />
+    <None Remove="Packets\Definitions\" />
   </ItemGroup>
 </Project>

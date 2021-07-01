@@ -2,7 +2,7 @@
 using Common.Network.Definitions;
 using Common.Network.IO;
 
-namespace Common.Network.Schema.Auth
+namespace Common.Network.Packets.Auth
 {
     public class LoginRequestPacket: IPacket
     {

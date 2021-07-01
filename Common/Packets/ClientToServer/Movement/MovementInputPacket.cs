@@ -1,26 +1,27 @@
 ﻿using System;
+using Common.Model;
 using Common.Network.Definitions;
 using Common.Network.IO;
 
-namespace Common.Network.Schema.Player
+namespace Common.Network.Packets.Movement
 {
-    public class PlayerDisconnectPacket : IPacket
+
+    public class MovementInputPacket: IPacket
     {
+        public PacketType Id => PacketType.MOVEMENT_INPUT;
 
-        public PacketType Id => PacketType.PLAYER_DISCONNECTED;
-
-        public string PlayerId { get; set; }
+        public MovementType Direction { get; set; }
 
         public IPacket ReadData(PacketReader packetReader)
         {
-            PlayerId = packetReader.ReadString();
+            Direction = (MovementType)packetReader.ReadInteger();
             return this;
         }
 
         public byte[] WriteData(PacketWriter packetWriter)
         {
             packetWriter.WriteInteger((int)Id);
-            packetWriter.WriteString(PlayerId);
+            packetWriter.WriteInteger((int)Direction);
             return packetWriter.ToBytes();
         }
     }

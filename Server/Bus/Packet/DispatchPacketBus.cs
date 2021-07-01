@@ -7,8 +7,8 @@ namespace Server.Bus.Packet
 {
     public class DispatchPacketBus : IDispatchPacketBus
     {
-        private readonly IList<IEventBusListener<DispatchPacketEvent>> listeners
-            = new List<IEventBusListener<DispatchPacketEvent>>();
+        private readonly HashSet<IEventBusListener<DispatchPacketEvent>> listeners
+            = new HashSet<IEventBusListener<DispatchPacketEvent>>();
 
         public void Publish(string connectionId, IPacket packet)
         {

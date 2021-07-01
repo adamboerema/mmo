@@ -9,15 +9,15 @@ namespace Sever
     {
         private readonly IServer _socketServer;
         private readonly IConnectionDispatch _connectionDispatch;
-        private readonly IAuthManager _authManager;
+        private readonly IConnectionReceiver _connectionReceiver;
 
         public GameServer(
             IServer socketServer,
             IConnectionDispatch connectionDispatch,
-            IAuthManager authManager)
+            IConnectionReceiver connectionReceiver)
         {
             _socketServer = socketServer;
-            _authManager = authManager;
+            _connectionReceiver = connectionReceiver;
             _connectionDispatch = connectionDispatch;
         }
 
@@ -32,6 +32,7 @@ namespace Sever
             Console.WriteLine("Closing Game Server");
             _socketServer.Close();
             _connectionDispatch.Close();
+            _connectionReceiver.Close();
         }
     }
 }

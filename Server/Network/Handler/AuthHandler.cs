@@ -1,30 +1,21 @@
 ﻿using System;
-using Common.Network.Schema.Auth;
-using Server.Bus.Packet;
+using Common.Network.Packets.Auth;
+using Server.Auth;
 
 namespace Server.Network.Handler
 {
-    public class AuthHandler: IServerHandler<LoginRequestPacket>
+    public class AuthHandler: IPacketHandler<LoginRequestPacket>
     {
-        private readonly IDispatchPacketBus _packetBus;
+        private readonly IAuthManager _authManager;
 
-        public AuthHandler(IDispatchPacketBus eventBus)
+        public AuthHandler(IAuthManager authManager)
         {
-            _packetBus = eventBus;
+            _authManager = authManager;
         }
 
         public void Handle(string connectionId, LoginRequestPacket packet)
         {
-            Console.WriteLine($"Connection id: {connectionId}");
-            Console.WriteLine($"Login attempt User: {packet.Username}, Password: {packet.Password}");
-
-            // TODO: Handle login logic
-            var response = new LoginResponsePacket
-            {
-                Success = true,
-                UserId = Guid.NewGuid().ToString()
-            };
-            _packetBus.Publish(connectionId, response);
+            _authManager.HandleLoginResponse(connectionId, packet);
         }
 
     }

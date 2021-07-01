@@ -1,21 +1,17 @@
 ﻿using System;
 using Common.Bus;
-using Common.Network.Schema.Auth;
+using Common.Network.Packets.Auth;
 using Server.Bus.Packet;
 
 namespace Server.Auth
 {
-    public class AuthManager: IAuthManager, IEventBusListener<ReceiverPacketEvent>
+    public class AuthManager: IAuthManager
     {
-        private IReceiverPacketBus _receiverPacketBus;
         private IDispatchPacketBus _dispatchPacketBus;
 
-        public AuthManager(IReceiverPacketBus receiverPacketBus,
-            IDispatchPacketBus dispatchPacketBus)
+        public AuthManager(IDispatchPacketBus dispatchPacketBus)
         {
             _dispatchPacketBus = dispatchPacketBus;
-            _receiverPacketBus = receiverPacketBus;
-            _receiverPacketBus.Subscribe(this);
         }
 
         public void HandleLoginResponse(string connectionId, LoginRequestPacket packet)
@@ -30,16 +26,6 @@ namespace Server.Auth
                 UserId = Guid.NewGuid().ToString()
             };
             _dispatchPacketBus.Publish(connectionId, response);
-        }
-
-        public void Handle(ReceiverPacketEvent eventObject)
-        {
-            switch(eventObject.Packet)
-            {
-                case LoginRequestPacket packet:
-                    HandleLoginResponse(eventObject.ConnectionId, packet);
-                    break;
-            }
         }
 
     }

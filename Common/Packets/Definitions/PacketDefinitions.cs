@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Network.Schema.Auth;
-using Common.Network.Schema.Movement;
-using Common.Network.Schema.Player;
+using Common.Network.Packets.Auth;
+using Common.Network.Packets.Movement;
+using Common.Network.Packets.Player;
 
 namespace Common.Network.Definitions
 {

@@ -3,7 +3,7 @@ using Common.Model;
 using Common.Network.Definitions;
 using Common.Network.IO;
 
-namespace Common.Network.Schema.Movement
+namespace Common.Network.Packets.Movement
 {
     public class MovementOutputPacket: IPacket
     {

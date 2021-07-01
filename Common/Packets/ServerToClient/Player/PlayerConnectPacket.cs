@@ -2,7 +2,7 @@
 using Common.Network.Definitions;
 using Common.Network.IO;
 
-namespace Common.Network.Schema.Player
+namespace Common.Network.Packets.Player
 {
     public class PlayerConnectPacket: IPacket
     {

@@ -15,16 +15,16 @@ namespace CommonClient.Network.Socket
     {
         private readonly TcpClient _socket;
         private readonly IPacketManager _packetManager;
-        private readonly ReceiverPacketBus _receiverPacketBus;
-        private readonly DispatchPacketBus _dispatchPacketBus;
+        private readonly IReceiverPacketBus _receiverPacketBus;
+        private readonly IDispatchPacketBus _dispatchPacketBus;
 
         private NetworkStream _stream;
         private StateBuffer _stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
         private byte[] _readBuffer = new byte[Constants.BUFFER_CLIENT_SIZE];
 
         public TcpSocketClient(
-            ReceiverPacketBus receiverPacketBus,
-            DispatchPacketBus dispatchPacketBus)
+            IReceiverPacketBus receiverPacketBus,
+            IDispatchPacketBus dispatchPacketBus)
         {
             _receiverPacketBus = receiverPacketBus;
             _dispatchPacketBus = dispatchPacketBus;

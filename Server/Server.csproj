@@ -21,7 +21,8 @@
     <Folder Include="Engine\World\" />
     <Folder Include="Engine\Player\" />
     <Folder Include="Engine\Movement\" />
-    <Folder Include="Auth\" />
+    <Folder Include="Login\" />
+    <Folder Include="Network\Handler\Factory\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\Packet\" />
@@ -30,5 +31,11 @@
     <None Remove="Engine\Player\" />
     <None Remove="Engine\Movement\" />
     <None Remove="Auth\" />
+    <None Remove="Microsoft.Extensions.DependencyInjection" />
+    <None Remove="Network\Handler\Module\" />
+    <None Remove="Network\Handler\Factory\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.16" />
   </ItemGroup>
 </Project>
