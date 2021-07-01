@@ -5,7 +5,6 @@ using Common.Network.IO;
 
 namespace Common.Network.Packets.Movement
 {
-
     public class MovementInputPacket: IPacket
     {
         public PacketType Id => PacketType.MOVEMENT_INPUT;

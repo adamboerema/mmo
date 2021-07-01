@@ -37,38 +37,30 @@ namespace Server
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    BuildPacketHandlers(services);
+                    // Server setup
                     services.AddScoped<IServerConfiguration, ServerConfiguration>();
                     services.AddScoped<IServer, TcpSocketServer>();
                     services.AddScoped<GameServer>();
 
+                    // Packet Buses
                     services.AddScoped<IReceiverPacketBus, ReceiverPacketBus>();
                     services.AddScoped<IDispatchPacketBus, DispatchPacketBus>();
                     services.AddScoped<IConnectionBus, ConnectionBus>();
 
+                    // Connection routing
                     services.AddScoped<IConnectionManager, ConnectionManager>();
                     services.AddScoped<IConnectionDispatch, ConnectionDispatch>();
                     services.AddScoped<IConnectionReceiver, ConnectionReceiver>();
 
+                    // Managers
                     services.AddScoped<IPlayerManager, PlayerManager>();
                     services.AddScoped<IAuthManager, AuthManager>();
+
+                    // Receiver handlers
+                    services.AddScoped<IHandlerRouter, HandlerRouter>();
+                    services.AddScoped<AuthHandler>();
+                    services.AddScoped<MovementHandler>();
                 });
-        }
-
-        private static IServiceCollection BuildPacketHandlers(IServiceCollection services)
-        {
-            services.AddScoped<IPacketHandler<LoginRequestPacket>, AuthHandler>();
-            services.AddScoped<IPacketHandler<MovementInputPacket>, MovementHandler>();
-
-            services.AddScoped<IHandlerFactory, HandlerFactory>((builder) =>
-            {
-                var factory = new HandlerFactory();
-                factory.RegisterHandler(builder.GetRequiredService<IPacketHandler<LoginRequestPacket>>());
-                factory.RegisterHandler(builder.GetRequiredService<IPacketHandler<LoginRequestPacket>>());
-                return factory;
-            });
-
-            return services;
         }
 
     }

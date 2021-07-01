@@ -5,16 +5,19 @@ using Common.Network.Definitions;
 using Common.Network.Packets.Auth;
 using Server.Bus.Packet;
 using Server.Network.Handler;
+using Server.Network.Handler.Factory;
 
 namespace Server.Network.Connection
 {
     public class ConnectionReceiver : IConnectionReceiver, IEventBusListener<ReceiverPacketEvent>
     {
         private readonly IReceiverPacketBus _packetBus;
-        private readonly Dictionary<Type, IPacketHandler<IPacket>> _handlers;
+        private readonly IHandlerRouter _handlerRouter;
 
-        public ConnectionReceiver(IReceiverPacketBus packetBus)
+        public ConnectionReceiver(IReceiverPacketBus packetBus,
+            IHandlerRouter handlerRouter)
         {
+            _handlerRouter = handlerRouter;
             _packetBus = packetBus;
             _packetBus.Subscribe(this);
         }
@@ -31,19 +34,7 @@ namespace Server.Network.Connection
 
         public void Receive(string connectionId, IPacket receivePacket)
         {
-            switch(receivePacket)
-            {
-                case LoginResponsePacket packet:
-                    Handle(connectionId, packet);
-                    break;
-            }
-            Handle(connectionId, receivePacket);
-        }
-
-        private void Handle<T>(string connectionId, T receivePacket) where T: IPacket
-        {
-            var handler = _serviceProvider.GetService(typeof(IPacketHandler<T>)) as IPacketHandler<T>;
-            handler?.Handle(connectionId, receivePacket);
+            _handlerRouter.Route(connectionId, receivePacket);
         }
     }
 }

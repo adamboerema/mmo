@@ -22,7 +22,7 @@
     <Folder Include="Engine\Player\" />
     <Folder Include="Engine\Movement\" />
     <Folder Include="Login\" />
-    <Folder Include="Network\Handler\Factory\" />
+    <Folder Include="Network\Handler\Provider\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\Packet\" />
