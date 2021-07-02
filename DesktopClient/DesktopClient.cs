@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Network.Packets.Auth;
+using Common.Packets.ClientToServer.Auth;
 using CommonClient;
 using CommonClient.Container;
 using DesktopClient.Configuration;

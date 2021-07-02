@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Common.Network.Definitions;
+using Common.Definitions;
 
 namespace CommonClient.Network.Socket
 {

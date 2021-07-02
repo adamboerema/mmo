@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Common.Bus;
-using Common.Network.Definitions;
+using Common.Definitions;
 using CommonClient.Bus.Packet;
 using CommonClient.Configuration;
 using CommonClient.Network.Socket;

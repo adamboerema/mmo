@@ -4,7 +4,7 @@ using Common.Bus;
 using CommonClient.Bus.Packet;
 using CommonClient.Container;
 using Common.Model;
-using Common.Network.Packets.Player;
+using Common.Packets.ServerToClient.Player;
 
 namespace CommonClient.Player
 {

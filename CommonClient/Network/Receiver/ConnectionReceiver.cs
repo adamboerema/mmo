@@ -2,7 +2,7 @@
 using Common.Bus;
 using CommonClient.Bus.Packet;
 using CommonClient.Container;
-using Common.Network.Definitions;
+using Common.Definitions;
 
 namespace CommonClient.Network.Receiver
 {

@@ -8,6 +8,7 @@ using CommonClient.Bus.Packet;
 using Common.Bus;
 using Common.Network.Manager;
 using Common.Network.Definitions;
+using Common.Definitions;
 
 namespace CommonClient.Network.Socket
 {
