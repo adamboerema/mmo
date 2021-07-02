@@ -1,34 +1,26 @@
 ﻿using System;
 using Common.Bus;
 using CommonClient.Bus.Packet;
-using CommonClient.Container;
-using Common.Definitions;
+using CommonClient.Network.Handler.Router;
 
 namespace CommonClient.Network.Receiver
 {
-    public class ConnectionReceiver: IConnectionReceiver, IEventBusListener<PacketEvent>
+    public class ConnectionReceiver: IConnectionReceiver
     {
-        private IReceiverPacketBus _receiverPacketBus;
+        private readonly IReceiverPacketBus _receiverPacketBus;
+        private readonly IHandlerRouter _handlerRouter;
 
-        public ConnectionReceiver()
+        public ConnectionReceiver(IReceiverPacketBus receiverPacketBus,
+            IHandlerRouter handlerRouter)
         {
-            _receiverPacketBus = GameServices.GetService<IReceiverPacketBus>();
+            _handlerRouter = handlerRouter;
+            _receiverPacketBus = receiverPacketBus;
             _receiverPacketBus.Subscribe(this);
         }
 
         public void Handle(PacketEvent eventObject)
         {
-            switch(eventObject.Packet.Id)
-            {
-                case PacketType.LOGIN_RESPONSE:
-                    break;
-                case PacketType.PLAYER_CONNECTED:
-                    break;
-                case PacketType.PLAYER_DISCONNECTED:
-                    break;
-                case PacketType.MOVEMENT_OUTPUT:
-                    break;
-            }
+            _handlerRouter.Route(eventObject.Packet);
         }
     }
 }

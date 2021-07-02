@@ -11,8 +11,11 @@
     <None Remove="Network\Socket\" />
     <None Remove="Player\" />
     <None Remove="MonoGame.Framework.DesktopGL" />
-    <None Remove="Container\" />
     <None Remove="Network\Receiver\" />
+    <None Remove="Network\Handlers\" />
+    <None Remove="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <None Remove="Microsoft.Extensions.DependencyInjection" />
+    <None Remove="Network\Handler\Router\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bus\" />
@@ -20,13 +23,15 @@
     <Folder Include="Network\" />
     <Folder Include="Network\Socket\" />
     <Folder Include="Player\" />
-    <Folder Include="Container\" />
     <Folder Include="Network\Receiver\" />
+    <Folder Include="Network\Handler\" />
+    <Folder Include="Network\Handler\Router\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
   </ItemGroup>
 </Project>

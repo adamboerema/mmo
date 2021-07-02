@@ -1,31 +1,28 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Common.Bus;
-using Common.Definitions;
-using CommonClient.Bus.Packet;
 using CommonClient.Configuration;
 using CommonClient.Network.Socket;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CommonClient
 {
     public class GameClient: IGameClient
     {
+        public readonly GameServices GameServices;
+
         private readonly IGameConfiguration _configuration;
         private readonly IClient _client;
-        private readonly ReceiverPacketBus _receiverPacketBus;
-        private readonly DispatchPacketBus _dispatchPacketBus;
 
         public GameClient(IGameConfiguration gameConfiguration)
         {
-            _receiverPacketBus = new ReceiverPacketBus();
-            _dispatchPacketBus = new DispatchPacketBus();
+            GameServices = new GameServices(gameConfiguration);
             _configuration = gameConfiguration;
-            _client = new TcpSocketClient(_receiverPacketBus, _dispatchPacketBus);
+            _client = GameServices.ServiceProvider.GetService<IClient>();
         }
 
         public void Start()
         {
-            initializeConnection().Wait();
+            InitializeConnection().Wait();
         }
 
         public void Close()
@@ -33,22 +30,12 @@ namespace CommonClient
             _client.Close();
         }
 
-        public void Send(IPacket packet)
+        public T GetService<T>()
         {
-            _dispatchPacketBus.Publish(packet);
+            return GameServices.ServiceProvider.GetService<T>();
         }
 
-        public void RegisterListener(IEventBusListener<PacketEvent> eventListener)
-        {
-            _receiverPacketBus.Subscribe(eventListener);
-        }
-
-        public void UnregisterListener(IEventBusListener<PacketEvent> eventListener)
-        {
-            _receiverPacketBus.Unsubscribe(eventListener);
-        }
-
-        private async Task initializeConnection()
+        private async Task InitializeConnection()
         {
             try
             {
@@ -59,7 +46,7 @@ namespace CommonClient
                 var delayMs = 5000;
                 Console.WriteLine($"Failed connection with error: {error.Message}");
                 Console.WriteLine("Retrying Connection attempt in 5 seconds");
-                await Task.Delay(delayMs).ContinueWith(_ => initializeConnection());
+                await Task.Delay(delayMs).ContinueWith(_ => InitializeConnection());
             }
         }
     }

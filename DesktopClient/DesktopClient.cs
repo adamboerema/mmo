@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Packets.ClientToServer.Auth;
 using CommonClient;
-using CommonClient.Container;
+using CommonClient.Bus.Packet;
 using DesktopClient.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,6 +14,7 @@ namespace DesktopClient
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private IGameClient _gameClient;
+        private IDispatchPacketBus _dispatchPacketBus;
 
         public DesktopClient()
         {
@@ -25,9 +26,9 @@ namespace DesktopClient
         protected override void Initialize()
         {
             var configuration = new ClientConfiguration();
-            GameServices.Initialize(configuration);
-            _gameClient = GameServices.GetService<IGameClient>();
+            _gameClient = new GameClient(configuration);
             _gameClient.Start();
+            _dispatchPacketBus = _gameClient.GetService<IDispatchPacketBus>();
             Login("test", "test12345");
             base.Initialize();
         }
@@ -59,7 +60,7 @@ namespace DesktopClient
                 Username = username,
                 Password = password
             };
-            _gameClient.Send(packet);
+            _dispatchPacketBus.Publish(packet);
         }
     }
 }
