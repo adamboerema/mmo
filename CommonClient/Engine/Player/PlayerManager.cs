@@ -1,26 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using Common.Model;
+using CommonClient.Store;
 
-namespace CommonClient.Player
+namespace CommonClient.Engine.Player
 {
     public class PlayerManager: IPlayerManager
     {
-        private Dictionary<string, PlayerModel> _players = new Dictionary<string, PlayerModel>();
+        private IStore<string, PlayerModel> _playerStore;
 
-        public PlayerManager()
+        public PlayerManager(IStore<string, PlayerModel> playerStore)
         {
+            _playerStore = playerStore;
         }
 
         public void CreatePlayer(string playerId)
         {
             var player = CreateNewPlayer(playerId);
-            _players.Add(playerId, player);
+            _playerStore.Add(playerId, player);
         }
 
         public void RemovePlayer(string playerId)
         {
-            _players.Remove(playerId);
+            _playerStore.Remove(playerId);
         }
 
         /// <summary>

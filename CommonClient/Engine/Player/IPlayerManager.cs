@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CommonClient.Player
+namespace CommonClient.Engine.Player
 {
     public interface IPlayerManager
     {

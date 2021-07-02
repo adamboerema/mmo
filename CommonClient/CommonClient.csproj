@@ -9,23 +9,29 @@
     <None Remove="Configuration\" />
     <None Remove="Network\" />
     <None Remove="Network\Socket\" />
-    <None Remove="Player\" />
     <None Remove="MonoGame.Framework.DesktopGL" />
     <None Remove="Network\Receiver\" />
     <None Remove="Network\Handlers\" />
     <None Remove="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <None Remove="Microsoft.Extensions.DependencyInjection" />
     <None Remove="Network\Handler\Router\" />
+    <None Remove="Engine\" />
+    <None Remove="Engine\Player\" />
+    <None Remove="Engine\Store\" />
+    <None Remove="Engine\Movement\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bus\" />
     <Folder Include="Configuration\" />
     <Folder Include="Network\" />
     <Folder Include="Network\Socket\" />
-    <Folder Include="Player\" />
     <Folder Include="Network\Receiver\" />
     <Folder Include="Network\Handler\" />
     <Folder Include="Network\Handler\Router\" />
+    <Folder Include="Engine\" />
+    <Folder Include="Engine\Player\" />
+    <Folder Include="Engine\Store\" />
+    <Folder Include="Engine\Movement\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />

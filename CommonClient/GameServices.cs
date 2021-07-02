@@ -1,10 +1,13 @@
 ﻿using System;
+using Common.Model;
 using CommonClient.Bus.Packet;
 using CommonClient.Configuration;
+using CommonClient.Engine.Player;
 using CommonClient.Network.Handler;
 using CommonClient.Network.Handler.Router;
 using CommonClient.Network.Socket;
 using CommonClient.Player;
+using CommonClient.Store;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CommonClient
@@ -52,6 +55,7 @@ namespace CommonClient
             serviceCollection.AddScoped<IDispatchPacketBus, DispatchPacketBus>();
             serviceCollection.AddScoped<IReceiverPacketBus, ReceiverPacketBus>();
 
+            serviceCollection.AddScoped<IPlayerStore, PlayerStore>();
             serviceCollection.AddScoped<IPlayerManager, PlayerManager>();
         }
 
