@@ -1,28 +1,45 @@
 ﻿using System;
-using Common.Model;
 using CommonClient.Bus.Packet;
 using CommonClient.Configuration;
 using CommonClient.Engine.Player;
 using CommonClient.Network.Handler;
 using CommonClient.Network.Handler.Router;
 using CommonClient.Network.Socket;
-using CommonClient.Player;
 using CommonClient.Store;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CommonClient
 {
-    public class GameServices
+    public static class GameServices
     {
-        public IServiceProvider ServiceProvider;
+        private static IServiceProvider ServiceProvider;
 
-        public GameServices(IGameConfiguration configuration)
+        /// <summary>
+        /// Initialize the container
+        /// </summary>
+        /// <param name="configuration"></param>
+        public static void Initialize(IGameConfiguration configuration)
         {
             var serviceCollection = BuildServiceCollection(configuration);
             ServiceProvider = serviceCollection.BuildServiceProvider();
         }
 
-        private IServiceCollection BuildServiceCollection(
+        /// <summary>
+        /// Get Service
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T GetService<T>()
+        {
+            return ServiceProvider.GetRequiredService<T>();
+        }
+
+        /// <summary>
+        /// Builds all of the containers
+        /// </summary>
+        /// <param name="configuration">Game configuration</param>
+        /// <returns></returns>
+        private static IServiceCollection BuildServiceCollection(
             IGameConfiguration configuration)
         {
             var serviceCollection = new ServiceCollection();
@@ -36,7 +53,7 @@ namespace CommonClient
         /// Build Configuration
         /// </summary>
         /// <param name="configuration">Custom configuration</param>
-        private void BuildConfiguration(
+        private static void BuildConfiguration(
             IServiceCollection serviceCollection,
             IGameConfiguration configuration)
         {
@@ -49,7 +66,7 @@ namespace CommonClient
         /// <summary>
         /// Build Services
         /// </summary>
-        private void BuildServices(IServiceCollection serviceCollection)
+        private static void BuildServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IClient, TcpSocketClient>();
             serviceCollection.AddScoped<IDispatchPacketBus, DispatchPacketBus>();
@@ -62,7 +79,7 @@ namespace CommonClient
         /// <summary>
         /// Build Handlers
         /// </summary>
-        private void BuildHandlers(IServiceCollection serviceCollection)
+        private static void BuildHandlers(IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IHandlerRouter, HandlerRouter>();
             serviceCollection.AddScoped<PlayerHandler>();

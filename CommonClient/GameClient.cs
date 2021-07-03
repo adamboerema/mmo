@@ -8,16 +8,14 @@ namespace CommonClient
 {
     public class GameClient: IGameClient
     {
-        public readonly GameServices GameServices;
-
         private readonly IGameConfiguration _configuration;
         private readonly IClient _client;
 
         public GameClient(IGameConfiguration gameConfiguration)
         {
-            GameServices = new GameServices(gameConfiguration);
+            GameServices.Initialize(gameConfiguration);
             _configuration = gameConfiguration;
-            _client = GameServices.ServiceProvider.GetService<IClient>();
+            _client = GameServices.GetService<IClient>();
         }
 
         public void Start()
@@ -28,11 +26,6 @@ namespace CommonClient
         public void Close()
         {
             _client.Close();
-        }
-
-        public T GetService<T>()
-        {
-            return GameServices.ServiceProvider.GetService<T>();
         }
 
         private async Task InitializeConnection()

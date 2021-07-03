@@ -28,7 +28,7 @@ namespace DesktopClient
             var configuration = new ClientConfiguration();
             _gameClient = new GameClient(configuration);
             _gameClient.Start();
-            _dispatchPacketBus = _gameClient.GetService<IDispatchPacketBus>();
+            _dispatchPacketBus = GameServices.GetService<IDispatchPacketBus>();
             Login("test", "test12345");
             base.Initialize();
         }

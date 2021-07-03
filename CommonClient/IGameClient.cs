@@ -8,6 +8,5 @@ namespace CommonClient
 
         public void Close();
 
-        public T GetService<T>();
     }
 }
