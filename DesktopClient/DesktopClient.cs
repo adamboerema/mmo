@@ -2,6 +2,7 @@
 using Common.Packets.ClientToServer.Auth;
 using CommonClient;
 using CommonClient.Bus.Packet;
+using CommonClient.Components.Movement;
 using DesktopClient.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,17 +19,21 @@ namespace DesktopClient
 
         public DesktopClient()
         {
+            var configuration = new ClientConfiguration();
+            _gameClient = new GameClient(configuration);
+
             _graphics = new GraphicsDeviceManager(this);
+            _dispatchPacketBus = GameServices.GetService<IDispatchPacketBus>();
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            var movementComponent = new MovementComponent(this);
+            Components.Add(movementComponent);
         }
 
         protected override void Initialize()
         {
-            var configuration = new ClientConfiguration();
-            _gameClient = new GameClient(configuration);
             _gameClient.Start();
-            _dispatchPacketBus = GameServices.GetService<IDispatchPacketBus>();
             Login("test", "test12345");
             base.Initialize();
         }

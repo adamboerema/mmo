@@ -3,13 +3,13 @@ using Common.Model;
 
 namespace CommonClient.Engine.Player
 {
-    public interface IPlayerStore
+    public interface IPlayersStore
     {
-        public PlayerModel Get(string playerId);
+        public ClientPlayerModel Get(string playerId);
 
-        public void Add(PlayerModel playerModel);
+        public void Add(ClientPlayerModel playerModel);
 
-        public void Update(PlayerModel playerModel);
+        public void Update(ClientPlayerModel playerModel);
 
         public void Remove(string playerId);
 

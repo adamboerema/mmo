@@ -1,6 +1,7 @@
 ﻿using System;
 using CommonClient.Bus.Packet;
 using CommonClient.Configuration;
+using CommonClient.Engine.Movement;
 using CommonClient.Engine.Player;
 using CommonClient.Network.Handler;
 using CommonClient.Network.Handler.Router;
@@ -72,8 +73,9 @@ namespace CommonClient
             serviceCollection.AddScoped<IDispatchPacketBus, DispatchPacketBus>();
             serviceCollection.AddScoped<IReceiverPacketBus, ReceiverPacketBus>();
 
-            serviceCollection.AddScoped<IPlayerStore, PlayerStore>();
+            serviceCollection.AddScoped<IPlayersStore, PlayersStore>();
             serviceCollection.AddScoped<IPlayerManager, PlayerManager>();
+            serviceCollection.AddScoped<IMovementManager, MovementManager>();
         }
 
         /// <summary>

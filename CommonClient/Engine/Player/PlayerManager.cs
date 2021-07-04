@@ -6,17 +6,23 @@ namespace CommonClient.Engine.Player
 {
     public class PlayerManager: IPlayerManager
     {
-        private IStore<string, PlayerModel> _playerStore;
+        private IPlayersStore _playerStore;
 
-        public PlayerManager(IStore<string, PlayerModel> playerStore)
+        public PlayerManager(IPlayersStore playerStore)
         {
             _playerStore = playerStore;
+        }
+
+        public void CreateClientPlayer(string playerId)
+        {
+            var player = CreateNewPlayer(playerId, true);
+            _playerStore.Add(player);
         }
 
         public void CreatePlayer(string playerId)
         {
             var player = CreateNewPlayer(playerId);
-            _playerStore.Add(playerId, player);
+            _playerStore.Add(player);
         }
 
         public void RemovePlayer(string playerId)
@@ -29,16 +35,18 @@ namespace CommonClient.Engine.Player
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private PlayerModel CreateNewPlayer(string id) => new PlayerModel
-        {
-            Id = id,
-            Character = new CharacterModel
+        private ClientPlayerModel CreateNewPlayer(string id, bool isClient = false) =>
+            new ClientPlayerModel
             {
-                Name = "test",
-                X = 0,
-                Y = 0,
-                Z = 0
-            }
-        };
+                Id = id,
+                IsClientPlayer = isClient,
+                Character = new CharacterModel
+                {
+                    Name = "test",
+                    X = 0,
+                    Y = 0,
+                    Z = 0
+                }
+            };
     }
 }

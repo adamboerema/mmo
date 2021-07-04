@@ -1,6 +1,6 @@
 ﻿using System;
 using Common.Packets.ServerToClient.Player;
-using CommonClient.Player;
+using CommonClient.Engine.Player;
 
 namespace CommonClient.Network.Handler
 {

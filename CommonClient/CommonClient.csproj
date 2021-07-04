@@ -17,7 +17,6 @@
     <None Remove="Network\Handler\Router\" />
     <None Remove="Engine\" />
     <None Remove="Engine\Player\" />
-    <None Remove="Engine\Store\" />
     <None Remove="Engine\Movement\" />
     <None Remove="Components\" />
     <None Remove="Components\MovementManager\" />
@@ -32,7 +31,6 @@
     <Folder Include="Network\Handler\Router\" />
     <Folder Include="Engine\" />
     <Folder Include="Engine\Player\" />
-    <Folder Include="Engine\Store\" />
     <Folder Include="Engine\Movement\" />
     <Folder Include="Components\" />
     <Folder Include="Components\Movement\" />

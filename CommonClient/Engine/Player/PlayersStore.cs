@@ -5,16 +5,16 @@ using CommonClient.Engine.Player;
 
 namespace CommonClient.Store
 {
-    public class PlayerStore: IPlayerStore
+    public class PlayersStore: IPlayersStore
     {
-        private Dictionary<string, PlayerModel> _players = new Dictionary<string, PlayerModel>();
+        private Dictionary<string, ClientPlayerModel> _players = new Dictionary<string, ClientPlayerModel>();
 
-        public PlayerModel Get(string playerId)
+        public ClientPlayerModel Get(string playerId)
         {
             return _players.ContainsKey(playerId) ? _players[playerId] : null;
         }
 
-        public void Add(PlayerModel playerModel)
+        public void Add(ClientPlayerModel playerModel)
         {
             _players.Add(playerModel.Id, playerModel);
         }
@@ -24,7 +24,7 @@ namespace CommonClient.Store
             _players.Remove(playerId);
         }
 
-        public void Update(PlayerModel playerModel)
+        public void Update(ClientPlayerModel playerModel)
         {
             _players[playerModel.Id] = playerModel;
         }
@@ -41,5 +41,6 @@ namespace CommonClient.Store
                 Update(player);
             }
         }
+       
     }
 }

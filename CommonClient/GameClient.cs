@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using CommonClient.Configuration;
 using CommonClient.Network.Socket;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CommonClient
 {
