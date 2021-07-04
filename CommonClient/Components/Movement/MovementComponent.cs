@@ -23,7 +23,7 @@ namespace CommonClient.Components.Movement
             {
                 Console.WriteLine($"Changing to movement type: {currentMovementType}");
                 _movementType = currentMovementType;
-                _movementManager.DispatchMovementInput(currentMovementType);
+                _movementManager.UpdateMovementInput(currentMovementType);
             }
             base.Update(gameTime);
         }

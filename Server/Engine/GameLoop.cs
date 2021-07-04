@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using Server.Bus.Game;
 using Server.Configuration;
-using Server.Network.Connection;
+using Server.Engine.Player;
 
 namespace Server.Engine
 {
@@ -9,13 +10,19 @@ namespace Server.Engine
     {
         private bool IsRunning = false;
         private Stopwatch _gameLoopTimer = new Stopwatch();
+        private IGameLoopBus _gameLoopBus;
 
         private readonly IServerConfiguration _serverConfiguration;
+        private readonly IPlayerManager _playerManager;
 
         public GameLoop(
-            IServerConfiguration serverConfiguration)
+            IServerConfiguration serverConfiguration,
+            IGameLoopBus gameLoopBus,
+            IPlayerManager playerManager)
         {
             _serverConfiguration = serverConfiguration;
+            _gameLoopBus = gameLoopBus;
+            _playerManager = playerManager;
         }
 
         public void Start()
@@ -35,7 +42,7 @@ namespace Server.Engine
 
         public void Update(double elapsedTime)
         {
-
+            _gameLoopBus.Publish(elapsedTime);
         }
 
         public void Stop()

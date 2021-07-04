@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Numerics;
 using Common.Model;
 
 namespace CommonClient.Engine.Movement
 {
     public interface IMovementManager
     {
-        public void DispatchMovementInput(MovementType movementType);
+        public void UpdateMovementInput(MovementType movementType);
 
-        public void ReceiveUpdateMovement(string playerId, int x, int y, int z, MovementType movementType);
+        public void UpdatePlayerCoordinates(string playerId, Vector3 coordinates, MovementType movementType);
     }
 }

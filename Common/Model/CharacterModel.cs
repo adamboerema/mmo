@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 
 namespace Common.Model
 {
@@ -7,8 +8,6 @@ namespace Common.Model
         public string Name { get; set; }
 
         public MovementType MovementType { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Z { get; set; }
+        public Vector3 Coordinates { get; set; }
     }
 }

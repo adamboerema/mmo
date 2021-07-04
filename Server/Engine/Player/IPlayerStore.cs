@@ -3,9 +3,9 @@ using System.Numerics;
 using Common.Model;
 using Common.Store;
 
-namespace CommonClient.Engine.Player
+namespace Server.Engine.Player
 {
-    public interface IPlayersStore: IStore<string, ClientPlayerModel>
+    public interface IPlayerStore: IStore<string, PlayerModel>
     {
         public void UpdateMovement(string playerId, Vector3 coordinates, MovementType movementType);
     }

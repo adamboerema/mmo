@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Numerics;
 using Common.Model;
-using CommonClient.Store;
 
 namespace CommonClient.Engine.Player
 {
@@ -43,9 +43,7 @@ namespace CommonClient.Engine.Player
                 Character = new CharacterModel
                 {
                     Name = "test",
-                    X = 0,
-                    Y = 0,
-                    Z = 0
+                    Coordinates = new Vector3(0, 0, 0)
                 }
             };
     }

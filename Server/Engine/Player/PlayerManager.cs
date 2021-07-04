@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Numerics;
 using Common.Bus;
 using Common.Model;
 using Common.Packets.ServerToClient.Movement;
@@ -11,22 +11,24 @@ namespace Server.Engine.Player
 {
     public class PlayerManager : IPlayerManager, IEventBusListener<ConnectionEvent>
     {
-        private Dictionary<string, PlayerModel> _players = new Dictionary<string, PlayerModel>();
         private IConnectionBus _connectionBus;
         private IDispatchPacketBus _dispatchBus;
+        private IPlayerStore _playerStore;
 
         public PlayerManager(
             IConnectionBus connectionBus,
-            IDispatchPacketBus dispatchBus)
+            IDispatchPacketBus dispatchBus,
+            IPlayerStore playersStore)
         {
             _dispatchBus = dispatchBus;
             _connectionBus = connectionBus;
             _connectionBus.Subscribe(this);
+            _playerStore = playersStore;
         }
 
         public void AddPlayer(PlayerModel player)
         {
-            _players.Add(player.Id, player);
+            _playerStore.Add(player);
             DispatchConnectPlayer(player);
             DispatchAllStartMovement(player);
             DispatchPlayerStartMovement(player);
@@ -34,10 +36,10 @@ namespace Server.Engine.Player
 
         public void RemovePlayer(string connectionId)
         {
-            if(_players.ContainsKey(connectionId))
+            var player = _playerStore.Get(connectionId);
+            if(player != null)
             {
-                var player = _players[connectionId];
-                _players.Remove(connectionId);
+                _playerStore.Remove(connectionId);
                 DispatchDisconnectPlayer(player);
             }
         }
@@ -62,15 +64,16 @@ namespace Server.Engine.Player
         /// <param name="player">New Player</param>
         private void DispatchAllStartMovement(PlayerModel player)
         {
-            foreach(var playerValue in _players)
+            var allPlayers = _playerStore.GetAll();
+            foreach(var playerValue in allPlayers)
             {
                 var connectedPlayer = playerValue.Value;
                 var packet = new MovementOutputPacket
                 {
                     PlayerId = connectedPlayer.Id,
-                    X = connectedPlayer.Character.X,
-                    Y = connectedPlayer.Character.Y,
-                    Z = connectedPlayer.Character.Z,
+                    X = connectedPlayer.Character.Coordinates.X,
+                    Y = connectedPlayer.Character.Coordinates.Y,
+                    Z = connectedPlayer.Character.Coordinates.Z,
                     MovementType = connectedPlayer.Character.MovementType
                 };
                 _dispatchBus.Publish(player.Id, packet);
@@ -86,9 +89,9 @@ namespace Server.Engine.Player
             var packet = new MovementOutputPacket
             {
                 PlayerId = player.Id,
-                X = player.Character.X,
-                Y = player.Character.Y,
-                Z = player.Character.Z,
+                X = player.Character.Coordinates.X,
+                Y = player.Character.Coordinates.Y,
+                Z = player.Character.Coordinates.Z,
                 MovementType = player.Character.MovementType
             };
             _dispatchBus.Publish(packet);
@@ -133,9 +136,7 @@ namespace Server.Engine.Player
             {
                 Name = "Test",
                 MovementType = MovementType.STOPPED,
-                X = 0,
-                Y = 0,
-                Z = 0
+                Coordinates = new Vector3(0, 0, 0)
             }
         };
     }

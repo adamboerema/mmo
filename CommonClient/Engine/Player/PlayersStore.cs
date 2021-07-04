@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using Common.Model;
 using CommonClient.Engine.Player;
 
@@ -19,6 +20,11 @@ namespace CommonClient.Store
             _players.Add(playerModel.Id, playerModel);
         }
 
+        public ICollection<KeyValuePair<string, ClientPlayerModel>> GetAll()
+        {
+            return _players;
+        }
+
         public void Remove(string playerId)
         {
             _players.Remove(playerId);
@@ -29,18 +35,15 @@ namespace CommonClient.Store
             _players[playerModel.Id] = playerModel;
         }
 
-        public void UpdateMovement(string playerId, int x, int y, int z, MovementType movementType)
+        public void UpdateMovement(string playerId, Vector3 coordinates, MovementType movementType)
         {
             var player = Get(playerId);
             if(player != null)
             {
-                player.Character.X = x;
-                player.Character.Y = y;
-                player.Character.Z = z;
+                player.Character.Coordinates = coordinates;
                 player.Character.MovementType = movementType;
                 Update(player);
             }
         }
-       
     }
 }

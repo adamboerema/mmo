@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using Common.Model;
 using Common.Packets.ClientToServer.Movement;
 using CommonClient.Bus.Packet;
@@ -9,14 +10,15 @@ namespace CommonClient.Engine.Movement
     public class MovementManager: IMovementManager
     {
         private readonly IDispatchPacketBus _dispatchPacket;
-        private readonly IPlayersStore _playerStore;
+        private readonly IPlayersStore _playersStore;
 
-        public MovementManager(IDispatchPacketBus dispatchPacketBus)
+        public MovementManager(IDispatchPacketBus dispatchPacketBus, IPlayersStore playersStore)
         {
             _dispatchPacket = dispatchPacketBus;
+            _playersStore = playersStore;
         }
 
-        public void DispatchMovementInput(MovementType movementType)
+        public void UpdateMovementInput(MovementType movementType)
         {
             _dispatchPacket.Publish(new MovementInputPacket
             {
@@ -24,9 +26,9 @@ namespace CommonClient.Engine.Movement
             });
         }
 
-        public void ReceiveUpdateMovement(string playerId, int x, int y, int z, MovementType movementType)
+        public void UpdatePlayerCoordinates(string playerId, Vector3 coordinates, MovementType movementType)
         {
-            _playerStore.UpdateMovement(playerId, x, y, z, movementType);
+            _playersStore.UpdateMovement(playerId, coordinates, movementType);
         }
     }
 }

@@ -1,11 +1,15 @@
 using System;
+using Common.Bus;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Server.Auth;
 using Server.Bus.Connection;
+using Server.Bus.Game;
 using Server.Bus.Packet;
 using Server.Configuration;
+using Server.Engine;
+using Server.Engine.Movement;
 using Server.Engine.Player;
 using Server.Network.Connection;
 using Server.Network.Handler;
@@ -37,11 +41,13 @@ namespace Server
                     services.AddScoped<IServerConfiguration, ServerConfiguration>();
                     services.AddScoped<IServer, TcpSocketServer>();
                     services.AddScoped<GameServer>();
+                    services.AddScoped<IGameLoop, GameLoop>();
 
                     // Packet Buses
                     services.AddScoped<IReceiverPacketBus, ReceiverPacketBus>();
                     services.AddScoped<IDispatchPacketBus, DispatchPacketBus>();
                     services.AddScoped<IConnectionBus, ConnectionBus>();
+                    services.AddScoped<IGameLoopBus, GameLoopBus>();
 
                     // Connection routing
                     services.AddScoped<IConnectionManager, ConnectionManager>();
@@ -51,6 +57,10 @@ namespace Server
                     // Managers
                     services.AddScoped<IPlayerManager, PlayerManager>();
                     services.AddScoped<IAuthManager, AuthManager>();
+                    services.AddScoped<IMovementManager, MovementManager>();
+
+                    // Stores
+                    services.AddScoped<IPlayerStore, PlayerStore>();
 
                     // Receiver handlers
                     services.AddScoped<IHandlerRouter, HandlerRouter>();

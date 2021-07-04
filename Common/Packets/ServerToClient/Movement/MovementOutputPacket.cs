@@ -11,17 +11,17 @@ namespace Common.Packets.ServerToClient.Movement
 
         public string PlayerId { get; set; }
 
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Z { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
         public MovementType MovementType { get; set; }
 
         public IPacket ReadData(PacketReader packetReader)
         {
             PlayerId = packetReader.ReadString();
-            X = packetReader.ReadInteger();
-            Y = packetReader.ReadInteger();
-            Z = packetReader.ReadInteger();
+            X = packetReader.ReadFloat();
+            Y = packetReader.ReadFloat();
+            Z = packetReader.ReadFloat();
             MovementType = (MovementType)packetReader.ReadInteger();
             return this;
         }
@@ -30,9 +30,9 @@ namespace Common.Packets.ServerToClient.Movement
         {
             packetWriter.WriteInteger((int)Id);
             packetWriter.WriteString(PlayerId);
-            packetWriter.WriteInteger(X);
-            packetWriter.WriteInteger(Y);
-            packetWriter.WriteInteger(Z);
+            packetWriter.WriteFloat(X);
+            packetWriter.WriteFloat(Y);
+            packetWriter.WriteFloat(Z);
             packetWriter.WriteInteger((int)MovementType);
             return packetWriter.ToBytes();
         }

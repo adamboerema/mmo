@@ -23,6 +23,7 @@
     <Folder Include="Engine\Movement\" />
     <Folder Include="Login\" />
     <Folder Include="Network\Handler\Router\" />
+    <Folder Include="Bus\Game\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\Packet\" />
@@ -34,5 +35,6 @@
     <None Remove="Microsoft.Extensions.DependencyInjection" />
     <None Remove="Network\Handler\Module\" />
     <None Remove="Network\Handler\Factory\" />
+    <None Remove="Bus\Game\" />
   </ItemGroup>
 </Project>
