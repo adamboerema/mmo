@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
 using Common.Model;
@@ -7,11 +8,11 @@ namespace Server.Engine.Player
 {
     public class PlayerStore: IPlayerStore
     {
-        private Dictionary<string, PlayerModel> _players = new Dictionary<string, PlayerModel>();
+        private ConcurrentDictionary<string, PlayerModel> _players = new ConcurrentDictionary<string, PlayerModel>();
 
         public void Add(PlayerModel model)
         {
-            _players.Add(model.Id, model);
+            _players.TryAdd(model.Id, model);
         }
 
         public PlayerModel Get(string id)
@@ -26,7 +27,7 @@ namespace Server.Engine.Player
 
         public void Remove(string id)
         {
-            _players.Remove(id);
+            _players.TryRemove(id, out var playerModel);
         }
 
         public void Update(PlayerModel model)

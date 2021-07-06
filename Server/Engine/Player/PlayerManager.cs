@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using Common.Bus;
 using Common.Model;
 using Common.Packets.ServerToClient.Movement;
 using Common.Packets.ServerToClient.Player;
@@ -9,20 +8,16 @@ using Server.Bus.Packet;
 
 namespace Server.Engine.Player
 {
-    public class PlayerManager : IPlayerManager, IEventBusListener<ConnectionEvent>
+    public class PlayerManager : IPlayerManager
     {
-        private IConnectionBus _connectionBus;
         private IDispatchPacketBus _dispatchBus;
         private IPlayerStore _playerStore;
 
         public PlayerManager(
-            IConnectionBus connectionBus,
             IDispatchPacketBus dispatchBus,
             IPlayerStore playersStore)
         {
             _dispatchBus = dispatchBus;
-            _connectionBus = connectionBus;
-            _connectionBus.Subscribe(this);
             _playerStore = playersStore;
         }
 
@@ -44,18 +39,10 @@ namespace Server.Engine.Player
             }
         }
 
-        public void Handle(ConnectionEvent eventObject)
+        public void CreatePlayer(string connectionId)
         {
-            switch (eventObject.State)
-            {
-                case ConnectionState.CONNECT:
-                    var player = CreateNewPlayer(eventObject.Id);
-                    AddPlayer(player);
-                    break;
-                case ConnectionState.DISCONNECT:
-                    RemovePlayer(eventObject.Id);
-                    break;
-            }
+            var player = CreateNewPlayer(connectionId);
+            AddPlayer(player);
         }
 
         /// <summary>

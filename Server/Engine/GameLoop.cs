@@ -13,16 +13,13 @@ namespace Server.Engine
         private IGameLoopBus _gameLoopBus;
 
         private readonly IServerConfiguration _serverConfiguration;
-        private readonly IPlayerManager _playerManager;
 
         public GameLoop(
             IServerConfiguration serverConfiguration,
-            IGameLoopBus gameLoopBus,
-            IPlayerManager playerManager)
+            IGameLoopBus gameLoopBus)
         {
             _serverConfiguration = serverConfiguration;
             _gameLoopBus = gameLoopBus;
-            _playerManager = playerManager;
         }
 
         public void Start()

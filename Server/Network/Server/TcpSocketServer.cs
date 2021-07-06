@@ -7,6 +7,7 @@ using Common.Network.Shared;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
 using Server.Configuration;
+using Server.Engine.Player;
 using Server.Network.Connection;
 
 namespace Server.Network.Server
@@ -14,6 +15,7 @@ namespace Server.Network.Server
     public class TcpSocketServer: IServer, IEventBusListener<ConnectionEvent>
     {
         private readonly IConnectionManager _connectionManager;
+        private readonly IPlayerManager _playerManager;
         private readonly IReceiverPacketBus _receiverPacketBus;
         private readonly IConnectionBus _connectionBus;
         private readonly TcpListener _socket;
@@ -22,10 +24,12 @@ namespace Server.Network.Server
         public TcpSocketServer(
             IServerConfiguration configuration,
             IConnectionManager connectionManager,
+            IPlayerManager playerManager,
             IConnectionBus connectionBus,
             IReceiverPacketBus receiverPacketBus)
         {
             _connectionManager = connectionManager;
+            _playerManager = playerManager
             _connectionBus = connectionBus;
             _receiverPacketBus = receiverPacketBus;
             _socket = new TcpListener(IPAddress.Any, configuration.Port);
@@ -76,10 +80,12 @@ namespace Server.Network.Server
             {
                 case ConnectionState.CONNECT:
                     Console.WriteLine($"Client Connected: {connectionId}");
+                    _playerManager.CreatePlayer(connectionId);
                     break;
                 case ConnectionState.DISCONNECT:
                     Console.WriteLine($"Client Disconnected: {connectionId}");
                     _connectionManager.CloseConnection(connectionId);
+                    _playerManager.RemovePlayer(connectionId);
                     break;
             }
         }
