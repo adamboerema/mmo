@@ -26,9 +26,12 @@ namespace Server.Network.Connection
 
         public void CloseConnection(string connectionId)
         {
-            var connection = _connections[connectionId];
-            connection?.CloseConnection();
-            _connections.Remove(connectionId);
+            if (_connections.ContainsKey(connectionId))
+            {
+                var connection = _connections[connectionId];
+                connection?.CloseConnection();
+                _connections.Remove(connectionId);
+            }
         }
 
         public void CloseAllConnections()

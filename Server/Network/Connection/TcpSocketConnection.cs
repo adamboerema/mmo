@@ -21,7 +21,6 @@ namespace Server.Network.Connection
         private readonly IReceiverPacketBus _receiverPacketBus;
         private readonly IConnectionBus _connectionBus;
 
-
         private NetworkStream _stream;
         private byte[] _readBuffer;
 

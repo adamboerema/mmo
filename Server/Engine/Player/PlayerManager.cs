@@ -3,7 +3,6 @@ using System.Numerics;
 using Common.Model;
 using Common.Packets.ServerToClient.Movement;
 using Common.Packets.ServerToClient.Player;
-using Server.Bus.Connection;
 using Server.Bus.Packet;
 
 namespace Server.Engine.Player
@@ -39,7 +38,7 @@ namespace Server.Engine.Player
             }
         }
 
-        public void CreatePlayer(string connectionId)
+        public void InitializePlayer(string connectionId)
         {
             var player = CreateNewPlayer(connectionId);
             AddPlayer(player);

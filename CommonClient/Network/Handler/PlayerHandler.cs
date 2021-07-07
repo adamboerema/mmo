@@ -16,11 +16,13 @@ namespace CommonClient.Network.Handler
 
         public void Handle(PlayerConnectPacket packet)
         {
-            _playerManager.CreatePlayer(packet.PlayerId);
+            Console.WriteLine($"Packet {packet}: {packet.Id}");
+            _playerManager.InitializePlayer(packet.PlayerId);
         }
 
         public void Handle(PlayerDisconnectPacket packet)
         {
+            Console.WriteLine($"Packet {packet}: {packet.Id}");
             _playerManager.RemovePlayer(packet.PlayerId);
         }
     }

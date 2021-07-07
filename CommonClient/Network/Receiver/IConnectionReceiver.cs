@@ -6,5 +6,6 @@ namespace CommonClient.Network.Receiver
 {
     public interface IConnectionReceiver: IEventBusListener<PacketEvent>
     {
+        public void Close();
     }
 }

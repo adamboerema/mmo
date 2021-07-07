@@ -1,5 +1,4 @@
 ﻿using System;
-using Common.Bus;
 using CommonClient.Bus.Packet;
 using CommonClient.Network.Handler.Router;
 
@@ -22,5 +21,11 @@ namespace CommonClient.Network.Receiver
         {
             _handlerRouter.Route(eventObject.Packet);
         }
+
+        public void Close()
+        {
+            _receiverPacketBus.Unsubscribe(this);
+        }
+
     }
 }

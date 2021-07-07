@@ -5,8 +5,12 @@ using Common.Store;
 
 namespace CommonClient.Engine.Player
 {
-    public interface IPlayersStore: IStore<string, ClientPlayerModel>
+    public interface IPlayerStore: IStore<string, ClientPlayerModel>
     {
+        public void SetClientPlayer(string playerId);
+
+        public ClientPlayerModel GetClientPlayer();
+
         public void UpdateMovement(string playerId, Vector3 coordinates, MovementType movementType);
     }
 }

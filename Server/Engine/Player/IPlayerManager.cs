@@ -15,7 +15,7 @@ namespace Server.Engine.Player
         /// Creates a new player and adds it to the store
         /// </summary>
         /// <param name="connectionId"></param>
-        public void CreatePlayer(string connectionId);
+        public void InitializePlayer(string connectionId);
 
         /// <summary>
         /// Remove player from pool

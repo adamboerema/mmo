@@ -29,7 +29,7 @@ namespace Server.Network.Server
             IReceiverPacketBus receiverPacketBus)
         {
             _connectionManager = connectionManager;
-            _playerManager = playerManager
+            _playerManager = playerManager;
             _connectionBus = connectionBus;
             _receiverPacketBus = receiverPacketBus;
             _socket = new TcpListener(IPAddress.Any, configuration.Port);
@@ -64,8 +64,8 @@ namespace Server.Network.Server
                 _connectionBus,
                 _receiverPacketBus);
 
-            connection.Start();
             _connectionManager.AddConnection(connection);
+            connection.Start();
 
             // Allow for next client connection
             _socket.BeginAcceptTcpClient(
@@ -80,12 +80,12 @@ namespace Server.Network.Server
             {
                 case ConnectionState.CONNECT:
                     Console.WriteLine($"Client Connected: {connectionId}");
-                    _playerManager.CreatePlayer(connectionId);
+                    _playerManager.InitializePlayer(connectionId);
                     break;
                 case ConnectionState.DISCONNECT:
                     Console.WriteLine($"Client Disconnected: {connectionId}");
-                    _connectionManager.CloseConnection(connectionId);
                     _playerManager.RemovePlayer(connectionId);
+                    _connectionManager.CloseConnection(connectionId);
                     break;
             }
         }

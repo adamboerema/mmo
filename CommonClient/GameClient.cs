@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CommonClient.Configuration;
+using CommonClient.Network.Receiver;
 using CommonClient.Network.Socket;
 
 namespace CommonClient
@@ -8,6 +9,7 @@ namespace CommonClient
     public class GameClient: IGameClient
     {
         private readonly IGameConfiguration _configuration;
+        private readonly IConnectionReceiver _connectionReceiver;
         private readonly IClient _client;
 
         public GameClient(IGameConfiguration gameConfiguration)
@@ -15,6 +17,7 @@ namespace CommonClient
             GameServices.Initialize(gameConfiguration);
             _configuration = gameConfiguration;
             _client = GameServices.GetService<IClient>();
+            _connectionReceiver = GameServices.GetService<IConnectionReceiver>();
         }
 
         public void Start()
@@ -25,6 +28,7 @@ namespace CommonClient
         public void Close()
         {
             _client.Close();
+            _connectionReceiver.Close();
         }
 
         private async Task InitializeConnection()

@@ -5,6 +5,7 @@ using CommonClient.Engine.Movement;
 using CommonClient.Engine.Player;
 using CommonClient.Network.Handler;
 using CommonClient.Network.Handler.Router;
+using CommonClient.Network.Receiver;
 using CommonClient.Network.Socket;
 using CommonClient.Store;
 using Microsoft.Extensions.DependencyInjection;
@@ -72,8 +73,9 @@ namespace CommonClient
             serviceCollection.AddScoped<IClient, TcpSocketClient>();
             serviceCollection.AddScoped<IDispatchPacketBus, DispatchPacketBus>();
             serviceCollection.AddScoped<IReceiverPacketBus, ReceiverPacketBus>();
+            serviceCollection.AddScoped<IConnectionReceiver, ConnectionReceiver>();
 
-            serviceCollection.AddScoped<IPlayersStore, PlayersStore>();
+            serviceCollection.AddScoped<IPlayerStore, PlayersStore>();
             serviceCollection.AddScoped<IPlayerManager, PlayerManager>();
             serviceCollection.AddScoped<IMovementManager, MovementManager>();
         }

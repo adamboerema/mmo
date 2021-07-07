@@ -10,9 +10,9 @@ namespace CommonClient.Engine.Movement
     public class MovementManager: IMovementManager
     {
         private readonly IDispatchPacketBus _dispatchPacket;
-        private readonly IPlayersStore _playersStore;
+        private readonly IPlayerStore _playersStore;
 
-        public MovementManager(IDispatchPacketBus dispatchPacketBus, IPlayersStore playersStore)
+        public MovementManager(IDispatchPacketBus dispatchPacketBus, IPlayerStore playersStore)
         {
             _dispatchPacket = dispatchPacketBus;
             _playersStore = playersStore;

@@ -6,22 +6,21 @@ namespace CommonClient.Engine.Player
 {
     public class PlayerManager: IPlayerManager
     {
-        private IPlayersStore _playerStore;
+        private IPlayerStore _playerStore;
 
-        public PlayerManager(IPlayersStore playerStore)
+        public PlayerManager(IPlayerStore playerStore)
         {
             _playerStore = playerStore;
         }
 
-        public void CreateClientPlayer(string playerId)
+        public void InitializePlayer(string playerId)
         {
-            var player = CreateNewPlayer(playerId, true);
-            _playerStore.Add(player);
+            _playerStore.SetClientPlayer(playerId);
         }
 
-        public void CreatePlayer(string playerId)
+        public void AddPlayer(string playerId)
         {
-            var player = CreateNewPlayer(playerId);
+            var player = CreateNewPlayer(playerId, true);
             _playerStore.Add(player);
         }
 

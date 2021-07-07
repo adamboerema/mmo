@@ -6,9 +6,10 @@ using CommonClient.Engine.Player;
 
 namespace CommonClient.Store
 {
-    public class PlayersStore: IPlayersStore
+    public class PlayersStore: IPlayerStore
     {
         private Dictionary<string, ClientPlayerModel> _players = new Dictionary<string, ClientPlayerModel>();
+        private string _clientPlayerId;
 
         public ClientPlayerModel Get(string playerId)
         {
@@ -44,6 +45,16 @@ namespace CommonClient.Store
                 player.Character.MovementType = movementType;
                 Update(player);
             }
+        }
+
+        public void SetClientPlayer(string playerId)
+        {
+            _clientPlayerId = playerId;
+        }
+
+        public ClientPlayerModel GetClientPlayer()
+        {
+            return _players[_clientPlayerId];
         }
     }
 }
