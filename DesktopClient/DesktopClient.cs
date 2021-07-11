@@ -3,6 +3,7 @@ using Common.Packets.ClientToServer.Auth;
 using CommonClient;
 using CommonClient.Bus.Packet;
 using CommonClient.Components.Movement;
+using CommonClient.Components.Player;
 using DesktopClient.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,7 +29,9 @@ namespace DesktopClient
             IsMouseVisible = true;
 
             var movementComponent = new MovementComponent(this);
+            var playerDrawableComponent = new PlayerDrawableComponent(this);
             Components.Add(movementComponent);
+            Components.Add(playerDrawableComponent);
         }
 
         protected override void Initialize()

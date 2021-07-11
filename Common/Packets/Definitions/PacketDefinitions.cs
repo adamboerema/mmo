@@ -14,7 +14,6 @@ namespace Common.Definitions
         {
             { PacketType.LOGIN_REQUEST, new LoginRequestPacket() },
             { PacketType.LOGIN_RESPONSE, new LoginResponsePacket() },
-            { PacketType.PLAYER_INITIALIZED, new PlayerInitializePacket() },
             { PacketType.PLAYER_CONNECTED, new PlayerConnectPacket() },
             { PacketType.PLAYER_DISCONNECTED, new PlayerDisconnectPacket() },
             { PacketType.MOVEMENT_OUTPUT, new MovementOutputPacket() },

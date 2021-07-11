@@ -41,5 +41,12 @@ namespace Server.Network.Connection
         /// </summary>
         /// <param name="packet"></param>
         void SendAll(IPacket packet);
+
+        /// <summary>
+        /// Broadcast to all connections except a single
+        /// </summary>
+        /// <param name="exceptConnectionId">Exception connection id</param>
+        /// <param name="packet">Packet to send</param>
+        void SendAllExcept(string exceptConnectionId, IPacket packet);
     }
 }

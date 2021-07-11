@@ -18,7 +18,12 @@ namespace CommonClient.Store
 
         public void Add(ClientPlayerModel playerModel)
         {
-            _players.Add(playerModel.Id, playerModel);
+            // Store reference to client player id
+            if(playerModel.IsClient)
+            {
+                _clientPlayerId = playerModel.Id;
+            }
+            _players[playerModel.Id] = playerModel;
         }
 
         public ICollection<KeyValuePair<string, ClientPlayerModel>> GetAll()

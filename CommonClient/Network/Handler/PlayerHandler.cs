@@ -17,7 +17,11 @@ namespace CommonClient.Network.Handler
         public void Handle(PlayerConnectPacket packet)
         {
             Console.WriteLine($"Packet {packet}: {packet.Id}");
-            _playerManager.InitializePlayer(packet.PlayerId);
+            _playerManager.InitializePlayer(
+                packet.PlayerId,
+                packet.IsClient,
+                packet.Position,
+                packet.MovementType);
         }
 
         public void Handle(PlayerDisconnectPacket packet)

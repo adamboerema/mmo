@@ -57,5 +57,16 @@ namespace Server.Network.Connection
                 connection.Send(packet);
             }
         }
+
+        public void SendAllExcept(string exceptConnectionId, IPacket packet)
+        {
+            foreach(IConnection connection in _connections.Values)
+            {
+                if(connection.Id != exceptConnectionId)
+                {
+                    connection.Send(packet);
+                }
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace Server.Bus.Packet
     public enum DispatchType
     {
         ALL,
+        ALL_EXCEPT,
         CONNECTION
     }
 
@@ -18,6 +19,7 @@ namespace Server.Bus.Packet
 
         /// <summary>
         /// Id of the connection to a client
+        /// 
         /// </summary>
         public string ConnectionId { get; set; }
 

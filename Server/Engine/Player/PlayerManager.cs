@@ -20,12 +20,19 @@ namespace Server.Engine.Player
             _playerStore = playersStore;
         }
 
+        public void InitializePlayer(string connectionId)
+        {
+            var player = CreateNewPlayer(connectionId);
+            AddPlayer(player);
+        }
+
         public void AddPlayer(PlayerModel player)
         {
-            _playerStore.Add(player);
             DispatchConnectPlayer(player);
             DispatchAllStartMovement(player);
-            DispatchPlayerStartMovement(player);
+
+            // Store after dispatch to avoid duplicates
+            _playerStore.Add(player);
         }
 
         public void RemovePlayer(string connectionId)
@@ -36,12 +43,6 @@ namespace Server.Engine.Player
                 _playerStore.Remove(connectionId);
                 DispatchDisconnectPlayer(player);
             }
-        }
-
-        public void InitializePlayer(string connectionId)
-        {
-            var player = CreateNewPlayer(connectionId);
-            AddPlayer(player);
         }
 
         /// <summary>
@@ -57,9 +58,10 @@ namespace Server.Engine.Player
                 var packet = new MovementOutputPacket
                 {
                     PlayerId = connectedPlayer.Id,
-                    X = connectedPlayer.Character.Coordinates.X,
-                    Y = connectedPlayer.Character.Coordinates.Y,
-                    Z = connectedPlayer.Character.Coordinates.Z,
+                    Position = new Vector3(
+                        connectedPlayer.Character.Coordinates.X,
+                        connectedPlayer.Character.Coordinates.Y,
+                        connectedPlayer.Character.Coordinates.Z),
                     MovementType = connectedPlayer.Character.MovementType
                 };
                 _dispatchBus.Publish(player.Id, packet);
@@ -67,33 +69,14 @@ namespace Server.Engine.Player
         }
 
         /// <summary>
-        /// Dispatch player start movement to all players
-        /// </summary>
-        /// <param name="player">New Player</param>
-        private void DispatchPlayerStartMovement(PlayerModel player)
-        {
-            var packet = new MovementOutputPacket
-            {
-                PlayerId = player.Id,
-                X = player.Character.Coordinates.X,
-                Y = player.Character.Coordinates.Y,
-                Z = player.Character.Coordinates.Z,
-                MovementType = player.Character.MovementType
-            };
-            _dispatchBus.Publish(packet);
-        }
-
-        /// <summary>
         /// Dispatch to all that player connected.
         /// </summary>
-        /// <param name="player"></param>
+        /// <param name="player">Player model</param>
+        /// <param name="isClient">Same client that requested connection</param>
         private void DispatchConnectPlayer(PlayerModel player)
         {
-            var packet = new PlayerConnectPacket
-            {
-                PlayerId = player.Id
-            };
-            _dispatchBus.Publish(packet);
+            _dispatchBus.PublishExcept(player.Id, CreatePlayerConnectPacket(player, false));
+            _dispatchBus.Publish(player.Id, CreatePlayerConnectPacket(player, true));
         }
 
         /// <summary>
@@ -108,6 +91,25 @@ namespace Server.Engine.Player
             };
             _dispatchBus.Publish(packet);
         }
+
+        /// <summary>
+        /// Build the Player connect packet based on if it should be distributed
+        /// as the client connecting or the global packet
+        /// </summary>
+        /// <param name="player">Player model</param>
+        /// <param name="isClient">Is Player for the connecting client?</param>
+        /// <returns></returns>
+        private PlayerConnectPacket CreatePlayerConnectPacket(PlayerModel player, bool isClient) =>
+            new PlayerConnectPacket
+            {
+                PlayerId = player.Id,
+                IsClient = isClient,
+                Position = new Vector3(
+                        player.Character.Coordinates.X,
+                        player.Character.Coordinates.Y,
+                        player.Character.Coordinates.Z),
+                MovementType = player.Character.MovementType
+            };
 
         /// <summary>
         /// Get new player object

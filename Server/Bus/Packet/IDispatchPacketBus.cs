@@ -14,6 +14,13 @@ namespace Server.Bus.Packet
         public void Publish(string connectionId, IPacket packet);
 
         /// <summary>
+        /// Dispatch a packet except for the connection
+        /// </summary>
+        /// <param name="connectionId"></param>
+        /// <param name="packet"></param>
+        public void PublishExcept(string connectionId, IPacket packet);
+
+        /// <summary>
         /// Publish all packet
         /// </summary>
         /// <param name="packet"></param>

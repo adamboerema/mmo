@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using Common.Model;
 
@@ -13,14 +14,17 @@ namespace CommonClient.Engine.Player
             _playerStore = playerStore;
         }
 
-        public void InitializePlayer(string playerId)
+        public void InitializePlayer(
+            string playerId,
+            bool isClient,
+            Vector3 position,
+            MovementType movementType)
         {
-            _playerStore.SetClientPlayer(playerId);
-        }
-
-        public void AddPlayer(string playerId)
-        {
-            var player = CreateNewPlayer(playerId, true);
+            var player = CreateNewPlayer(
+                playerId,
+                isClient,
+                position,
+                movementType);
             _playerStore.Add(player);
         }
 
@@ -29,21 +33,33 @@ namespace CommonClient.Engine.Player
             _playerStore.Remove(playerId);
         }
 
+        public ICollection<KeyValuePair<string, ClientPlayerModel>> GetPlayers()
+        {
+            return _playerStore.GetAll();
+        }
+
         /// <summary>
         /// Create 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private ClientPlayerModel CreateNewPlayer(string id, bool isClient = false) =>
-            new ClientPlayerModel
+        private ClientPlayerModel CreateNewPlayer(
+            string playerId,
+            bool isClient,
+            Vector3 position,
+            MovementType movementType)
+        {
+            return new ClientPlayerModel
             {
-                Id = id,
-                IsClientPlayer = isClient,
+                Id = playerId,
+                IsClient = isClient,
                 Character = new CharacterModel
                 {
                     Name = "test",
-                    Coordinates = new Vector3(0, 0, 0)
+                    Coordinates = position,
+                    MovementType = movementType
                 }
             };
+        }
     }
 }

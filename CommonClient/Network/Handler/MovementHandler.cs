@@ -16,10 +16,10 @@ namespace CommonClient.Network.Handler
 
         public void Handle(MovementOutputPacket packet)
         {
-            Console.WriteLine($"Movement Packet: {packet.X} {packet.Y} {packet.Z} {packet.MovementType}");
+            Console.WriteLine($"Movement Packet: {packet.Position} {packet.MovementType}");
             _movementManager.UpdatePlayerCoordinates(
                 packet.PlayerId,
-                new Vector3(packet.X, packet.Y, packet.Z),
+                packet.Position,
                 packet.MovementType);
         }
     }

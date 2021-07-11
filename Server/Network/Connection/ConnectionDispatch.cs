@@ -27,10 +27,13 @@ namespace Server.Network.Connection
 
         public void Handle(DispatchPacketEvent eventObject)
         {
+            Console.WriteLine($"Dispatch Packet: {eventObject.Type} -- {eventObject.Packet}");
             switch(eventObject.Type)
             {
                 case DispatchType.ALL:
                     _connectionManager.SendAll(eventObject.Packet);
+                    break;
+                case DispatchType.ALL_EXCEPT:
                     break;
                 case DispatchType.CONNECTION:
                     _connectionManager.Send(eventObject.ConnectionId, eventObject.Packet);

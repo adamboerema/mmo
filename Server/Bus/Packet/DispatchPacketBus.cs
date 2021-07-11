@@ -29,6 +29,16 @@ namespace Server.Bus.Packet
             });
         }
 
+        public void PublishExcept(string connectionId, IPacket packet)
+        {
+            Publish(new DispatchPacketEvent
+            {
+                Type = DispatchType.ALL_EXCEPT,
+                ConnectionId = connectionId,
+                Packet = packet
+            });
+        }
+
         public void Publish(DispatchPacketEvent eventObject)
         {
             foreach (var listener in listeners)

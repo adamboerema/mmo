@@ -63,32 +63,32 @@ namespace Server.Engine.Movement
                 switch(character.MovementType)
                 {
                     case MovementType.UP:
-                        coordinates.Y += coordinates.Y * speed;
+                        coordinates.Y += speed;
                         break;
                     case MovementType.LEFT:
-                        coordinates.X -= coordinates.X * speed;
+                        coordinates.X -= speed;
                         break;
                     case MovementType.RIGHT:
-                        coordinates.X += coordinates.X * speed;
+                        coordinates.X += speed;
                         break;
                     case MovementType.DOWN:
-                        coordinates.Y -= coordinates.Y * speed;
+                        coordinates.Y -= speed;
                         break;
                     case MovementType.UP_LEFT:
-                        coordinates.X -= coordinates.X * speed;
-                        coordinates.Y += coordinates.Y * speed;
+                        coordinates.X -= speed;
+                        coordinates.Y += speed;
                         break;
                     case MovementType.UP_RIGHT:
-                        coordinates.X += coordinates.X * speed;
-                        coordinates.Y += coordinates.Y * speed;
+                        coordinates.X += speed;
+                        coordinates.Y += speed;
                         break;
                     case MovementType.DOWN_LEFT:
-                        coordinates.X -= coordinates.X * speed;
-                        coordinates.Y -= coordinates.Y * speed;
+                        coordinates.X -= speed;
+                        coordinates.Y -= speed;
                         break;
                     case MovementType.DOWN_RIGHT:
-                        coordinates.X += coordinates.X * speed;
-                        coordinates.Y -= coordinates.Y * speed;
+                        coordinates.X += speed;
+                        coordinates.Y -= speed;
                         break;
                     case MovementType.STOPPED:
                         break;
@@ -106,9 +106,10 @@ namespace Server.Engine.Movement
             _dispatchPacketBus.Publish(new MovementOutputPacket
             {
                 PlayerId = player.Id,
-                X = player.Character.Coordinates.X,
-                Y = player.Character.Coordinates.Y,
-                Z = player.Character.Coordinates.Z,
+                Position = new Vector3(
+                    player.Character.Coordinates.X,
+                    player.Character.Coordinates.Y,
+                    player.Character.Coordinates.Z),
                 MovementType = player.Character.MovementType
             });
         }
