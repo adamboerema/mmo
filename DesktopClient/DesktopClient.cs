@@ -25,6 +25,7 @@ namespace DesktopClient
 
             _graphics = new GraphicsDeviceManager(this);
             _dispatchPacketBus = GameServices.GetService<IDispatchPacketBus>();
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 

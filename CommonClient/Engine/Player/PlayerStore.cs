@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
 using Common.Model;
@@ -8,7 +9,9 @@ namespace CommonClient.Store
 {
     public class PlayersStore: IPlayerStore
     {
-        private Dictionary<string, ClientPlayerModel> _players = new Dictionary<string, ClientPlayerModel>();
+        private ConcurrentDictionary<string, ClientPlayerModel> _players
+            = new ConcurrentDictionary<string, ClientPlayerModel>();
+
         private string _clientPlayerId;
 
         public ClientPlayerModel Get(string playerId)
@@ -33,7 +36,7 @@ namespace CommonClient.Store
 
         public void Remove(string playerId)
         {
-            _players.Remove(playerId);
+            _players.TryRemove(playerId, out var playerModel);
         }
 
         public void Update(ClientPlayerModel playerModel)

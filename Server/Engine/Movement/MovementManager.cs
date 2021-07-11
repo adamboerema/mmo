@@ -93,6 +93,7 @@ namespace Server.Engine.Movement
                     case MovementType.STOPPED:
                         break;
                 }
+                playerValue.Value.Character.Coordinates = coordinates;
                 _playerStore.Update(playerValue.Value);
             }
         }

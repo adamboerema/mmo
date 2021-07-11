@@ -34,6 +34,7 @@ namespace Server.Network.Connection
                     _connectionManager.SendAll(eventObject.Packet);
                     break;
                 case DispatchType.ALL_EXCEPT:
+                    _connectionManager.SendAllExcept(eventObject.ConnectionId, eventObject.Packet);
                     break;
                 case DispatchType.CONNECTION:
                     _connectionManager.Send(eventObject.ConnectionId, eventObject.Packet);

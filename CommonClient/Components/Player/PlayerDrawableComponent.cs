@@ -25,13 +25,16 @@ namespace CommonClient.Components.Player
             var whiteSquare = new Color[100];
             for (var i = 0; i < 100; i++)
                 whiteSquare[i] = Color.White;
-                
+
+            var greenSquare = new Color[100];
+            for (var i = 0; i < 100; i++)
+                greenSquare[i] = Color.Green;
 
             _clientPlayerTexture = new Texture2D(GraphicsDevice, 10, 10);
             _clientPlayerTexture.SetData(whiteSquare);
 
-            _playerTexture = new Texture2D(GraphicsDevice, 1, 1);
-            _playerTexture.SetData(new Color[] { Color.Green });
+            _playerTexture = new Texture2D(GraphicsDevice, 10, 10);
+            _playerTexture.SetData(greenSquare);
             base.Initialize();
         }
 
@@ -56,8 +59,8 @@ namespace CommonClient.Components.Player
                 }
                 
             }
-            base.Draw(gameTime);
             _spriteBatch.End();
+            base.Draw(gameTime);
         }
 
         /// <summary>
@@ -88,7 +91,7 @@ namespace CommonClient.Components.Player
 
             _spriteBatch.Draw(
                 _clientPlayerTexture,
-                new Vector2(centerHeight, centerWidth),
+                new Vector2(centerWidth, centerHeight),
                 Color.White);
         }
     }

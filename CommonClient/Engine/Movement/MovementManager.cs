@@ -10,12 +10,12 @@ namespace CommonClient.Engine.Movement
     public class MovementManager: IMovementManager
     {
         private readonly IDispatchPacketBus _dispatchPacket;
-        private readonly IPlayerStore _playersStore;
+        private readonly IPlayerStore _playerStore;
 
         public MovementManager(IDispatchPacketBus dispatchPacketBus, IPlayerStore playersStore)
         {
             _dispatchPacket = dispatchPacketBus;
-            _playersStore = playersStore;
+            _playerStore = playersStore;
         }
 
         public void UpdateMovementInput(MovementType movementType)
@@ -28,7 +28,7 @@ namespace CommonClient.Engine.Movement
 
         public void UpdatePlayerCoordinates(string playerId, Vector3 coordinates, MovementType movementType)
         {
-            _playersStore.UpdateMovement(playerId, coordinates, movementType);
+            _playerStore.UpdateMovement(playerId, coordinates, movementType);
         }
     }
 }

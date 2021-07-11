@@ -29,7 +29,7 @@ namespace Server.Engine.Player
         public void AddPlayer(PlayerModel player)
         {
             DispatchConnectPlayer(player);
-            DispatchAllStartMovement(player);
+            InitializeOtherPlayers(player);
 
             // Store after dispatch to avoid duplicates
             _playerStore.Add(player);
@@ -48,22 +48,14 @@ namespace Server.Engine.Player
         /// <summary>
         /// Dispatch all current player location to new player
         /// </summary>
-        /// <param name="player">New Player</param>
-        private void DispatchAllStartMovement(PlayerModel player)
+        /// <param name="player">New Player to notify</param>
+        private void InitializeOtherPlayers(PlayerModel player)
         {
             var allPlayers = _playerStore.GetAll();
             foreach(var playerValue in allPlayers)
             {
-                var connectedPlayer = playerValue.Value;
-                var packet = new MovementOutputPacket
-                {
-                    PlayerId = connectedPlayer.Id,
-                    Position = new Vector3(
-                        connectedPlayer.Character.Coordinates.X,
-                        connectedPlayer.Character.Coordinates.Y,
-                        connectedPlayer.Character.Coordinates.Z),
-                    MovementType = connectedPlayer.Character.MovementType
-                };
+                var otherPlayer = playerValue.Value;
+                var packet = CreatePlayerConnectPacket(otherPlayer, false);
                 _dispatchBus.Publish(player.Id, packet);
             }
         }
