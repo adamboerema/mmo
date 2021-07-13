@@ -60,7 +60,7 @@ namespace Server
                     services.AddScoped<IMovementManager, MovementManager>();
 
                     // Stores
-                    services.AddScoped<IPlayerStore, PlayerStore>();
+                    services.AddSingleton<IPlayerStore, PlayerStore>();
 
                     // Receiver handlers
                     services.AddScoped<IHandlerRouter, HandlerRouter>();

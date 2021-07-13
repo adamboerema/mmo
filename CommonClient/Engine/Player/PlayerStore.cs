@@ -7,7 +7,7 @@ using CommonClient.Engine.Player;
 
 namespace CommonClient.Store
 {
-    public class PlayersStore: IPlayerStore
+    public class PlayerStore: IPlayerStore
     {
         private ConcurrentDictionary<string, ClientPlayerModel> _players
             = new ConcurrentDictionary<string, ClientPlayerModel>();
@@ -19,14 +19,14 @@ namespace CommonClient.Store
             return _players.ContainsKey(playerId) ? _players[playerId] : null;
         }
 
-        public void Add(ClientPlayerModel playerModel)
+        public void Add(ClientPlayerModel model)
         {
             // Store reference to client player id
-            if(playerModel.IsClient)
+            if(model.IsClient)
             {
-                _clientPlayerId = playerModel.Id;
+                _clientPlayerId = model.Id;
             }
-            _players[playerModel.Id] = playerModel;
+            _players[model.Id] = model;
         }
 
         public ICollection<KeyValuePair<string, ClientPlayerModel>> GetAll()
@@ -34,14 +34,14 @@ namespace CommonClient.Store
             return _players;
         }
 
-        public void Remove(string playerId)
+        public void Remove(string id)
         {
-            _players.TryRemove(playerId, out var playerModel);
+            _players.TryRemove(id, out _);
         }
 
-        public void Update(ClientPlayerModel playerModel)
+        public void Update(ClientPlayerModel model)
         {
-            _players[playerModel.Id] = playerModel;
+            _players.TryUpdate(model.Id, model, _players[model.Id]);
         }
 
         public void UpdateMovement(string playerId, Vector3 coordinates, MovementType movementType)

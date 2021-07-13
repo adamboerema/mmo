@@ -64,8 +64,17 @@ namespace Server.Network.Connection
 
         public void Send(IPacket packet)
         {
-            var writeBytes = _packetManager.Write(packet);
-            _stream.Write(writeBytes, 0, writeBytes.Length);
+            Console.WriteLine($"WRITE {packet} TO {Id}");
+            try
+            {
+                var writeBytes = _packetManager.Write(packet);
+                _stream.Write(writeBytes, 0, writeBytes.Length);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Packet failed to send: {ex.Message}");
+            }
+            
         }
 
         /// <summary>
@@ -75,24 +84,32 @@ namespace Server.Network.Connection
         private void HandleDataReceive(IAsyncResult result)
         {
             var offset = 0;
-            var readByteCount = _stream.EndRead(result);
-            if (readByteCount <= 0)
+            try
             {
-                CloseConnection();
-                return;
+                var readByteCount = _stream.EndRead(result);
+                if (readByteCount <= 0)
+                {
+                    CloseConnection();
+                    return;
+                }
+
+                var packetBytes = new byte[readByteCount];
+                Buffer.BlockCopy(
+                    _readBuffer,
+                    offset,
+                    packetBytes,
+                    offset,
+                    readByteCount);
+
+                var packet = _packetManager.Receive(packetBytes);
+                _receiverPacketBus.Publish(Id, packet);
+                BeginStreamRead(result.AsyncState as StateBuffer);
             }
-
-            var packetBytes = new byte[readByteCount];
-            Buffer.BlockCopy(
-                _readBuffer,
-                offset,
-                packetBytes,
-                offset,
-                readByteCount);
-
-            var packet = _packetManager.Receive(packetBytes);
-            _receiverPacketBus.Publish(Id, packet);
-            BeginStreamRead(result.AsyncState as StateBuffer);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Connection Stream failed: {ex.Message}");
+                CloseConnection();
+            }
         }
 
         /// <summary>

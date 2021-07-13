@@ -13,10 +13,12 @@ namespace CommonClient.Network.Socket
 {
     public class TcpSocketClient : IClient, IEventBusListener<PacketEvent>
     {
+        private object _lock = new object();
         private readonly TcpClient _socket;
         private readonly IPacketManager _packetManager;
         private readonly IReceiverPacketBus _receiverPacketBus;
         private readonly IDispatchPacketBus _dispatchPacketBus;
+        
 
         private NetworkStream _stream;
         private StateBuffer _stateBuffer = new StateBuffer(Constants.BUFFER_STATE_SIZE);
@@ -88,6 +90,8 @@ namespace CommonClient.Network.Socket
         {
             var offset = 0;
             var readByteCount = _stream.EndRead(result);
+
+            Console.WriteLine($"Byte Count: {readByteCount}");
             if(readByteCount <= 0)
             {
                 Close();
@@ -102,8 +106,8 @@ namespace CommonClient.Network.Socket
                 offset,
                 readByteCount);
             var packet = _packetManager.Receive(packetBytes);
-            _receiverPacketBus.Publish(packet);
             Console.WriteLine($"Packet {packet.Id}: {packet}");
+            _receiverPacketBus.Publish(packet);
             BeginStreamRead(result.AsyncState as StateBuffer);
         }
 
@@ -121,6 +125,5 @@ namespace CommonClient.Network.Socket
                 new AsyncCallback(HandleDataReceive),
                 state);
         }
-
     }
 }

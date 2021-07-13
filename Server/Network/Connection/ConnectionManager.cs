@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using Common.Definitions;
 using Server.Configuration;
 
@@ -7,16 +7,19 @@ namespace Server.Network.Connection
 {
     public class ConnectionManager: IConnectionManager
     {
-        private Dictionary<string, IConnection> _connections;
+        private ConcurrentDictionary<string, IConnection> _connections;
+        private const int CONCURRENT_LEVEL = 2;
 
         public ConnectionManager(IServerConfiguration configuration)
         {
-            _connections = new Dictionary<string, IConnection>(configuration.MaxConnections);
+            _connections = new ConcurrentDictionary<string, IConnection>(
+                CONCURRENT_LEVEL,
+                configuration.MaxConnections);
         }
 
         public void AddConnection(IConnection connection)
         {
-            _connections.Add(connection.Id, connection);
+            _connections[connection.Id] = connection;
         }
 
         public IConnection GetConnection(string connectionId)
@@ -30,7 +33,7 @@ namespace Server.Network.Connection
             {
                 var connection = _connections[connectionId];
                 connection?.CloseConnection();
-                _connections.Remove(connectionId);
+                _connections.TryRemove(connectionId, out IConnection _);
             }
         }
 

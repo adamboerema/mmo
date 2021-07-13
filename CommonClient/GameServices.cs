@@ -75,7 +75,7 @@ namespace CommonClient
             serviceCollection.AddScoped<IReceiverPacketBus, ReceiverPacketBus>();
             serviceCollection.AddScoped<IConnectionReceiver, ConnectionReceiver>();
 
-            serviceCollection.AddScoped<IPlayerStore, PlayersStore>();
+            serviceCollection.AddScoped<IPlayerStore, PlayerStore>();
             serviceCollection.AddScoped<IPlayerManager, PlayerManager>();
             serviceCollection.AddScoped<IMovementManager, MovementManager>();
         }

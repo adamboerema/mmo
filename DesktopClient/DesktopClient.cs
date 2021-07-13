@@ -64,12 +64,12 @@ namespace DesktopClient
 
         private void Login(string username, string password)
         {
-            var packet = new LoginRequestPacket
-            {
-                Username = username,
-                Password = password
-            };
-            _dispatchPacketBus.Publish(packet);
+            //var packet = new LoginRequestPacket
+            //{
+            //    Username = username,
+            //    Password = password
+            //};
+            //_dispatchPacketBus.Publish(packet);
         }
     }
 }

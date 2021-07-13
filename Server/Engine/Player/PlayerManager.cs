@@ -29,7 +29,7 @@ namespace Server.Engine.Player
         public void AddPlayer(PlayerModel player)
         {
             DispatchConnectPlayer(player);
-            InitializeOtherPlayers(player);
+            DispatchOtherPlayers(player);
 
             // Store after dispatch to avoid duplicates
             _playerStore.Add(player);
@@ -37,24 +37,21 @@ namespace Server.Engine.Player
 
         public void RemovePlayer(string connectionId)
         {
-            var player = _playerStore.Get(connectionId);
-            if(player != null)
-            {
-                _playerStore.Remove(connectionId);
-                DispatchDisconnectPlayer(player);
-            }
+            _playerStore.Remove(connectionId);
+            DispatchDisconnectPlayer(connectionId);
         }
 
         /// <summary>
         /// Dispatch all current player location to new player
         /// </summary>
         /// <param name="player">New Player to notify</param>
-        private void InitializeOtherPlayers(PlayerModel player)
+        private void DispatchOtherPlayers(PlayerModel player)
         {
             var allPlayers = _playerStore.GetAll();
             foreach(var playerValue in allPlayers)
             {
                 var otherPlayer = playerValue.Value;
+                Console.WriteLine($"OTHER PLAYER: {otherPlayer.Id}");
                 var packet = CreatePlayerConnectPacket(otherPlayer, false);
                 _dispatchBus.Publish(player.Id, packet);
             }
@@ -74,12 +71,12 @@ namespace Server.Engine.Player
         /// <summary>
         /// Dispatch to player disconnected
         /// </summary>
-        /// <param name="player"></param>
-        private void DispatchDisconnectPlayer(PlayerModel player)
+        /// <param name="connectionId"></param>
+        private void DispatchDisconnectPlayer(string connectionId)
         {
             var packet = new PlayerDisconnectPacket
             {
-                PlayerId = player.Id
+                PlayerId = connectionId
             };
             _dispatchBus.Publish(packet);
         }
