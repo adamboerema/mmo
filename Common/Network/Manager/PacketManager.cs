@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Common.Definitions;
 using Common.Network.IO;
 using Common.Network.Parser;
@@ -7,6 +8,7 @@ namespace Common.Network.Manager
 {
     public class PacketManager: IPacketManager
     {
+        private const int HEADER_BYTE_LENGTH = 4;
         private IPacketParser packetParser;
 
         public PacketManager(IPacketDefinitions packetDefinitions)
@@ -14,24 +16,42 @@ namespace Common.Network.Manager
             packetParser = new PacketParser(packetDefinitions);
         }
 
-        public IPacket Receive(byte[] bytes)
+        public IEnumerable<IPacket> Receive(byte[] bytes)
         {
-            var reader = new PacketReader(bytes);
-            var packetId = reader.ReadInteger();
-            var packet = packetParser.ReadPacket((PacketType)packetId, reader);
-            reader.Dispose();
+            var packets = new List<IPacket>();
+            using (var reader = new PacketReader(bytes))
+            {
+                var pointerPosition = 0;
+                while(pointerPosition < bytes.Length)
+                {
+                    var packetLength = reader.ReadInteger();
+                    var packetBytes = reader.ReadBytes(packetLength);
+                    var packet = packetParser.ReadPacket(packetBytes);
+                    pointerPosition += packetBytes.Length + HEADER_BYTE_LENGTH;
 
-            Console.WriteLine($"Packet Id: {packetId} -- Packet {packet}");
+                    packets.Add(packet);
 
-            return packet;
+                    Console.WriteLine($"Byte Length: { bytes.Length }" +
+                        $" Pointer Position: { pointerPosition }" +
+                        $" Packet Id: {packet.Id}" +
+                        $" Packet {packet}");
+                }
+            }
+            return packets;
         }
 
         public byte[] Write(IPacket packet)
         {
-            var writer = new PacketWriter();
-            var output = packetParser.WritePacket(packet, writer);
-            writer.Dispose();
-            return output;
+            using(var outputWriter = new PacketWriter())
+            using(var packetWriter = new PacketWriter())
+            {
+                var packetBytes = packetParser.WritePacket(packet, packetWriter);
+
+                // Write packet header
+                outputWriter.WriteInteger(packetBytes.Length);
+                outputWriter.WriteBytes(packetBytes);
+                return outputWriter.ToBytes();
+            }
         }
     }
 }

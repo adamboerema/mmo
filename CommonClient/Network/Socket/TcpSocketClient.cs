@@ -69,6 +69,7 @@ namespace CommonClient.Network.Socket
         /// </summary>
         public void Close()
         {
+            _stream.Dispose();
             _socket.Close();
             _dispatchPacketBus.Unsubscribe(this);
         }
@@ -89,25 +90,36 @@ namespace CommonClient.Network.Socket
         private void HandleDataReceive(IAsyncResult result)
         {
             var offset = 0;
-            var readByteCount = _stream.EndRead(result);
-
-            Console.WriteLine($"Byte Count: {readByteCount}");
-            if(readByteCount <= 0)
+            try
             {
-                Close();
-                return;
+                var readByteCount = _stream.EndRead(result);
+
+                Console.WriteLine($"Byte Count: {readByteCount}");
+                if (readByteCount <= 0)
+                {
+                    Close();
+                    return;
+                }
+
+                var packetBytes = new byte[readByteCount];
+                Buffer.BlockCopy(
+                    _readBuffer,
+                    offset,
+                    packetBytes,
+                    offset,
+                    readByteCount);
+
+                foreach(var packet in _packetManager.Receive(packetBytes))
+                {
+                    Console.WriteLine($"Packet {packet.Id}: {packet}");
+                    _receiverPacketBus.Publish(packet);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Connection Stream failed: {ex.Message}");
             }
 
-            var packetBytes = new byte[readByteCount];
-            Buffer.BlockCopy(
-                _readBuffer,
-                offset,
-                packetBytes,
-                offset,
-                readByteCount);
-            var packet = _packetManager.Receive(packetBytes);
-            Console.WriteLine($"Packet {packet.Id}: {packet}");
-            _receiverPacketBus.Publish(packet);
             BeginStreamRead(result.AsyncState as StateBuffer);
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Common.Definitions;
 using Common.Network.Definitions;
 
@@ -6,8 +7,8 @@ namespace Common.Network.Manager
 {
     public interface IPacketManager
     {
-        byte[] Write(IPacket packet);
+        public byte[] Write(IPacket packet);
 
-        IPacket Receive(byte[] bytes);
+        public IEnumerable<IPacket> Receive(byte[] bytes);
     }
 }

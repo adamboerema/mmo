@@ -28,6 +28,15 @@ namespace Common.Network.Parser
             }
         }
 
+        public IPacket ReadPacket(byte[] bytes)
+        {
+            using(var reader = new PacketReader(bytes))
+            {
+                var packetId = reader.ReadInteger();
+                return ReadPacket((PacketType)packetId, reader);
+            }
+        }
+
         public byte[] WritePacket(IPacket packet, PacketWriter packetWriter)
         {
             try

@@ -58,15 +58,17 @@ namespace Server.Network.Connection
             {
                 _isClosing = true;
                 _connectionBus.Publish(Id, ConnectionState.DISCONNECT);
+                _stream.Dispose();
                 _socket.Close();
             }
         }
 
         public void Send(IPacket packet)
         {
-            Console.WriteLine($"WRITE {packet} TO {Id}");
             try
             {
+                Console.WriteLine($"WRITE {packet} TO {Id}");
+
                 var writeBytes = _packetManager.Write(packet);
                 _stream.Write(writeBytes, 0, writeBytes.Length);
             }
@@ -101,15 +103,18 @@ namespace Server.Network.Connection
                     offset,
                     readByteCount);
 
-                var packet = _packetManager.Receive(packetBytes);
-                _receiverPacketBus.Publish(Id, packet);
-                BeginStreamRead(result.AsyncState as StateBuffer);
+                foreach(var packet in _packetManager.Receive(packetBytes))
+                {
+                    _receiverPacketBus.Publish(Id, packet);
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Connection Stream failed: {ex.Message}");
                 CloseConnection();
             }
+
+            BeginStreamRead(result.AsyncState as StateBuffer);
         }
 
         /// <summary>

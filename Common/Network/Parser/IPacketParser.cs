@@ -8,6 +8,8 @@ namespace Common.Network.Parser
     {
         public IPacket ReadPacket(PacketType packetId, PacketReader packetReader);
 
+        public IPacket ReadPacket(byte[] bytes);
+
         public byte[] WritePacket(IPacket packet, PacketWriter packetWriter);
     }
 }
