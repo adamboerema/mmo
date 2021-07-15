@@ -33,6 +33,7 @@ namespace Server.Engine
                 if (elapsedTime > _serverConfiguration.ServerTickRate)
                 {
                     Update(elapsedTime);
+                    _gameLoopTimer.Restart();
                 }
             }
         }

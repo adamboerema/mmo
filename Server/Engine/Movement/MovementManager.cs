@@ -14,6 +14,7 @@ namespace Server.Engine.Movement
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IPlayerStore _playerStore;
         private readonly IGameLoopBus _gameLoopBus;
+        private float LastUpdateTime = 0;
 
         public MovementManager(
             IDispatchPacketBus dispatchPacketBus,
@@ -55,7 +56,7 @@ namespace Server.Engine.Movement
         private void UpdateCoordinatesOfPlayers(double elapsedTime)
         {
             var players = _playerStore.GetAll();
-            var speed = 0.1f * (float) elapsedTime;
+            var speed = 0.01f * (float) elapsedTime;
             foreach (var playerValue in players)
             {
                 var character = playerValue.Value.Character;
@@ -63,7 +64,7 @@ namespace Server.Engine.Movement
                 switch(character.MovementType)
                 {
                     case MovementType.UP:
-                        coordinates.Y += speed;
+                        coordinates.Y -= speed;
                         break;
                     case MovementType.LEFT:
                         coordinates.X -= speed;
@@ -72,23 +73,23 @@ namespace Server.Engine.Movement
                         coordinates.X += speed;
                         break;
                     case MovementType.DOWN:
-                        coordinates.Y -= speed;
+                        coordinates.Y += speed;
                         break;
                     case MovementType.UP_LEFT:
                         coordinates.X -= speed;
-                        coordinates.Y += speed;
+                        coordinates.Y -= speed;
                         break;
                     case MovementType.UP_RIGHT:
                         coordinates.X += speed;
-                        coordinates.Y += speed;
+                        coordinates.Y -= speed;
                         break;
                     case MovementType.DOWN_LEFT:
                         coordinates.X -= speed;
-                        coordinates.Y -= speed;
+                        coordinates.Y += speed;
                         break;
                     case MovementType.DOWN_RIGHT:
                         coordinates.X += speed;
-                        coordinates.Y -= speed;
+                        coordinates.Y += speed;
                         break;
                     case MovementType.STOPPED:
                         break;
