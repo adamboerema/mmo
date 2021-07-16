@@ -22,6 +22,7 @@
     <Folder Include="Packets\ClientToServer\Movement\" />
     <Folder Include="Packets\Definitions\" />
     <Folder Include="Store\" />
+    <Folder Include="Utility\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\" />
@@ -41,5 +42,6 @@
     <None Remove="Packets\ClientToServer\Movement\" />
     <None Remove="Packets\Definitions\" />
     <None Remove="Store\" />
+    <None Remove="Utility\" />
   </ItemGroup>
 </Project>

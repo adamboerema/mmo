@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Numerics;
 using Common.Model;
-using Common.Packets.ServerToClient.Movement;
 using Common.Packets.ServerToClient.Player;
 using Server.Bus.Packet;
 

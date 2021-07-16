@@ -14,7 +14,6 @@ namespace Server.Engine.Movement
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IPlayerStore _playerStore;
         private readonly IGameLoopBus _gameLoopBus;
-        private float LastUpdateTime = 0;
 
         public MovementManager(
             IDispatchPacketBus dispatchPacketBus,
