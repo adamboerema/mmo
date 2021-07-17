@@ -29,7 +29,7 @@ namespace CommonClient.Store
             _players[model.Id] = model;
         }
 
-        public ICollection<KeyValuePair<string, ClientPlayerModel>> GetAll()
+        public IDictionary<string, ClientPlayerModel> GetAll()
         {
             return _players;
         }
@@ -55,14 +55,24 @@ namespace CommonClient.Store
             }
         }
 
-        public void SetClientPlayer(string playerId)
-        {
-            _clientPlayerId = playerId;
-        }
-
         public ClientPlayerModel GetClientPlayer()
         {
             return _players[_clientPlayerId];
+        }
+
+        public void UpdateClientCoordinates(Vector3 coordinates, MovementType movementType)
+        {
+            UpdateMovement(_clientPlayerId, coordinates, movementType);
+        }
+
+        public void UpdateClientMovementType(MovementType movementType)
+        {
+            var clientPlayer = GetClientPlayer();
+            if(clientPlayer != null)
+            {
+                clientPlayer.Character.MovementType = movementType;
+                Update(clientPlayer);
+            }
         }
     }
 }

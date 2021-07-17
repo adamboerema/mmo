@@ -13,9 +13,13 @@ namespace CommonClient.Engine.Player
             Vector3 position,
             MovementType movementType);
 
+        public void UpdatePlayer(ClientPlayerModel playerModel);
+
         public void RemovePlayer(string playerId);
 
-        public ICollection<KeyValuePair<string, ClientPlayerModel>> GetPlayers();
+        public IEnumerable<ClientPlayerModel> GetPlayers();
+
+        public ClientPlayerModel GetClientPlayer();
 
     }
 }

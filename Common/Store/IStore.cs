@@ -7,7 +7,7 @@ namespace Common.Store
     {
         public V Get(K id);
 
-        public ICollection<KeyValuePair<K, V>> GetAll();
+        public IDictionary<K, V> GetAll();
 
         public void Add(V model);
 

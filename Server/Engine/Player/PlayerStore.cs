@@ -22,7 +22,7 @@ namespace Server.Engine.Player
             return _players.ContainsKey(id) ? _players[id] : null;
         }
 
-        public ICollection<KeyValuePair<string, PlayerModel>> GetAll()
+        public IDictionary<string, PlayerModel> GetAll()
         {
             return _players;
         }

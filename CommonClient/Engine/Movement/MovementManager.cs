@@ -18,8 +18,10 @@ namespace CommonClient.Engine.Movement
             _playerStore = playersStore;
         }
 
-        public void UpdateMovementInput(MovementType movementType)
+        public void UpdateClientMovementInput(MovementType movementType)
         {
+            _playerStore.UpdateClientMovementType(movementType);
+
             _dispatchPacket.Publish(new MovementInputPacket
             {
                 Direction = movementType

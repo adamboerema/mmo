@@ -6,12 +6,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CommonClient.Components.Movement
 {
-    public class MovementComponent: GameComponent
+    public class InputComponent: GameComponent
     {
         private readonly IMovementManager _movementManager;
         private MovementType _movementType = MovementType.STOPPED;
 
-        public MovementComponent(Game game): base(game)
+
+        public InputComponent(Game game): base(game)
         {
             _movementManager = GameServices.GetService<IMovementManager>();
         }
@@ -23,10 +24,11 @@ namespace CommonClient.Components.Movement
             {
                 Console.WriteLine($"Changing to movement type: {currentMovementType}");
                 _movementType = currentMovementType;
-                _movementManager.UpdateMovementInput(currentMovementType);
+                _movementManager.UpdateClientMovementInput(currentMovementType);
             }
             base.Update(gameTime);
         }
+
 
         /// <summary>
         /// Get the type of movement based on keys

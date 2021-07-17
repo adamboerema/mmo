@@ -1,11 +1,17 @@
 ﻿using System;
 using Common.Model;
 
-namespace Common.Utility
+namespace Common.Extensions
 {
-    public static class MovementUtility
+    public static class PlayerExtensions
     {
-        public static PlayerModel MovePlayerCoordinates(float speed, PlayerModel model)
+        /// <summary>
+        /// Move Coordinates of player
+        /// </summary>
+        /// <param name="model">Player model</param>
+        /// <param name="speed">Speed of the movement</param>
+        /// <returns></returns>
+        public static PlayerModel MoveCoordinates(this PlayerModel model, float speed)
         {
             var character = model.Character;
             var coordinates = character.Coordinates;
@@ -42,6 +48,7 @@ namespace Common.Utility
                 case MovementType.STOPPED:
                     break;
             }
+            model.Character.Coordinates = coordinates;
             return model;
         }
     }

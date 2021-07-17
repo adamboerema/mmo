@@ -28,14 +28,24 @@ namespace CommonClient.Engine.Player
             _playerStore.Add(player);
         }
 
+        public void UpdatePlayer(ClientPlayerModel model)
+        {
+            _playerStore.Update(model);
+        }
+
         public void RemovePlayer(string playerId)
         {
             _playerStore.Remove(playerId);
         }
 
-        public ICollection<KeyValuePair<string, ClientPlayerModel>> GetPlayers()
+        public IEnumerable<ClientPlayerModel> GetPlayers()
         {
-            return _playerStore.GetAll();
+            return _playerStore.GetAll().Values;
+        }
+
+        public ClientPlayerModel GetClientPlayerModel()
+        {
+            return _playerStore.GetClientPlayer();
         }
 
         /// <summary>

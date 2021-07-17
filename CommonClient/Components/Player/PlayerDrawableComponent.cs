@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Extensions;
 using CommonClient.Engine.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -40,6 +41,13 @@ namespace CommonClient.Components.Player
 
         public override void Update(GameTime gameTime)
         {
+            var players = _playerManager.GetPlayers();
+            var speed = (float) gameTime.ElapsedGameTime.TotalMilliseconds * 0.5f;
+            foreach(var player in players)
+            {
+                player.MoveCoordinates(speed);
+                _playerManager.UpdatePlayer(player);
+            }
             base.Update(gameTime);
         }
 
@@ -47,7 +55,7 @@ namespace CommonClient.Components.Player
         {
             _spriteBatch.Begin();
             var players = _playerManager.GetPlayers();
-            foreach(var (_, player) in players)
+            foreach(var player in players)
             {
                 if(player.IsClient)
                 {

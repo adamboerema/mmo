@@ -29,9 +29,11 @@ namespace DesktopClient
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            var movementComponent = new MovementComponent(this);
+            var movementComponent = new InputComponent(this);
             var playerDrawableComponent = new PlayerDrawableComponent(this);
+            var worldDrawableComponent = new WorldDrawableComponent(this);
             Components.Add(movementComponent);
+            Components.Add(worldDrawableComponent);
             Components.Add(playerDrawableComponent);
         }
 
