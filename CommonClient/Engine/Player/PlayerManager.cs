@@ -43,7 +43,7 @@ namespace CommonClient.Engine.Player
             return _playerStore.GetAll().Values;
         }
 
-        public ClientPlayerModel GetClientPlayerModel()
+        public ClientPlayerModel GetClientPlayer()
         {
             return _playerStore.GetClientPlayer();
         }

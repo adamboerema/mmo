@@ -21,6 +21,8 @@
     <None Remove="Components\" />
     <None Remove="Components\MovementManager\" />
     <None Remove="Components\Player\" />
+    <None Remove="Components\Camera\" />
+    <None Remove="Extentions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bus\" />
@@ -36,6 +38,7 @@
     <Folder Include="Components\" />
     <Folder Include="Components\Movement\" />
     <Folder Include="Components\Player\" />
+    <Folder Include="Components\Camera\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />

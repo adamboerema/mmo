@@ -55,7 +55,7 @@ namespace Server.Engine.Movement
         private void UpdateCoordinatesOfPlayers(double elapsedTime)
         {
             var players = _playerStore.GetAll();
-            var speed = 0.5f * (float) elapsedTime;
+            var speed = 0.01f * (float) elapsedTime;
             foreach (var playerValue in players)
             {
                 var character = playerValue.Value.Character;

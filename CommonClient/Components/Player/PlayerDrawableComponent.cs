@@ -8,6 +8,8 @@ namespace CommonClient.Components.Player
 {
     public class PlayerDrawableComponent : DrawableGameComponent
     {
+        private const float PLAYER_SPEED = 0.01f;
+
         private SpriteBatch _spriteBatch;
         private IPlayerManager _playerManager;
         private ClientPlayerModel _playerModel;
@@ -42,7 +44,7 @@ namespace CommonClient.Components.Player
         public override void Update(GameTime gameTime)
         {
             var players = _playerManager.GetPlayers();
-            var speed = (float) gameTime.ElapsedGameTime.TotalMilliseconds * 0.5f;
+            var speed = (float) gameTime.ElapsedGameTime.TotalMilliseconds * PLAYER_SPEED;
             foreach(var player in players)
             {
                 player.MoveCoordinates(speed);
@@ -57,17 +59,14 @@ namespace CommonClient.Components.Player
             var players = _playerManager.GetPlayers();
             foreach(var player in players)
             {
-                if(player.IsClient)
-                {
-                    DrawClientPlayer();
-                }
-                else
-                {
-                    DrawPlayer(player);
-                }
-                
+                var texture = player.IsClient
+                    ? _clientPlayerTexture
+                    : _playerTexture;
+
+                DrawPlayer(player, texture);
             }
             _spriteBatch.End();
+
             base.Draw(gameTime);
         }
 
@@ -75,32 +74,31 @@ namespace CommonClient.Components.Player
         /// 
         /// </summary>
         /// <param name="playerModel"></param>
-        private void DrawPlayer(ClientPlayerModel playerModel)
+        private void DrawPlayer(ClientPlayerModel playerModel, Texture2D texture)
         {
             var coordinates = playerModel.Character.Coordinates;
-            var viewPort = GraphicsDevice.Viewport;
-            if (viewPort.Bounds.Contains(coordinates.X, coordinates.Y)) {
-                _spriteBatch.Draw(
-                    _playerTexture,
-                    new Vector2(coordinates.X, coordinates.Y),
-                    Color.Green);
-            }
+
+            _spriteBatch.Draw(
+                texture,
+                new Vector2(coordinates.X, coordinates.Y),
+                Color.White);
+            //}
         }
 
         /// <summary>
         /// Draw Client Player in the center
         /// </summary>
-        private void DrawClientPlayer()
-        {
-            var viewportWidth = GraphicsDevice.Viewport.Width;
-            var viewportHeight = GraphicsDevice.Viewport.Height;
-            var centerWidth = (viewportWidth / 2) - (_clientPlayerTexture.Width / 2);
-            var centerHeight = (viewportHeight / 2) - (_clientPlayerTexture.Height / 2);
+        //private void DrawClientPlayer()
+        //{
+        //    var viewportWidth = GraphicsDevice.Viewport.Width;
+        //    var viewportHeight = GraphicsDevice.Viewport.Height;
+        //    var centerWidth = (viewportWidth / 2) - (_clientPlayerTexture.Width / 2);
+        //    var centerHeight = (viewportHeight / 2) - (_clientPlayerTexture.Height / 2);
 
-            _spriteBatch.Draw(
-                _clientPlayerTexture,
-                new Vector2(centerWidth, centerHeight),
-                Color.White);
-        }
+        //    _spriteBatch.Draw(
+        //        _clientPlayerTexture,
+        //        new Vector2(centerWidth, centerHeight),
+        //        Color.White);
+        //}
     }
 }

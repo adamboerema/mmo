@@ -57,7 +57,7 @@ namespace CommonClient.Store
 
         public ClientPlayerModel GetClientPlayer()
         {
-            return _players[_clientPlayerId];
+            return Get(_clientPlayerId);
         }
 
         public void UpdateClientCoordinates(Vector3 coordinates, MovementType movementType)
