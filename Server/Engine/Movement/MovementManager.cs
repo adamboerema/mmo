@@ -11,6 +11,7 @@ namespace Server.Engine.Movement
 {
     public class MovementManager: IMovementManager, IEventBusListener<GameLoopEvent>
     {
+        private const float PLAYER_SPEED = 0.05f;
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IPlayerStore _playerStore;
         private readonly IGameLoopBus _gameLoopBus;
@@ -55,7 +56,7 @@ namespace Server.Engine.Movement
         private void UpdateCoordinatesOfPlayers(double elapsedTime)
         {
             var players = _playerStore.GetAll();
-            var speed = 0.01f * (float) elapsedTime;
+            var speed = PLAYER_SPEED * (float) elapsedTime;
             foreach (var playerValue in players)
             {
                 var character = playerValue.Value.Character;

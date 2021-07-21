@@ -8,7 +8,7 @@ namespace CommonClient.Components.Player
 {
     public class PlayerDrawableComponent : DrawableGameComponent
     {
-        private const float PLAYER_SPEED = 0.01f;
+        private const float PLAYER_SPEED = 0.05f;
 
         private SpriteBatch _spriteBatch;
         private IPlayerManager _playerManager;

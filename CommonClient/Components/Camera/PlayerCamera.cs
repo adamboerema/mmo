@@ -7,11 +7,11 @@ namespace CommonClient.Components.Camera
     public class PlayerCamera: ICamera
     {
         private Matrix _position = Matrix.Identity;
-        private Rectangle _cameraArea;
+        private IViewport _viewPort;
 
-        public PlayerCamera(Rectangle cameraArea)
+        public PlayerCamera(IViewport viewPort)
         {
-            _cameraArea = cameraArea;
+            _viewPort = viewPort;
         }
 
         public Matrix GetPosition()
@@ -19,13 +19,13 @@ namespace CommonClient.Components.Camera
             return _position;
         }
 
-        public void UpdatePosition(Vector2 position)
+        public void UpdatePosition(Vector3 position)
         {
-            var centerPosition = GetCenterFromPosition(position, _cameraArea);
+            var centerPosition = _viewPort.GetCenterPosition(position);
             _position = MoveTarget(centerPosition);
         }
 
-        private Matrix MoveTarget(Vector2 target)
+        private Matrix MoveTarget(Vector3 target)
         {
             var scale = new Vector3(1, 1, 0);
             var translation = new Vector3(-target.X, -target.Y, 0);
@@ -34,13 +34,6 @@ namespace CommonClient.Components.Camera
             var matrixTranslation = Matrix.CreateTranslation(translation);
 
             return matrixScale * matrixTranslation;
-        }
-
-        private Vector2 GetCenterFromPosition(Vector2 position, Rectangle cameraArea)
-        {
-            var centerX = position.X -= cameraArea.Width / 2;
-            var centerY = position.Y -= cameraArea.Height / 2;
-            return new Vector2(centerX, centerY);
         }
     }
 }

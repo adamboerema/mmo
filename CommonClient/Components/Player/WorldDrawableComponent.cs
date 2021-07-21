@@ -35,7 +35,9 @@ namespace CommonClient.Components.Player
             var drawableArea = new Rectangle(0, 0,
                 GraphicsDevice.Viewport.Width,
                 GraphicsDevice.Viewport.Height);
-            _camera = new PlayerCamera(drawableArea);
+
+            var maxArea = new Rectangle(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+            _camera = new PlayerCamera(new PlayerViewport(drawableArea, maxArea));
             base.Initialize();
         }
 
@@ -50,7 +52,7 @@ namespace CommonClient.Components.Player
             if(player != null)
             {
                 var position = player.Character.Coordinates;
-                _camera.UpdatePosition(new Vector2(position.X, position.Y));
+                _camera.UpdatePosition(new Vector3(position.X, position.Y, 0));
             }
 
             base.Update(gameTime);

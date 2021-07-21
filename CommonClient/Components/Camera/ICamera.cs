@@ -8,6 +8,6 @@ namespace CommonClient.Components.Camera
     {
         public Matrix GetPosition();
 
-        public void UpdatePosition(Vector2 position);
+        public void UpdatePosition(Vector3 position);
     }
 }
