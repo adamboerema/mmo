@@ -33,8 +33,8 @@ namespace CommonClient.Components.Player
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             var drawableArea = new Rectangle(0, 0,
-                GraphicsDevice.Viewport.Width,
-                GraphicsDevice.Viewport.Height);
+                TARGET_HEIGHT,
+                TARGET_WIDTH);
 
             var maxArea = new Rectangle(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
             _camera = new PlayerCamera(new PlayerViewport(drawableArea, maxArea));
@@ -74,18 +74,18 @@ namespace CommonClient.Components.Player
 
         public void DrawArea(SpriteBatch spriteBatch, Texture2D tile)
         {
-            var startX = Math.Clamp(_targetArea.X, 0, int.MaxValue);
-            var endX = startX + TARGET_WIDTH;
-            var startY = _targetArea.Y;
-            var endY = _targetArea.Y + TARGET_HEIGHT;
+            //var startX = Math.Clamp(_targetArea.X, 0, int.MaxValue);
+            //var endX = startX + TARGET_WIDTH;
+            //var startY = _targetArea.Y;
+            //var endY = _targetArea.Y + TARGET_HEIGHT;
 
             var scaleHeight = 200;
             var scaleWidth = 200;
             var textureScale = 0.5f;
 
-            for (int i = startX; i < endX; i++)
+            for (int i = 0; i < 100; i++)
             {
-                for (int j = startY; j < endY; j++)
+                for (int j = 0; j < 100; j++)
                 {
                     var xCoordinate = i * scaleWidth;
                     var yCoordinate = j * scaleHeight;

@@ -5,6 +5,7 @@ namespace CommonClient.Components.Camera
 {
     public interface IViewport
     {
+
         /// <summary>
         /// Get center position in view port
         /// </summary>

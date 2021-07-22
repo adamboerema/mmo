@@ -9,10 +9,11 @@ namespace CommonClient.Components.Player
     public class PlayerDrawableComponent : DrawableGameComponent
     {
         private const float PLAYER_SPEED = 0.05f;
+        private const int WORLD_HEIGHT = 10000;
+        private const int WORLD_WIDTH = 10000;
 
         private SpriteBatch _spriteBatch;
         private IPlayerManager _playerManager;
-        private ClientPlayerModel _playerModel;
         private Texture2D _clientPlayerTexture;
         private Texture2D _playerTexture;
 
@@ -47,7 +48,7 @@ namespace CommonClient.Components.Player
             var speed = (float) gameTime.ElapsedGameTime.TotalMilliseconds * PLAYER_SPEED;
             foreach(var player in players)
             {
-                player.MoveCoordinates(speed);
+                player.MoveCoordinates(speed, WORLD_WIDTH, WORLD_HEIGHT);
                 _playerManager.UpdatePlayer(player);
             }
             base.Update(gameTime);
@@ -82,23 +83,6 @@ namespace CommonClient.Components.Player
                 texture,
                 new Vector2(coordinates.X, coordinates.Y),
                 Color.White);
-            //}
         }
-
-        /// <summary>
-        /// Draw Client Player in the center
-        /// </summary>
-        //private void DrawClientPlayer()
-        //{
-        //    var viewportWidth = GraphicsDevice.Viewport.Width;
-        //    var viewportHeight = GraphicsDevice.Viewport.Height;
-        //    var centerWidth = (viewportWidth / 2) - (_clientPlayerTexture.Width / 2);
-        //    var centerHeight = (viewportHeight / 2) - (_clientPlayerTexture.Height / 2);
-
-        //    _spriteBatch.Draw(
-        //        _clientPlayerTexture,
-        //        new Vector2(centerWidth, centerHeight),
-        //        Color.White);
-        //}
     }
 }

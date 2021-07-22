@@ -2,6 +2,7 @@
 using System.Numerics;
 using Common.Bus;
 using Common.Model;
+using Common.Extensions;
 using Common.Packets.ServerToClient.Movement;
 using Server.Bus.Game;
 using Server.Bus.Packet;
@@ -12,6 +13,9 @@ namespace Server.Engine.Movement
     public class MovementManager: IMovementManager, IEventBusListener<GameLoopEvent>
     {
         private const float PLAYER_SPEED = 0.05f;
+        private const int MAX_WIDTH = 10000;
+        private const int MAX_HEIGHT = 10000;
+
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IPlayerStore _playerStore;
         private readonly IGameLoopBus _gameLoopBus;
@@ -59,42 +63,7 @@ namespace Server.Engine.Movement
             var speed = PLAYER_SPEED * (float) elapsedTime;
             foreach (var playerValue in players)
             {
-                var character = playerValue.Value.Character;
-                var coordinates = character.Coordinates;
-                switch(character.MovementType)
-                {
-                    case MovementType.UP:
-                        coordinates.Y -= speed;
-                        break;
-                    case MovementType.LEFT:
-                        coordinates.X -= speed;
-                        break;
-                    case MovementType.RIGHT:
-                        coordinates.X += speed;
-                        break;
-                    case MovementType.DOWN:
-                        coordinates.Y += speed;
-                        break;
-                    case MovementType.UP_LEFT:
-                        coordinates.X -= speed;
-                        coordinates.Y -= speed;
-                        break;
-                    case MovementType.UP_RIGHT:
-                        coordinates.X += speed;
-                        coordinates.Y -= speed;
-                        break;
-                    case MovementType.DOWN_LEFT:
-                        coordinates.X -= speed;
-                        coordinates.Y += speed;
-                        break;
-                    case MovementType.DOWN_RIGHT:
-                        coordinates.X += speed;
-                        coordinates.Y += speed;
-                        break;
-                    case MovementType.STOPPED:
-                        break;
-                }
-                playerValue.Value.Character.Coordinates = coordinates;
+                playerValue.Value.MoveCoordinates(speed, MAX_WIDTH, MAX_HEIGHT);
                 _playerStore.Update(playerValue.Value);
             }
         }
