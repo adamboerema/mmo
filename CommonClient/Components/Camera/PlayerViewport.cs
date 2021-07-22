@@ -18,13 +18,18 @@ namespace CommonClient.Components.Camera
 
         public Vector3 GetCenterPosition(Vector3 position)
         {
+            position.X -= _view.Width / 2;
+            position.Y -= _view.Height / 2;
             var clampedPosition = ClampToMaxArea(position);
-            var centerX = clampedPosition.X -= _view.Width / 2;
-            var centerY = clampedPosition.Y -= _view.Height / 2;
-            return new Vector3(centerX, centerY, 0);
+            return new Vector3(clampedPosition.X, clampedPosition.Y, 0);
         }
 
-        public Vector3 ClampToMaxArea(Vector3 position)
+        /// <summary>
+        /// Clamp the coordinates to the bounds of the world
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        private Vector3 ClampToMaxArea(Vector3 position)
         {
             var clampedX = Math.Clamp(position.X, _maxView.Left, _maxView.Right);
             var clampedY = Math.Clamp(position.Y, _maxView.Top, _maxView.Bottom);

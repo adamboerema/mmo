@@ -8,14 +8,10 @@ namespace CommonClient.Components.Player
 {
     public class WorldDrawableComponent: DrawableGameComponent
     {
-        private const int TARGET_HEIGHT = 500;
-        private const int TARGET_WIDTH = 500;
         private const int WORLD_HEIGHT = 10000;
         private const int WORLD_WIDTH = 10000;
 
         private readonly int[,] _worldArea;
-        private readonly Rectangle _displayArea;
-        private Rectangle _targetArea;
 
         private readonly IPlayerManager _playerManager;
 
@@ -32,12 +28,12 @@ namespace CommonClient.Components.Player
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            var drawableArea = new Rectangle(0, 0,
-                TARGET_HEIGHT,
-                TARGET_WIDTH);
+            var viewArea = new Rectangle(0, 0,
+                GraphicsDevice.Viewport.Width,
+                GraphicsDevice.Viewport.Height);
 
             var maxArea = new Rectangle(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-            _camera = new PlayerCamera(new PlayerViewport(drawableArea, maxArea));
+            _camera = new PlayerCamera(new PlayerViewport(viewArea, maxArea));
             base.Initialize();
         }
 
@@ -74,11 +70,6 @@ namespace CommonClient.Components.Player
 
         public void DrawArea(SpriteBatch spriteBatch, Texture2D tile)
         {
-            //var startX = Math.Clamp(_targetArea.X, 0, int.MaxValue);
-            //var endX = startX + TARGET_WIDTH;
-            //var startY = _targetArea.Y;
-            //var endY = _targetArea.Y + TARGET_HEIGHT;
-
             var scaleHeight = 200;
             var scaleWidth = 200;
             var textureScale = 0.5f;
