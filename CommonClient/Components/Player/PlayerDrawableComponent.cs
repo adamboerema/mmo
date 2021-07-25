@@ -1,5 +1,6 @@
 ﻿using System;
 using Common.Extensions;
+using CommonClient.Components.Camera;
 using CommonClient.Engine.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,17 +9,19 @@ namespace CommonClient.Components.Player
 {
     public class PlayerDrawableComponent : DrawableGameComponent
     {
-        private const float PLAYER_SPEED = 0.05f;
-        private const int WORLD_HEIGHT = 10000;
-        private const int WORLD_WIDTH = 10000;
+        private const float PLAYER_SPEED = 0.2f;
+        private const int WORLD_HEIGHT = 1000;
+        private const int WORLD_WIDTH = 1000;
 
         private SpriteBatch _spriteBatch;
         private IPlayerManager _playerManager;
         private Texture2D _clientPlayerTexture;
         private Texture2D _playerTexture;
+        private ICamera _camera;
 
-        public PlayerDrawableComponent(Game game): base(game)
+        public PlayerDrawableComponent(Game game, ICamera camera): base(game)
         {
+            _camera = camera;
             _playerManager = GameServices.GetService<IPlayerManager>();
         }
 
@@ -48,6 +51,16 @@ namespace CommonClient.Components.Player
             var speed = (float) gameTime.ElapsedGameTime.TotalMilliseconds * PLAYER_SPEED;
             foreach(var player in players)
             {
+                if(player.IsClient)
+                {
+                    var position = player.Character.Coordinates;
+                    var vectorPosition = new Vector3(position.X, position.Y, 0);
+                    _camera.UpdatePosition(
+                        vectorPosition,
+                        _clientPlayerTexture.Width,
+                        _clientPlayerTexture.Height);
+                }
+
                 player.MoveCoordinates(speed, WORLD_WIDTH, WORLD_HEIGHT);
                 _playerManager.UpdatePlayer(player);
             }
@@ -56,7 +69,7 @@ namespace CommonClient.Components.Player
 
         public override void Draw(GameTime gameTime)
         {
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(transformMatrix: _camera.GetPosition());
             var players = _playerManager.GetPlayers();
             foreach(var player in players)
             {
@@ -72,7 +85,7 @@ namespace CommonClient.Components.Player
         }
 
         /// <summary>
-        /// 
+        /// Draw player with coordinates
         /// </summary>
         /// <param name="playerModel"></param>
         private void DrawPlayer(ClientPlayerModel playerModel, Texture2D texture)

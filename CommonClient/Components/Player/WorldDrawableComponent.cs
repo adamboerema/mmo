@@ -8,8 +8,8 @@ namespace CommonClient.Components.Player
 {
     public class WorldDrawableComponent: DrawableGameComponent
     {
-        private const int WORLD_HEIGHT = 10000;
-        private const int WORLD_WIDTH = 10000;
+        private const int WORLD_HEIGHT = 1000;
+        private const int WORLD_WIDTH = 1000;
 
         private readonly int[,] _worldArea;
 
@@ -19,8 +19,9 @@ namespace CommonClient.Components.Player
         private SpriteBatch _spriteBatch;
         private Texture2D _background;
 
-        public WorldDrawableComponent(Game game): base (game)
+        public WorldDrawableComponent(Game game, ICamera camera): base (game)
         {
+            _camera = camera;
             _playerManager = GameServices.GetService<IPlayerManager>();
         }
 
@@ -28,12 +29,6 @@ namespace CommonClient.Components.Player
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            var viewArea = new Rectangle(0, 0,
-                GraphicsDevice.Viewport.Width,
-                GraphicsDevice.Viewport.Height);
-
-            var maxArea = new Rectangle(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-            _camera = new PlayerCamera(new PlayerViewport(viewArea, maxArea));
             base.Initialize();
         }
 
@@ -42,25 +37,9 @@ namespace CommonClient.Components.Player
             _background = Game.Content.Load<Texture2D>("bg_rock_dirt");
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            var player = _playerManager.GetClientPlayer();
-            if(player != null)
-            {
-                var position = player.Character.Coordinates;
-                _camera.UpdatePosition(new Vector3(position.X, position.Y, 0));
-            }
-
-            base.Update(gameTime);
-        }
-
         public override void Draw(GameTime gameTime)
         {
-            _spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                BlendState.AlphaBlend,
-                null, null, null, null,
-                _camera.GetPosition());
+            _spriteBatch.Begin(transformMatrix: _camera.GetPosition());
 
             DrawArea(_spriteBatch, _background);
 

@@ -2,6 +2,7 @@
 using Common.Packets.ClientToServer.Auth;
 using CommonClient;
 using CommonClient.Bus.Packet;
+using CommonClient.Components.Camera;
 using CommonClient.Components.Movement;
 using CommonClient.Components.Player;
 using DesktopClient.Configuration;
@@ -13,10 +14,14 @@ namespace DesktopClient
 {
     public class DesktopClient : Game
     {
+        private const int WORLD_HEIGHT = 1000;
+        private const int WORLD_WIDTH = 1000;
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private IGameClient _gameClient;
         private IDispatchPacketBus _dispatchPacketBus;
+        private ICamera _camera;
 
         public DesktopClient()
         {
@@ -28,19 +33,26 @@ namespace DesktopClient
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
-            var movementComponent = new InputComponent(this);
-            var playerDrawableComponent = new PlayerDrawableComponent(this);
-            var worldDrawableComponent = new WorldDrawableComponent(this);
-            Components.Add(movementComponent);
-            Components.Add(worldDrawableComponent);
-            Components.Add(playerDrawableComponent);
         }
 
         protected override void Initialize()
         {
+            var viewArea = GraphicsDevice.Viewport.Bounds;
+            var maxArea = new Rectangle(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+            _camera = new PlayerCamera(new PlayerViewport
+            {
+                View = viewArea,
+                WorldView = maxArea
+            });
+
+            var movementComponent = new InputComponent(this);
+            var playerDrawableComponent = new PlayerDrawableComponent(this, _camera);
+            var worldDrawableComponent = new WorldDrawableComponent(this, _camera);
+            Components.Add(movementComponent);
+            Components.Add(worldDrawableComponent);
+            Components.Add(playerDrawableComponent);
+
             _gameClient.Start();
-            Login("test", "test12345");
             base.Initialize();
         }
 
@@ -62,16 +74,6 @@ namespace DesktopClient
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
-        }
-
-        private void Login(string username, string password)
-        {
-            //var packet = new LoginRequestPacket
-            //{
-            //    Username = username,
-            //    Password = password
-            //};
-            //_dispatchPacketBus.Publish(packet);
         }
     }
 }

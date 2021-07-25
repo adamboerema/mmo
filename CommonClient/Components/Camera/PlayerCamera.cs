@@ -18,21 +18,33 @@ namespace CommonClient.Components.Camera
             return _position;
         }
 
-        public void UpdatePosition(Vector3 position)
+        public void UpdatePosition(Vector3 target, int width, int height)
         {
-            var centerPosition = _viewPort.GetCenterPosition(position);
-            _position = MoveTarget(centerPosition);
+            _position = MoveTarget(target, width, height);
         }
 
-        private Matrix MoveTarget(Vector3 target)
+        /// <summary>
+        /// Moves target in designated 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        private Matrix MoveTarget(Vector3 target, int width, int height)
         {
             var scale = new Vector3(1, 1, 0);
             var translation = new Vector3(-target.X, -target.Y, 0);
+            var viewport = new Vector3(_viewPort.View.Center.X, _viewPort.View.Center.Y, 0);
 
             var matrixScale = Matrix.CreateScale(scale);
             var matrixTranslation = Matrix.CreateTranslation(translation);
+            var viewportTranslation = Matrix.CreateTranslation(viewport);
 
-            return matrixScale * matrixTranslation;
+            var position = matrixScale *
+                viewportTranslation *
+                matrixTranslation;
+
+            //return position;
+            var clampedPosition = _viewPort.GetClampedViewport(position.Translation, width, height);
+            return Matrix.CreateTranslation(clampedPosition);
         }
     }
 }

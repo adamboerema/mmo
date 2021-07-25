@@ -5,12 +5,22 @@ namespace CommonClient.Components.Camera
 {
     public interface IViewport
     {
+        /// <summary>
+        /// Current viewport view
+        /// </summary>
+        public Rectangle View { get; set; }
 
         /// <summary>
-        /// Get center position in view port
+        /// Maximum range of viewport
         /// </summary>
-        /// <param name="position"></param>
+        public Rectangle WorldView { get; set; }
+
+        /// <summary>
+        /// Clamps the position to the world coordinates
+        /// </summary>
+        /// <param name="area">Area to clamp</param>
         /// <returns></returns>
-        public Vector3 GetCenterPosition(Vector3 position);
+        public Vector3 GetClampedViewport(Vector3 position, int offsetWidth, int offsetHeight);
+
     }
 }

@@ -12,9 +12,9 @@ namespace Server.Engine.Movement
 {
     public class MovementManager: IMovementManager, IEventBusListener<GameLoopEvent>
     {
-        private const float PLAYER_SPEED = 0.05f;
-        private const int MAX_WIDTH = 10000;
-        private const int MAX_HEIGHT = 10000;
+        private const float PLAYER_SPEED = 0.2f;
+        private const int MAX_WIDTH = 1000;
+        private const int MAX_HEIGHT = 1000;
 
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IPlayerStore _playerStore;

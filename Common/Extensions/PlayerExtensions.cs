@@ -64,6 +64,8 @@ namespace Common.Extensions
         /// Clamps the coordinates to the world
         /// </summary>
         /// <param name="coordinates"></param>
+        /// <param name="maxWidth"></param>
+        /// <param name="maxHeight"></param>
         /// <returns></returns>
         private static Vector3 ClampCoordinates(Vector3 coordinates, int maxWidth, int maxHeight)
         {

@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace CommonClient.Components.Camera
 {
@@ -8,6 +7,6 @@ namespace CommonClient.Components.Camera
     {
         public Matrix GetPosition();
 
-        public void UpdatePosition(Vector3 position);
+        public void UpdatePosition(Vector3 playerArea, int width, int height);
     }
 }

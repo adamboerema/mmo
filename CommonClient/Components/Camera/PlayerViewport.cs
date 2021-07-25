@@ -5,36 +5,37 @@ namespace CommonClient.Components.Camera
 {
     public class PlayerViewport : IViewport
     {
-        private readonly Rectangle _view;
-        private readonly Rectangle _maxView;
+        public Rectangle View { get; set; }
 
-        public PlayerViewport(
-            Rectangle View,
-            Rectangle MaxView)
+        public Rectangle PlayerView { get; set; }
+
+        public Rectangle WorldView { get; set; }
+
+        public Vector3 GetClampedViewport(Vector3 position, int offsetWidth, int offsetHeight)
         {
-            _view = View;
-            _maxView = MaxView;
+            var positionToWorld = Vector3.Negate(position);
+            if(!IsInCorner(positionToWorld))
+            {
+                return position;
+            }
+            else
+            {
+                var adjustedAreaWidth = WorldView.Width - View.Width + offsetWidth;
+                var adjustedAreaHeight = WorldView.Height - View.Height + offsetHeight;
+                var clampedX = Math.Clamp(positionToWorld.X, 0, adjustedAreaWidth);
+                var clampedY = Math.Clamp(positionToWorld.Y, 0, adjustedAreaHeight);
+                return new Vector3(-clampedX, -clampedY, 0);
+            }
         }
 
-        public Vector3 GetCenterPosition(Vector3 position)
+        public bool IsInCorner(Vector3 position)
         {
-            position.X -= _view.Width / 2;
-            position.Y -= _view.Height / 2;
-            var clampedPosition = ClampToMaxArea(position);
-            return new Vector3(clampedPosition.X, clampedPosition.Y, 0);
-        }
 
-        /// <summary>
-        /// Clamp the coordinates to the bounds of the world
-        /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        private Vector3 ClampToMaxArea(Vector3 position)
-        {
-            var clampedX = Math.Clamp(position.X, _maxView.Left, _maxView.Right);
-            var clampedY = Math.Clamp(position.Y, _maxView.Top, _maxView.Bottom);
-            return new Vector3(clampedX, clampedY, 0);
-        }
+            var offsetX = WorldView.Width - View.Width;
+            var offsetY = WorldView.Height - View.Height;
 
+            return (position.X < 0 || position.X > offsetX)
+                || (position.Y < 0 || position.Y > offsetY);
+        }
     }
 }
