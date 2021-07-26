@@ -7,7 +7,12 @@ namespace Common.Model
     {
         public string Name { get; set; }
 
+        public bool IsAlive { get; set; }
+
+        public float MovementSpeed { get; set; }
+
         public MovementType MovementType { get; set; }
+
         public Vector3 Coordinates { get; set; }
     }
 }

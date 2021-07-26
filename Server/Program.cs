@@ -9,6 +9,7 @@ using Server.Bus.Game;
 using Server.Bus.Packet;
 using Server.Configuration;
 using Server.Engine;
+using Server.Engine.Enemy;
 using Server.Engine.Movement;
 using Server.Engine.Player;
 using Server.Network.Connection;
@@ -58,9 +59,11 @@ namespace Server
                     services.AddScoped<IPlayerManager, PlayerManager>();
                     services.AddScoped<IAuthManager, AuthManager>();
                     services.AddScoped<IMovementManager, MovementManager>();
+                    services.AddScoped<IEnemyManager, EnemyManager>();
 
                     // Stores
                     services.AddSingleton<IPlayerStore, PlayerStore>();
+                    services.AddSingleton<IEnemyStore, EnemyStore>();
 
                     // Receiver handlers
                     services.AddScoped<IHandlerRouter, HandlerRouter>();
