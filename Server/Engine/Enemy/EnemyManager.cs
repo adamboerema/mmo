@@ -31,5 +31,12 @@ namespace Server.Engine.Enemy
         {
 
         }
+
+        private void SpawnEnemy(double elapsedTime)
+        {
+            foreach(var enemy in _enemyStore.GetAll().Values)
+            {
+            }
+        }
     }
 }

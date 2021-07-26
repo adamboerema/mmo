@@ -7,6 +7,8 @@ namespace Common.Model
     {
         public string Id { get; set; }
 
+        public int TimeToSpawn { get; set; }
+
         public int SpawnTime { get; set; }
 
         public Rectangle SpawnArea { get; set; }
