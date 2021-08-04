@@ -13,6 +13,10 @@ namespace Common.Definitions
 
         // Movement
         MOVEMENT_OUTPUT = 4,
-        MOVEMENT_INPUT = 5
+        MOVEMENT_INPUT = 5,
+
+        // Enemy
+        ENEMY_SPAWN = 6,
+        ENEMY_MOVEMENT = 7
     }
 }

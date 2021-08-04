@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Numerics;
-using Common.Bus;
 using Common.Model;
 using Common.Extensions;
 using Common.Packets.ServerToClient.Movement;
-using Server.Bus.Game;
 using Server.Bus.Packet;
 using Server.Engine.Player;
 
 namespace Server.Engine.Movement
 {
-    public class MovementManager: IMovementManager, IEventBusListener<GameLoopEvent>
+    public class MovementManager: IMovementManager
     {
         private const float PLAYER_SPEED = 0.2f;
         private const int MAX_WIDTH = 1000;
@@ -18,26 +16,16 @@ namespace Server.Engine.Movement
 
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IPlayerStore _playerStore;
-        private readonly IGameLoopBus _gameLoopBus;
 
         public MovementManager(
             IDispatchPacketBus dispatchPacketBus,
-            IGameLoopBus gameLoopBus,
             IPlayerStore playerStore)
         {
             _dispatchPacketBus = dispatchPacketBus;
             _playerStore = playerStore;
-
-            _gameLoopBus = gameLoopBus;
-            _gameLoopBus.Subscribe(this);
         }
 
-        public void Handle(GameLoopEvent eventObject)
-        {
-            Update(eventObject.ElapsedTime);
-        }
-
-        public void Update(double elapsedTime)
+        public void Update(double elapsedTime, double timestamp)
         {
             UpdateCoordinatesOfPlayers(elapsedTime);
         }

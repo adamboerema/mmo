@@ -5,7 +5,7 @@ namespace Server.Engine
     {
         public void Start();
 
-        public void Update(double elapsedTime);
+        public void Update(double elapsedTime, double currentTime);
 
         public void Stop();
     }

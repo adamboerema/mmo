@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using Server.Bus.Game;
 using Server.Configuration;
+using Server.Engine.Enemy;
+using Server.Engine.Movement;
 using Server.Engine.Player;
 
 namespace Server.Engine
@@ -10,16 +11,19 @@ namespace Server.Engine
     {
         private bool IsRunning = false;
         private Stopwatch _gameLoopTimer = new Stopwatch();
-        private IGameLoopBus _gameLoopBus;
 
         private readonly IServerConfiguration _serverConfiguration;
+        private readonly IMovementManager _movementManager;
+        private readonly IEnemyManager _enemyManager;
 
         public GameLoop(
             IServerConfiguration serverConfiguration,
-            IGameLoopBus gameLoopBus)
+            IMovementManager movementManager,
+            IEnemyManager enemyManager)
         {
             _serverConfiguration = serverConfiguration;
-            _gameLoopBus = gameLoopBus;
+            _movementManager = movementManager;
+            _enemyManager = enemyManager;
         }
 
         public void Start()
@@ -32,15 +36,17 @@ namespace Server.Engine
                 var elapsedTime = _gameLoopTimer.Elapsed.TotalMilliseconds;
                 if (elapsedTime > _serverConfiguration.ServerTickRate)
                 {
-                    Update(elapsedTime);
+                    var currentTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+                    Update(elapsedTime, currentTime);
                     _gameLoopTimer.Restart();
                 }
             }
         }
 
-        public void Update(double elapsedTime)
+        public void Update(double elapsedTime, double currentTime)
         {
-            _gameLoopBus.Publish(elapsedTime);
+            _movementManager.Update(elapsedTime, currentTime);
+            _enemyManager.Update(elapsedTime, currentTime);
         }
 
         public void Stop()

@@ -1,11 +1,8 @@
-using System;
-using Common.Bus;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Server.Auth;
 using Server.Bus.Connection;
-using Server.Bus.Game;
 using Server.Bus.Packet;
 using Server.Configuration;
 using Server.Engine;
@@ -48,7 +45,6 @@ namespace Server
                     services.AddScoped<IReceiverPacketBus, ReceiverPacketBus>();
                     services.AddScoped<IDispatchPacketBus, DispatchPacketBus>();
                     services.AddScoped<IConnectionBus, ConnectionBus>();
-                    services.AddScoped<IGameLoopBus, GameLoopBus>();
 
                     // Connection routing
                     services.AddScoped<IConnectionManager, ConnectionManager>();
