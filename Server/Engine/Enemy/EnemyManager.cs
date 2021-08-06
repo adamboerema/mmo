@@ -28,7 +28,7 @@ namespace Server.Engine.Enemy
             _connectionBus.Subscribe(this);
             InitializeEnemies();
         }
-
+            
         public void Handle(ConnectionEvent eventObject)
         {
             if(eventObject.State == ConnectionState.CONNECT)
@@ -105,7 +105,7 @@ namespace Server.Engine.Enemy
             enemy.Character.IsAlive = true;
             enemy.Character.Coordinates = GetRandomSpawnPoint(enemy.SpawnArea);
             enemy.Character.MovementType = MovementType.STOPPED;
-            _enemyStore.Update(enemy);
+            _enemyStore.Add(enemy);
             DispatchEnemySpawn(enemy);
         }
 
@@ -124,6 +124,9 @@ namespace Server.Engine.Enemy
 
         private EnemyModel CreateEnemy()
         {
+            var spawnArea = new Rectangle(100, 100, 100, 100);
+            var spawnPoint = GetRandomSpawnPoint(spawnArea);
+
             return new EnemyModel
             {
                 Id = Guid.NewGuid().ToString(),
@@ -131,15 +134,17 @@ namespace Server.Engine.Enemy
                 SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds(),
                 RespawnSeconds = 10,
                 MovementSeconds = 10,
-                SpawnArea = new Rectangle(100, 100, 100, 100),
+                SpawnArea = spawnArea,
                 MovementArea = new Rectangle(100, 100, 100, 100),
                 Character = new CharacterModel
                 {
                     Name = "Test",
                     IsAlive = true,
+                    Coordinates = spawnPoint,
+                    MovementType = MovementType.STOPPED,
                     MovementSpeed = 0.5f
                 }
-            }; 
+            };
         }
 
         /// <summary>

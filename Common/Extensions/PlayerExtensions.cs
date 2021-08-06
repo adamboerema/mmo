@@ -4,7 +4,7 @@ using Common.Model;
 
 namespace Common.Extensions
 {
-    public static class PlayerExtensions
+    public static class CharacterExtensions
     {
         /// <summary>
         /// Move Coordinates of player
@@ -14,15 +14,14 @@ namespace Common.Extensions
         /// <param name="maxWidth">Max world width</param>
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
-        public static PlayerModel MoveCoordinates(
-            this PlayerModel model,
+        public static CharacterModel MoveCoordinates(
+            this CharacterModel model,
             float speed,
             int maxWidth,
             int maxHeight)
         {
-            var character = model.Character;
-            var coordinates = character.Coordinates;
-            switch (character.MovementType)
+            var coordinates = model.Coordinates;
+            switch (model.MovementType)
             {
                 case MovementType.UP:
                     coordinates.Y -= speed;
@@ -55,7 +54,7 @@ namespace Common.Extensions
                 case MovementType.STOPPED:
                     break;
             }
-            model.Character.Coordinates = ClampCoordinates(coordinates, maxWidth, maxHeight);
+            model.Coordinates = ClampCoordinates(coordinates, maxWidth, maxHeight);
             return model;
         }
 

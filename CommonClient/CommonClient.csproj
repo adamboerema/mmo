@@ -23,6 +23,7 @@
     <None Remove="Components\Player\" />
     <None Remove="Components\Camera\" />
     <None Remove="Extentions\" />
+    <None Remove="Engine\Enemy\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bus\" />
@@ -39,6 +40,7 @@
     <Folder Include="Components\Movement\" />
     <Folder Include="Components\Player\" />
     <Folder Include="Components\Camera\" />
+    <Folder Include="Engine\Enemy\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />

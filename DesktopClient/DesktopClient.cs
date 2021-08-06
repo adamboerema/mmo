@@ -48,9 +48,11 @@ namespace DesktopClient
             var movementComponent = new InputComponent(this);
             var playerDrawableComponent = new PlayerDrawableComponent(this, _camera);
             var worldDrawableComponent = new WorldDrawableComponent(this, _camera);
+            var enemyDrawableComponent = new EnemyDrawableComponent(this, _camera);
             Components.Add(movementComponent);
             Components.Add(worldDrawableComponent);
             Components.Add(playerDrawableComponent);
+            Components.Add(enemyDrawableComponent);
 
             _gameClient.Start();
             base.Initialize();

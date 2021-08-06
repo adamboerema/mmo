@@ -4,7 +4,8 @@ using CommonClient.Engine.Player;
 
 namespace CommonClient.Network.Handler
 {
-    public class PlayerHandler: IPacketHandler<PlayerConnectPacket>,
+    public class PlayerHandler:
+        IPacketHandler<PlayerConnectPacket>,
         IPacketHandler<PlayerDisconnectPacket>
     {
         private readonly IPlayerManager _playerManager;

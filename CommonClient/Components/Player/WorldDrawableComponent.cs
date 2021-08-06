@@ -44,6 +44,8 @@ namespace CommonClient.Components.Player
             DrawArea(_spriteBatch, _background);
 
             _spriteBatch.End();
+
+            base.Draw(gameTime);
         }
 
 

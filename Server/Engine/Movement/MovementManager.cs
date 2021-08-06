@@ -49,10 +49,10 @@ namespace Server.Engine.Movement
         {
             var players = _playerStore.GetAll();
             var speed = PLAYER_SPEED * (float) elapsedTime;
-            foreach (var playerValue in players)
+            foreach (var player in players.Values)
             {
-                playerValue.Value.MoveCoordinates(speed, MAX_WIDTH, MAX_HEIGHT);
-                _playerStore.Update(playerValue.Value);
+                player.Character.MoveCoordinates(speed, MAX_WIDTH, MAX_HEIGHT);
+                _playerStore.Update(player);
             }
         }
 
