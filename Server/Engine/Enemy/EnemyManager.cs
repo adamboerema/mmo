@@ -6,11 +6,16 @@ using Common.Model;
 using Common.Packets.ServerToClient.Enemy;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
+using Common.Extensions;
+using Common.Utility;
 
 namespace Server.Engine.Enemy
 {
     public class EnemyManager : IEnemyManager, IEventBusListener<ConnectionEvent>
     {
+        private const int MAX_WIDTH = 1000;
+        private const int MAX_HEIGHT = 1000;
+
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IConnectionBus _connectionBus;
         private readonly IEnemyStore _enemyStore;
@@ -47,7 +52,7 @@ namespace Server.Engine.Enemy
             foreach (var enemy in _enemyStore.GetAll().Values)
             {
                 SpawnEnemy(timestamp, enemy);
-                MoveEnemy(timestamp, enemy);
+                MoveEnemy(elapsedTime, timestamp, enemy);
             }
         }
 
@@ -64,20 +69,32 @@ namespace Server.Engine.Enemy
             }
         }
 
-
         /// <summary>
-        /// Trigger enemy movement
+        /// Trigger movement 
         /// </summary>
+        /// <param name="elaspedTime"></param>
         /// <param name="timestamp"></param>
-        private void MoveEnemy(double timestamp, EnemyModel enemy)
+        /// <param name="enemy"></param>
+        private void MoveEnemy(double elaspedTime, double timestamp, EnemyModel enemy)
         {
-            var moveTime = enemy.LastMovementTime + enemy.MovementSeconds;
-            var shouldMove = moveTime < timestamp;
-            if(shouldMove)
+            var previousDirection = enemy.Character.MovementType;
+            var moveTime = enemy.LastMovementTime + enemy.MovementWaitSeconds;
+            var shouldStartMove = moveTime < timestamp;
+
+            if(shouldStartMove)
             {
                 enemy.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+                enemy.MovementDestination = GetRandomWorldPoint(enemy.MovementArea);
             }
-            
+
+            var speed = (float)(enemy.Character.MovementSpeed * elaspedTime);
+            enemy.Character.MoveToPoint(speed, enemy.MovementDestination);
+
+            if (enemy.Character.MovementType != previousDirection)
+            {
+                DispatchEnemyMovement(enemy);
+            }
+            _enemyStore.Update(enemy);
         }
 
         /// <summary>
@@ -103,7 +120,7 @@ namespace Server.Engine.Enemy
         {
             enemy.SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
             enemy.Character.IsAlive = true;
-            enemy.Character.Coordinates = GetRandomSpawnPoint(enemy.SpawnArea);
+            enemy.Character.Coordinates = GetRandomWorldPoint(enemy.SpawnArea);
             enemy.Character.MovementType = MovementType.STOPPED;
             _enemyStore.Add(enemy);
             DispatchEnemySpawn(enemy);
@@ -112,37 +129,44 @@ namespace Server.Engine.Enemy
         /// <summary>
         /// Gets a random spawn point within a rectangle spawn area
         /// </summary>
-        /// <param name="rectangle">Spawn area</param>
+        /// <param name="spawnArea">Spawn area</param>
         /// <returns></returns>
-        private Vector3 GetRandomSpawnPoint(Rectangle rectangle)
+        private Vector3 GetRandomWorldPoint(Rectangle spawnArea)
         {
             return new Vector3(
-                _random.Next(rectangle.Left, rectangle.Right),
-                _random.Next(rectangle.Top, rectangle.Bottom),
+                _random.Next(spawnArea.Left, spawnArea.Right),
+                _random.Next(spawnArea.Top, spawnArea.Bottom),
                 0);
         }
 
+        /// <summary>
+        /// Create Enemy model
+        /// </summary>
+        /// <returns></returns>
         private EnemyModel CreateEnemy()
         {
             var spawnArea = new Rectangle(100, 100, 100, 100);
-            var spawnPoint = GetRandomSpawnPoint(spawnArea);
+            var spawnPoint = GetRandomWorldPoint(spawnArea);
+            var now = DateTimeOffset.Now.ToUnixTimeSeconds();
 
             return new EnemyModel
             {
                 Id = Guid.NewGuid().ToString(),
                 Type = EnemyType.TEST,
-                SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds(),
+                SpawnTime = now,
                 RespawnSeconds = 10,
-                MovementSeconds = 10,
                 SpawnArea = spawnArea,
-                MovementArea = new Rectangle(100, 100, 100, 100),
+                MovementWaitSeconds = 10,
+                MovementDestination = spawnPoint,
+                LastMovementTime = now,
+                MovementArea = new Rectangle(0, 100, 100, 100),
                 Character = new CharacterModel
                 {
                     Name = "Test",
                     IsAlive = true,
                     Coordinates = spawnPoint,
                     MovementType = MovementType.STOPPED,
-                    MovementSpeed = 0.5f
+                    MovementSpeed = 0.2f
                 }
             };
         }

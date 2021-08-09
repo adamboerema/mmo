@@ -112,7 +112,8 @@ namespace Server.Engine.Player
             {
                 Name = "Test",
                 MovementType = MovementType.STOPPED,
-                Coordinates = new Vector3(0, 0, 0)
+                Coordinates = new Vector3(0, 0, 0),
+                MovementSpeed = 0.2f
             }
         };
     }

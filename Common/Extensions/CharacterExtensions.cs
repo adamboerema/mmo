@@ -1,11 +1,33 @@
 ﻿using System;
 using System.Numerics;
 using Common.Model;
+using Common.Utility;
 
 namespace Common.Extensions
 {
     public static class CharacterExtensions
     {
+
+        public static CharacterModel MoveToPoint(
+            this CharacterModel model,
+            float speed,
+            Vector3 destination)
+        {
+
+            if (model.Coordinates == destination)
+            {
+                model.MovementType = MovementType.STOPPED;
+            }
+            else
+            {
+                model.MovementType = MovementUtility.GetDirectionToPoint(model.Coordinates, destination);
+                var coordinates = GetCoordinatesWithDirection(model, speed);
+                Console.WriteLine($"Destination {destination} -- Coordinates {coordinates}");
+                model.Coordinates = coordinates;
+            }
+            return model;
+        }
+
         /// <summary>
         /// Move Coordinates of player
         /// </summary>
@@ -19,6 +41,19 @@ namespace Common.Extensions
             float speed,
             int maxWidth,
             int maxHeight)
+        {
+            var coordinates = GetCoordinatesWithDirection(model, speed);
+            model.Coordinates = ClampCoordinates(coordinates, maxWidth, maxHeight);
+            return model;
+        }
+
+        /// <summary>
+        /// Get the coordinates with direction
+        /// </summary>
+        /// <param name="movementType"></param>
+        /// <param name="speed"></param>
+        /// <returns></returns>
+        private static Vector3 GetCoordinatesWithDirection(CharacterModel model, float speed)
         {
             var coordinates = model.Coordinates;
             switch (model.MovementType)
@@ -54,10 +89,8 @@ namespace Common.Extensions
                 case MovementType.STOPPED:
                     break;
             }
-            model.Coordinates = ClampCoordinates(coordinates, maxWidth, maxHeight);
-            return model;
+            return coordinates;
         }
-
 
         /// <summary>
         /// Clamps the coordinates to the world

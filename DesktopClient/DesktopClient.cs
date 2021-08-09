@@ -20,7 +20,6 @@ namespace DesktopClient
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private IGameClient _gameClient;
-        private IDispatchPacketBus _dispatchPacketBus;
         private ICamera _camera;
 
         public DesktopClient()
@@ -29,7 +28,6 @@ namespace DesktopClient
             _gameClient = new GameClient(configuration);
 
             _graphics = new GraphicsDeviceManager(this);
-            _dispatchPacketBus = GameServices.GetService<IDispatchPacketBus>();
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;

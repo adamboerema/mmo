@@ -67,7 +67,8 @@ namespace CommonClient.Engine.Player
                 {
                     Name = "test",
                     Coordinates = position,
-                    MovementType = movementType
+                    MovementType = movementType,
+                    MovementSpeed = 0.2f
                 }
             };
         }

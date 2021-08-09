@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Numerics;
 
 namespace Common.Model
 {
@@ -13,16 +14,24 @@ namespace Common.Model
 
         public double DeathTime { get; set; }
 
-        public double LastMovementTime { get; set; }
-
         public int RespawnSeconds { get; set; }
-
-        public int MovementSeconds { get; set; }
 
         public Rectangle SpawnArea { get; set; }
 
+        /// <summary>
+        /// Movement
+        /// </summary>
+        public double LastMovementTime { get; set; }
+
+        public int MovementWaitSeconds { get; set; }
+
+        public Vector3 MovementDestination { get; set; }
+
         public Rectangle MovementArea { get; set; }
 
+        /// <summary>
+        /// Character
+        /// </summary>
         public CharacterModel Character { get; set; }
     }
 }

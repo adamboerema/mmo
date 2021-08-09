@@ -48,10 +48,10 @@ namespace CommonClient.Components.Player
         public override void Update(GameTime gameTime)
         {
             var players = _playerManager.GetPlayers();
-            var speed = (float) gameTime.ElapsedGameTime.TotalMilliseconds * PLAYER_SPEED;
             foreach(var player in players)
             {
-                if(player.IsClient)
+                var speed = (float)(gameTime.ElapsedGameTime.TotalMilliseconds * player.Character.MovementSpeed);
+                if (player.IsClient)
                 {
                     var position = player.Character.Coordinates;
                     var vectorPosition = new Vector3(position.X, position.Y, 0);

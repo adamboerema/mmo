@@ -10,7 +10,6 @@ namespace Server.Engine.Movement
 {
     public class MovementManager: IMovementManager
     {
-        private const float PLAYER_SPEED = 0.2f;
         private const int MAX_WIDTH = 1000;
         private const int MAX_HEIGHT = 1000;
 
@@ -48,9 +47,9 @@ namespace Server.Engine.Movement
         private void UpdateCoordinatesOfPlayers(double elapsedTime)
         {
             var players = _playerStore.GetAll();
-            var speed = PLAYER_SPEED * (float) elapsedTime;
             foreach (var player in players.Values)
             {
+                var speed = player.Character.MovementSpeed * (float) elapsedTime;
                 player.Character.MoveCoordinates(speed, MAX_WIDTH, MAX_HEIGHT);
                 _playerStore.Update(player);
             }

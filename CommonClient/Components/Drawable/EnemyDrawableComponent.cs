@@ -34,7 +34,7 @@ namespace CommonClient.Components.Player
 
             _enemyTexture = new Texture2D(GraphicsDevice, 10, 10);
             _enemyTexture.SetData(redSquare);
-
+            
             base.Initialize();
         }
 
@@ -44,7 +44,7 @@ namespace CommonClient.Components.Player
             {
                 var speed = enemy.Character.MovementSpeed;
                 var movementSpeed = (float)gameTime.ElapsedGameTime.TotalMilliseconds * speed;
-                enemy.Character.MoveCoordinates(movementSpeed, WORLD_HEIGHT, WORLD_WIDTH);
+                enemy.Character.MoveToPoint(movementSpeed, enemy.MovementDestination);
             }
             base.Update(gameTime);
         }
