@@ -127,11 +127,12 @@ namespace Common.Extensions
             Vector3 destination,
             Vector3 increment)
         {
+            var distance = Vector3.Abs(coordinates - destination);
+            var absoluteIncrement = Vector3.Abs(increment);
 
-            var distance = Vector3.Distance(coordinates, destination);
-            return (distance < increment.X && distance < increment.Y)
+            return distance.X < absoluteIncrement.X && distance.Y < absoluteIncrement.Y
                 ? destination
-                : coordinates += increment; 
+                : coordinates += increment;
         }
 
         /// <summary>
