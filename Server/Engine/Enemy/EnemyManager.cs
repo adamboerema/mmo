@@ -61,7 +61,7 @@ namespace Server.Engine.Enemy
         /// </summary>
         private void InitializeEnemies()
         {
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 1; i++)
             {
                 var enemy = CreateEnemy();
                 _enemyStore.Add(enemy);
@@ -77,20 +77,30 @@ namespace Server.Engine.Enemy
         /// <param name="enemy"></param>
         private void MoveEnemy(double elaspedTime, double timestamp, EnemyModel enemy)
         {
-            var previousDirection = enemy.Character.MovementType;
+            var previousDirection = enemy.MovementDestination;
             var moveTime = enemy.LastMovementTime + enemy.MovementWaitSeconds;
             var shouldStartMove = moveTime < timestamp;
 
             if(shouldStartMove)
             {
+                var movementPoint = GetRandomWorldPoint(enemy.MovementArea);
                 enemy.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-                enemy.MovementDestination = GetRandomWorldPoint(enemy.MovementArea);
+                enemy.MovementDestination = movementPoint;
+                enemy.Character.TurnToPoint(movementPoint);
             }
 
             var speed = (float)(enemy.Character.MovementSpeed * elaspedTime);
-            enemy.Character.MoveToPoint(speed, enemy.MovementDestination);
+            enemy.Character.MoveToPoint(enemy.MovementDestination, speed);
 
-            if (enemy.Character.MovementType != previousDirection)
+            // Stop if at location
+            if(enemy.Character.Coordinates == enemy.MovementDestination)
+            {
+                enemy.Character.MovementType = MovementType.STOPPED;
+                DispatchEnemyMovement(enemy);
+            }
+
+            // If new destination notify the client
+            if (enemy.MovementDestination != previousDirection)
             {
                 DispatchEnemyMovement(enemy);
             }
@@ -214,7 +224,7 @@ namespace Server.Engine.Enemy
             {
                 EnemyId = enemy.Id,
                 Position = enemy.Character.Coordinates,
-                MovementType = enemy.Character.MovementType,
+                MovementDestination = enemy.MovementDestination,
                 MovementSpeed = enemy.Character.MovementSpeed
             };
             _dispatchPacketBus.Publish(packet);

@@ -23,12 +23,12 @@ namespace CommonClient.Engine.Enemy
         /// </summary>
         /// <param name="enemyId">string enemy id</param>
         /// <param name="position">vector3 position</param>
-        /// <param name="movementType">movement type enum</param>
+        /// <param name="movementDestination">movement destination</param>
         /// <param name="movementSpeed">movement speed</param>
         public void MoveEnemy(
             string enemyId,
             Vector3 position,
-            MovementType movementType,
+            Vector3 movementDestination,
             float movementSpeed);
 
         /// <summary>

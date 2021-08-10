@@ -44,7 +44,7 @@ namespace CommonClient.Components.Player
             {
                 var speed = enemy.Character.MovementSpeed;
                 var movementSpeed = (float)gameTime.ElapsedGameTime.TotalMilliseconds * speed;
-                enemy.Character.MoveToPoint(movementSpeed, enemy.MovementDestination);
+                enemy.Character.MoveToPoint(enemy.MovementDestination, movementSpeed);
             }
             base.Update(gameTime);
         }

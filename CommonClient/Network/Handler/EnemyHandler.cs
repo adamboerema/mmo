@@ -28,7 +28,7 @@ namespace CommonClient.Network.Handler
             _enemyManager.MoveEnemy(
                 packet.EnemyId,
                 packet.Position,
-                packet.MovementType,
+                packet.MovementDestination,
                 packet.MovementSpeed);
         }
     }

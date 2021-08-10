@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Common.Model;
+using Common.Utility;
 
 namespace CommonClient.Engine.Enemy
 {
@@ -26,13 +27,14 @@ namespace CommonClient.Engine.Enemy
         public void MoveEnemy(
             string enemyId,
             Vector3 position,
-            MovementType movementType,
+            Vector3 movementDestination,
             float movementSpeed)
         {
             var enemy = _enemyStore.Get(enemyId);
             enemy.Character.Coordinates = position;
-            enemy.Character.MovementType = movementType;
+            enemy.MovementDestination = movementDestination;
             enemy.Character.MovementSpeed = movementSpeed;
+            enemy.Character.MovementType = MovementUtility.GetDirectionToPoint(position, movementDestination);
             _enemyStore.Update(enemy);
         }
 

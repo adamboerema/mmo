@@ -8,23 +8,35 @@ namespace Common.Extensions
     public static class CharacterExtensions
     {
 
+        /// <summary>
+        /// Turn to point
+        /// </summary>
+        /// <param name="model">center model</param>
+        /// <param name="point">point turning towards</param>
+        /// <returns></returns>
+        public static CharacterModel TurnToPoint(
+            this CharacterModel model,
+            Vector3 point)
+        {
+            model.MovementType = MovementUtility.GetDirectionToPoint(model.Coordinates, point);
+            return model;
+        }
+
+        /// <summary>
+        /// Move to point
+        /// </summary>
+        /// <param name="model">center model</param>
+        /// <param name="destination"></param>
+        /// <param name="speed"></param>
+        /// <returns></returns>
         public static CharacterModel MoveToPoint(
             this CharacterModel model,
-            float speed,
-            Vector3 destination)
+            Vector3 destination,
+            float speed)
         {
-
-            if (model.Coordinates == destination)
-            {
-                model.MovementType = MovementType.STOPPED;
-            }
-            else
-            {
-                model.MovementType = MovementUtility.GetDirectionToPoint(model.Coordinates, destination);
-                var coordinates = GetCoordinatesWithDirection(model, speed);
-                Console.WriteLine($"Destination {destination} -- Coordinates {coordinates}");
-                model.Coordinates = coordinates;
-            }
+            var increment = GetCoordinatesToPoint(model.Coordinates, destination, speed);
+            model.Coordinates = ClampCoordinatesToDestination(model.Coordinates, destination, increment);
+            Console.WriteLine($"Direction -- {model.MovementType} -- Destination {destination} -- Coordinates {model.Coordinates}");
             return model;
         }
 
@@ -45,6 +57,24 @@ namespace Common.Extensions
             var coordinates = GetCoordinatesWithDirection(model, speed);
             model.Coordinates = ClampCoordinates(coordinates, maxWidth, maxHeight);
             return model;
+        }
+
+        /// <summary>
+        /// Get coordinates in direction of point
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="point"></param>
+        /// <param name="speed"></param>
+        /// <returns></returns>
+        private static Vector3 GetCoordinatesToPoint(
+            Vector3 center,
+            Vector3 point,
+            float speed)
+        {
+            var direction = point - center;
+            return direction == Vector3.Zero
+                ? Vector3.Zero
+                : Vector3.Normalize(direction) * speed;
         }
 
         /// <summary>
@@ -92,17 +122,29 @@ namespace Common.Extensions
             return coordinates;
         }
 
+        private static Vector3 ClampCoordinatesToDestination(
+            Vector3 coordinates,
+            Vector3 destination,
+            Vector3 increment)
+        {
+
+            var distance = Vector3.Distance(coordinates, destination);
+            return (distance < increment.X && distance < increment.Y)
+                ? destination
+                : coordinates += increment; 
+        }
+
         /// <summary>
         /// Clamps the coordinates to the world
         /// </summary>
         /// <param name="coordinates"></param>
-        /// <param name="maxWidth"></param>
-        /// <param name="maxHeight"></param>
+        /// <param name="maxX"></param>
+        /// <param name="maxY"></param>
         /// <returns></returns>
-        private static Vector3 ClampCoordinates(Vector3 coordinates, int maxWidth, int maxHeight)
+        private static Vector3 ClampCoordinates(Vector3 coordinates, int maxX, int maxY)
         {
-            coordinates.X = Math.Clamp(coordinates.X, 0, maxWidth);
-            coordinates.Y = Math.Clamp(coordinates.Y, 0, maxHeight);
+            coordinates.X = Math.Clamp(coordinates.X, 0, maxX);
+            coordinates.Y = Math.Clamp(coordinates.Y, 0, maxY);
             return coordinates;
         }
     }

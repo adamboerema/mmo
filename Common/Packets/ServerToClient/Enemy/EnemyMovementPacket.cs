@@ -11,7 +11,7 @@ namespace Common.Packets.ServerToClient.Enemy
         public PacketType Id => PacketType.ENEMY_MOVEMENT;
         public string EnemyId { get; set; }
         public Vector3 Position { get; set; }
-        public MovementType MovementType { get; set; }
+        public Vector3 MovementDestination { get; set; }
         public float MovementSpeed { get; set; }
 
         public IPacket ReadData(PacketReader packetReader)
@@ -21,7 +21,10 @@ namespace Common.Packets.ServerToClient.Enemy
                 packetReader.ReadFloat(),
                 packetReader.ReadFloat(),
                 packetReader.ReadFloat());
-            MovementType = (MovementType)packetReader.ReadInteger();
+            MovementDestination = new Vector3(
+                packetReader.ReadFloat(),
+                packetReader.ReadFloat(),
+                packetReader.ReadFloat());
             MovementSpeed = packetReader.ReadFloat();
             return this;
         }
@@ -33,7 +36,9 @@ namespace Common.Packets.ServerToClient.Enemy
             packetWriter.WriteFloat(Position.X);
             packetWriter.WriteFloat(Position.Y);
             packetWriter.WriteFloat(Position.Z);
-            packetWriter.WriteInteger((int)MovementType);
+            packetWriter.WriteFloat(MovementDestination.X);
+            packetWriter.WriteFloat(MovementDestination.Y);
+            packetWriter.WriteFloat(MovementDestination.Z);
             packetWriter.WriteFloat(MovementSpeed);
             return packetWriter.ToBytes();
         }
