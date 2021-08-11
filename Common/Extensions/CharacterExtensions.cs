@@ -36,7 +36,6 @@ namespace Common.Extensions
         {
             var increment = GetCoordinatesToPoint(model.Coordinates, destination, speed);
             model.Coordinates = ClampCoordinatesToDestination(model.Coordinates, destination, increment);
-            Console.WriteLine($"Direction -- {model.MovementType} -- Destination {destination} -- Coordinates {model.Coordinates}");
             return model;
         }
 

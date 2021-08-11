@@ -7,29 +7,29 @@ using Common.Packets.ServerToClient.Enemy;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
 using Common.Extensions;
-using Common.Utility;
+using Server.Engine.Player;
 
 namespace Server.Engine.Enemy
 {
     public class EnemyManager : IEnemyManager, IEventBusListener<ConnectionEvent>
     {
-        private const int MAX_WIDTH = 1000;
-        private const int MAX_HEIGHT = 1000;
-
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IConnectionBus _connectionBus;
         private readonly IEnemyStore _enemyStore;
+        private readonly IPlayerStore _playerStore;
         private readonly Random _random;
 
         public EnemyManager(
             IDispatchPacketBus dispatchPacketBus,
             IConnectionBus connectionBus,
-            IEnemyStore enemyStore)
+            IEnemyStore enemyStore,
+            IPlayerStore pLayerStore)
         {
             _random = new Random();
             _dispatchPacketBus = dispatchPacketBus;
             _connectionBus = connectionBus;
             _enemyStore = enemyStore;
+            _playerStore = pLayerStore;
             _connectionBus.Subscribe(this);
             InitializeEnemies();
         }
@@ -49,9 +49,10 @@ namespace Server.Engine.Enemy
         /// <param name="timestamp"></param>
         public void Update(double elapsedTime, double timestamp)
         {
-            foreach (var enemy in _enemyStore.GetAll().Values)
+            foreach(var enemy in _enemyStore.GetAll().Values)
             {
                 SpawnEnemy(timestamp, enemy);
+                EngagePlayer(enemy);
                 MoveEnemy(elapsedTime, timestamp, enemy);
             }
         }
@@ -61,12 +62,43 @@ namespace Server.Engine.Enemy
         /// </summary>
         private void InitializeEnemies()
         {
-            for (var i = 0; i < 1; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var enemy = CreateEnemy();
                 _enemyStore.Add(enemy);
                 DispatchEnemySpawn(enemy);
             }
+        }
+
+        /// <summary>
+        /// Engage player
+        /// </summary>
+        /// <param name="enemy"></param>
+        private void EngagePlayer(EnemyModel enemy)
+        {
+            if(enemy.EngageTargetId != null)
+            {
+                var player = _playerStore.Get(enemy.EngageTargetId);
+                enemy.MovementDestination = player.Character.Coordinates;
+                DispatchEnemyMovement(enemy);
+            }
+            else
+            {
+                foreach (var player in _playerStore.GetAll().Values)
+                {
+                    var difference = Vector3.Distance(
+                        enemy.Character.Coordinates,
+                        player.Character.Coordinates);
+                    var absoluteDistance = Math.Abs(difference);
+
+                    if (absoluteDistance < enemy.EngageDistance)
+                    {
+                        Console.WriteLine($"Enemy {enemy.Id} engaging player {player.Id}");
+                        enemy.EngageTargetId = player.Id;
+                    }
+                }
+            }
+           
         }
 
         /// <summary>
@@ -77,34 +109,50 @@ namespace Server.Engine.Enemy
         /// <param name="enemy"></param>
         private void MoveEnemy(double elaspedTime, double timestamp, EnemyModel enemy)
         {
-            var previousDirection = enemy.MovementDestination;
             var moveTime = enemy.LastMovementTime + enemy.MovementWaitSeconds;
-            var shouldStartMove = moveTime < timestamp;
+            var shouldStartMove = moveTime < timestamp && enemy.EngageTargetId == null;
 
             if(shouldStartMove)
             {
-                var movementPoint = GetRandomWorldPoint(enemy.MovementArea);
-                enemy.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-                enemy.MovementDestination = movementPoint;
-                enemy.Character.TurnToPoint(movementPoint);
+                StartMovement(enemy);
             }
 
             var speed = (float)(enemy.Character.MovementSpeed * elaspedTime);
             enemy.Character.MoveToPoint(enemy.MovementDestination, speed);
 
             // Stop if at location
-            if(enemy.Character.Coordinates == enemy.MovementDestination)
+            if(enemy.Character.Coordinates == enemy.MovementDestination
+                && enemy.Character.MovementType != MovementType.STOPPED)
             {
-                enemy.Character.MovementType = MovementType.STOPPED;
-                DispatchEnemyMovement(enemy);
-            }
-
-            // If new destination notify the client
-            if (enemy.MovementDestination != previousDirection)
-            {
-                DispatchEnemyMovement(enemy);
+                StopMovement(enemy);
             }
             _enemyStore.Update(enemy);
+        }
+
+        /// <summary>
+        /// Turn and start the movement towards a point
+        /// </summary>
+        /// <param name="enemy"></param>
+        private EnemyModel StartMovement(EnemyModel enemy)
+        {
+            var movementPoint = GetRandomWorldPoint(enemy.MovementArea);
+            enemy.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            enemy.MovementDestination = movementPoint;
+            enemy.Character.TurnToPoint(movementPoint);
+            DispatchEnemyMovement(enemy);
+            return enemy;
+        }
+
+        /// <summary>
+        /// Stop movement
+        /// </summary>
+        /// <param name="enemy"></param>
+        /// <returns></returns>
+        private EnemyModel StopMovement(EnemyModel enemy)
+        {
+            enemy.Character.MovementType = MovementType.STOPPED;
+            DispatchEnemyMovement(enemy);
+            return enemy;
         }
 
         /// <summary>
@@ -169,7 +217,9 @@ namespace Server.Engine.Enemy
                 MovementWaitSeconds = 10,
                 MovementDestination = spawnPoint,
                 LastMovementTime = now,
-                MovementArea = new Rectangle(0, 100, 100, 100),
+                MovementArea = new Rectangle(0, 100, 300, 300),
+                EngageDistance = 10,
+                EngageTargetId = null,
                 Character = new CharacterModel
                 {
                     Name = "Test",

@@ -19,6 +19,13 @@ namespace Common.Model
         public Rectangle SpawnArea { get; set; }
 
         /// <summary>
+        /// Behavior
+        /// </summary>
+        public int EngageDistance { get; set; }
+
+        public string EngageTargetId { get; set; }
+
+        /// <summary>
         /// Movement
         /// </summary>
         public double LastMovementTime { get; set; }
