@@ -6,7 +6,9 @@ namespace CommonClient.Network.Handler
 {
     public class EnemyHandler:
         IPacketHandler<EnemySpawnPacket>,
-        IPacketHandler<EnemyMovementPacket>
+        IPacketHandler<EnemyMovementPacket>,
+        IPacketHandler<EnemyEngagePacket>,
+        IPacketHandler<EnemyDisengagePacket>
     {
         private readonly IEnemyManager _enemyManager;
 
@@ -20,7 +22,10 @@ namespace CommonClient.Network.Handler
             _enemyManager.SpawnEnemy(
                 packet.EnemyId,
                 packet.Type,
-                packet.Position);
+                packet.TargetId,
+                packet.Position,
+                packet.MovementDestination,
+                packet.MovementSpeed);
         }
 
         public void Handle(EnemyMovementPacket packet)
@@ -30,6 +35,18 @@ namespace CommonClient.Network.Handler
                 packet.Position,
                 packet.MovementDestination,
                 packet.MovementSpeed);
+        }
+
+        public void Handle(EnemyEngagePacket packet)
+        {
+            _enemyManager.EngageEnemy(
+                packet.EnemyId,
+                packet.TargetId);
+        }
+
+        public void Handle(EnemyDisengagePacket packet)
+        {
+            _enemyManager.DisengageEnemy(packet.EnemyId);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Common.Extensions;
 using CommonClient.Components.Camera;
 using CommonClient.Engine.Enemy;
+using CommonClient.Engine.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,11 +10,9 @@ namespace CommonClient.Components.Player
 {
     public class EnemyDrawableComponent: DrawableGameComponent
     {
-        private const int WORLD_HEIGHT = 1000;
-        private const int WORLD_WIDTH = 1000;
-
         private readonly ICamera _camera;
-        private readonly IEnemyManager _enemyManager;
+        private readonly IEnemyStore _enemyStore;
+        private readonly IPlayerStore _playerStore;
 
         private Texture2D _enemyTexture;
         private SpriteBatch _spriteBatch;
@@ -21,7 +20,8 @@ namespace CommonClient.Components.Player
         public EnemyDrawableComponent(Game game, ICamera camera): base(game)
         {
             _camera = camera;
-            _enemyManager = GameServices.GetService<IEnemyManager>();
+            _enemyStore = GameServices.GetService<IEnemyStore>();
+            _playerStore = GameServices.GetService<IPlayerStore>();
         }
 
         public override void Initialize()
@@ -40,8 +40,18 @@ namespace CommonClient.Components.Player
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var enemy in _enemyManager.GetEnemies())
+            foreach (var enemy in _enemyStore.GetAll().Values)
             {
+                if(enemy.EngageTargetId != null)
+                {
+                    var player = _playerStore.Get(enemy.EngageTargetId);
+                    if(player != null)
+                    {
+                        var coordinates = player.Character.Coordinates;
+                        enemy.MovementDestination = coordinates;
+                        enemy.Character.TurnToPoint(coordinates);
+                    }
+                }
                 var speed = enemy.Character.MovementSpeed;
                 var movementSpeed = (float)gameTime.ElapsedGameTime.TotalMilliseconds * speed;
                 enemy.Character.MoveToPoint(enemy.MovementDestination, movementSpeed);
@@ -53,7 +63,7 @@ namespace CommonClient.Components.Player
         {
             _spriteBatch.Begin(transformMatrix: _camera.GetPosition());
 
-            foreach(var enemy in _enemyManager.GetEnemies())
+            foreach(var enemy in _enemyStore.GetAll().Values)
             {
                 var coordinates = enemy.Character.Coordinates;
                 _spriteBatch.Draw(

@@ -3,24 +3,38 @@ using System.Collections.Generic;
 using System.Numerics;
 using Common.Model;
 using Common.Utility;
+using CommonClient.Engine.Player;
 
 namespace CommonClient.Engine.Enemy
 {
     public class EnemyManager: IEnemyManager
     {
-        private IEnemyStore _enemyStore;
+        private readonly IEnemyStore _enemyStore;
+        private readonly IPlayerStore _playerStore;
 
-        public EnemyManager(IEnemyStore enemyStore)
+        public EnemyManager(
+            IEnemyStore enemyStore,
+            IPlayerStore playerStore)
         {
             _enemyStore = enemyStore;
+            _playerStore = playerStore;
         }
 
         public void SpawnEnemy(
             string enemyId,
             EnemyType enemyType,
-            Vector3 position)
+            string targetId,
+            Vector3 position,
+            Vector3 movementDestination,
+            float movementSpeed)
         {
-            var enemy = CreateEnemy(enemyId, enemyType, position);
+            var enemy = CreateEnemy(
+                enemyId,
+                enemyType,
+                targetId,
+                position,
+                movementDestination,
+                movementSpeed);
             _enemyStore.Add(enemy);
         }
 
@@ -31,11 +45,35 @@ namespace CommonClient.Engine.Enemy
             float movementSpeed)
         {
             var enemy = _enemyStore.Get(enemyId);
-            enemy.Character.Coordinates = position;
-            enemy.MovementDestination = movementDestination;
-            enemy.Character.MovementSpeed = movementSpeed;
-            enemy.Character.MovementType = MovementUtility.GetDirectionToPoint(position, movementDestination);
-            _enemyStore.Update(enemy);
+            if(enemy != null)
+            {
+                enemy.Character.Coordinates = position;
+                enemy.MovementDestination = movementDestination;
+                enemy.Character.MovementSpeed = movementSpeed;
+                enemy.Character.MovementType = MovementUtility.GetDirectionToPoint(position, movementDestination);
+                _enemyStore.Update(enemy);
+            }
+        }
+
+        public void EngageEnemy(string enemyId, string targetId)
+        {
+            var enemy = _enemyStore.Get(enemyId);
+            var player = _playerStore.Get(targetId);
+            if(enemy != null && player != null)
+            {
+                enemy.EngageTargetId = player.Id;
+                _enemyStore.Update(enemy);
+            }
+        }
+
+        public void DisengageEnemy(string enemyId)
+        {
+            var enemy = _enemyStore.Get(enemyId);
+            if (enemy != null)
+            {
+                enemy.EngageTargetId = null;
+                _enemyStore.Update(enemy);
+            }
         }
 
         public IEnumerable<EnemyModel> GetEnemies()
@@ -53,17 +91,23 @@ namespace CommonClient.Engine.Enemy
         private EnemyModel CreateEnemy(
             string enemyId,
             EnemyType enemyType,
-            Vector3 position)
+            string targetId,
+            Vector3 position,
+            Vector3 movementDestination,
+            float movementSpeed)
         {
             return new EnemyModel
             {
                 Id = enemyId,
                 Type = enemyType,
+                EngageTargetId = targetId,
+                MovementDestination = movementDestination,
                 Character = new CharacterModel
                 {
                     Name = "Test",
                     IsAlive = true,
                     Coordinates = position,
+                    MovementSpeed = movementSpeed
                 }
             };
         }

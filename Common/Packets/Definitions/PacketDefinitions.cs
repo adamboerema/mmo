@@ -20,7 +20,9 @@ namespace Common.Definitions
             { PacketType.MOVEMENT_OUTPUT, new MovementOutputPacket() },
             { PacketType.MOVEMENT_INPUT, new MovementInputPacket() },
             { PacketType.ENEMY_SPAWN, new EnemySpawnPacket() },
-            { PacketType.ENEMY_MOVEMENT, new EnemyMovementPacket() }
+            { PacketType.ENEMY_MOVEMENT, new EnemyMovementPacket() },
+            { PacketType.ENEMY_ENGAGE, new EnemyEngagePacket() },
+            { PacketType.ENEMY_DISENGAGE, new EnemyDisengagePacket() }
         };
     }
 }

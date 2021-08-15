@@ -16,8 +16,19 @@ namespace Common.Utility
         public static MovementType GetDirectionToPoint(Vector3 center, Vector3 point)
         {
             var vectorAngle = (float) GetAngleFromCenter(center, point);
-            Console.WriteLine($"Angle: {vectorAngle}");
             return GetDirectionFromAngle(vectorAngle);
+        }
+
+        /// <summary>
+        /// Gets absolute distance from center to point
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public static float GetAbsoluteDistanceToPoint(Vector3 center, Vector3 point)
+        {
+            var difference = Vector3.Distance(center, point);
+            return Math.Abs(difference);
         }
 
         /// <summary>

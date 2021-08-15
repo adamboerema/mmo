@@ -124,12 +124,20 @@ namespace Server.Network.Connection
         private void BeginStreamRead(StateBuffer state)
         {
             var offset = 0;
-            _stream.BeginRead(
-                _readBuffer,
-                offset,
-                Constants.BUFFER_CLIENT_SIZE,
-                new AsyncCallback(HandleDataReceive),
-                state);
+            try
+            {
+                _stream.BeginRead(
+                    _readBuffer,
+                    offset,
+                    Constants.BUFFER_CLIENT_SIZE,
+                    new AsyncCallback(HandleDataReceive),
+                    state);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Failed to start reading buffer: {ex.Message}");
+            }
+            
         }
     }
 }

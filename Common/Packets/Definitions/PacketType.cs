@@ -17,6 +17,8 @@ namespace Common.Definitions
 
         // Enemy
         ENEMY_SPAWN = 6,
-        ENEMY_MOVEMENT = 7
+        ENEMY_MOVEMENT = 7,
+        ENEMY_ENGAGE = 8,
+        ENEMY_DISENGAGE = 9
     }
 }

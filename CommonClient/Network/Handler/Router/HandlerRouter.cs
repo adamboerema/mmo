@@ -46,6 +46,12 @@ namespace CommonClient.Network.Handler.Router
                 case EnemyMovementPacket packet:
                     _enemyHandler.Handle(packet);
                     break;
+                case EnemyEngagePacket packet:
+                    _enemyHandler.Handle(packet);
+                    break;
+                case EnemyDisengagePacket packet:
+                    _enemyHandler.Handle(packet);
+                    break;
             }
         }
 

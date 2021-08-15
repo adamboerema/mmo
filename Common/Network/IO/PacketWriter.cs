@@ -8,6 +8,8 @@ namespace Common.Network.IO
     {
         private BinaryWriter binaryWriter;
         private MemoryStream memoryStream;
+        private string NULL = "" + char.MinValue;
+
 
         public PacketWriter(int capacity = 0)
         {
@@ -26,6 +28,12 @@ namespace Common.Network.IO
         {
             Encoding.ASCII.GetBytes(value);
             binaryWriter.Write(value);
+        }
+
+        public void WriteNullableString(string value)
+        {
+            var prepared = value ?? NULL;
+            WriteString(prepared);
         }
 
         public byte[] ToBytes()

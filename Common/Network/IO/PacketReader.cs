@@ -8,6 +8,7 @@ namespace Common.Network.IO
     {
         private BinaryReader binaryReader;
         private MemoryStream memoryStream;
+        private const string NULL = "NULL";
 
         public PacketReader(byte[] bytes)
         {
@@ -22,6 +23,11 @@ namespace Common.Network.IO
         public byte ReadByte() => binaryReader.ReadByte();
         public byte[] ReadBytes(int count) => binaryReader.ReadBytes(count);
         public string ReadString() => binaryReader.ReadString();
+
+        public string ReadNullableString() {
+            var value = binaryReader.ReadString();
+            return value == NULL ? null : value; 
+        }
 
         public void Dispose()
         {
