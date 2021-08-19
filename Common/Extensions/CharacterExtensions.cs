@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
-using Common.Model;
+using Common.Base;
+using Common.Model.Base;
 using Common.Utility;
 
 namespace Common.Extensions
@@ -14,8 +15,8 @@ namespace Common.Extensions
         /// <param name="model">center model</param>
         /// <param name="point">point turning towards</param>
         /// <returns></returns>
-        public static CharacterModel TurnToPoint(
-            this CharacterModel model,
+        public static BaseCharacterModel TurnToPoint(
+            this BaseCharacterModel model,
             Vector3 point)
         {
             model.MovementType = MovementUtility.GetDirectionToPoint(model.Coordinates, point);
@@ -29,8 +30,8 @@ namespace Common.Extensions
         /// <param name="destination"></param>
         /// <param name="speed"></param>
         /// <returns></returns>
-        public static CharacterModel MoveToPoint(
-            this CharacterModel model,
+        public static BaseCharacterModel MoveToPoint(
+            this BaseCharacterModel model,
             Vector3 destination,
             float speed)
         {
@@ -47,8 +48,8 @@ namespace Common.Extensions
         /// <param name="maxWidth">Max world width</param>
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
-        public static CharacterModel MoveCoordinates(
-            this CharacterModel model,
+        public static BaseCharacterModel MoveCoordinates(
+            this BaseCharacterModel model,
             float speed,
             int maxWidth,
             int maxHeight)
@@ -82,7 +83,7 @@ namespace Common.Extensions
         /// <param name="movementType"></param>
         /// <param name="speed"></param>
         /// <returns></returns>
-        private static Vector3 GetCoordinatesWithDirection(CharacterModel model, float speed)
+        private static Vector3 GetCoordinatesWithDirection(BaseCharacterModel model, float speed)
         {
             var coordinates = model.Coordinates;
             switch (model.MovementType)

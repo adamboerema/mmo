@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Model;
+using Common.Base;
 
 namespace Server.Engine.Player
 {

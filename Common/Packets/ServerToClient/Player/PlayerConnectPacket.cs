@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Common.Definitions;
-using Common.Model;
+using Common.Base;
 using Common.Network.IO;
 
 namespace Common.Packets.ServerToClient.Player

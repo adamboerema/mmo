@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Model
+namespace Common.Base
 {
     public enum MovementType : int
     {

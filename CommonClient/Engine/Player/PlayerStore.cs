@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Model;
+using Common.Base;
 using CommonClient.Engine.Player;
 
 namespace CommonClient.Store
@@ -49,8 +49,8 @@ namespace CommonClient.Store
             var player = Get(playerId);
             if(player != null)
             {
-                player.Character.Coordinates = coordinates;
-                player.Character.MovementType = movementType;
+                player.Coordinates = coordinates;
+                player.MovementType = movementType;
                 Update(player);
             }
         }
@@ -70,7 +70,7 @@ namespace CommonClient.Store
             var clientPlayer = GetClientPlayer();
             if(clientPlayer != null)
             {
-                clientPlayer.Character.MovementType = movementType;
+                clientPlayer.MovementType = movementType;
                 Update(clientPlayer);
             }
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Numerics;
-using Common.Model;
+using Common.Base;
 using Common.Extensions;
 using Common.Packets.ServerToClient.Movement;
 using Server.Bus.Packet;
@@ -34,7 +34,7 @@ namespace Server.Engine.Movement
             var player = _playerStore.Get(playerId);
             if (player != null)
             {
-                player.Character.MovementType = movementType;
+                player.MovementType = movementType;
                 _playerStore.Update(player);
                 DispatchMovementUpdate(player);
             }
@@ -49,8 +49,8 @@ namespace Server.Engine.Movement
             var players = _playerStore.GetAll();
             foreach (var player in players.Values)
             {
-                var speed = player.Character.MovementSpeed * (float) elapsedTime;
-                player.Character.MoveCoordinates(speed, MAX_WIDTH, MAX_HEIGHT);
+                var speed = player.MovementSpeed * (float) elapsedTime;
+                player.MoveCoordinates(speed, MAX_WIDTH, MAX_HEIGHT);
                 _playerStore.Update(player);
             }
         }
@@ -65,10 +65,10 @@ namespace Server.Engine.Movement
             {
                 PlayerId = player.Id,
                 Position = new Vector3(
-                    player.Character.Coordinates.X,
-                    player.Character.Coordinates.Y,
-                    player.Character.Coordinates.Z),
-                MovementType = player.Character.MovementType
+                    player.Coordinates.X,
+                    player.Coordinates.Y,
+                    player.Coordinates.Z),
+                MovementType = player.MovementType
             });
         }
     }

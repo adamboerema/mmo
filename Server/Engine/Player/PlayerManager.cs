@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Numerics;
-using Common.Model;
+using Common.Base;
 using Common.Packets.ServerToClient.Player;
 using Server.Bus.Packet;
 
@@ -93,10 +93,10 @@ namespace Server.Engine.Player
                 PlayerId = player.Id,
                 IsClient = isClient,
                 Position = new Vector3(
-                        player.Character.Coordinates.X,
-                        player.Character.Coordinates.Y,
-                        player.Character.Coordinates.Z),
-                MovementType = player.Character.MovementType
+                        player.Coordinates.X,
+                        player.Coordinates.Y,
+                        player.Coordinates.Z),
+                MovementType = player.MovementType
             };
 
         /// <summary>
@@ -108,13 +108,10 @@ namespace Server.Engine.Player
         {
             // TODO: Replace with persistent data
             Id = connectionId,
-            Character = new CharacterModel
-            {
-                Name = "Test",
-                MovementType = MovementType.STOPPED,
-                Coordinates = new Vector3(0, 0, 0),
-                MovementSpeed = 0.2f
-            }
+            Name = "Test",
+            MovementType = MovementType.STOPPED,
+            Coordinates = new Vector3(0, 0, 0),
+            MovementSpeed = 0.2f
         };
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
+using Common.Model.Base;
 
-namespace Common.Model
+namespace Common.Base
 {
-    public class PlayerModel
+    public class PlayerModel: BaseCharacterModel
     {
         public string Id { get; set; }
-
-        public CharacterModel Character { get; set; }
     }
 }

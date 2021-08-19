@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Numerics;
+using Common.Base;
 
-namespace Common.Model
+namespace Common.Model.Base
 {
-    public class CharacterModel
+    public abstract class BaseCharacterModel
     {
         public string Name { get; set; }
 

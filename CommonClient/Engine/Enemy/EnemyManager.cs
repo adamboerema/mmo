@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Model;
+using Common.Base;
 using Common.Utility;
 using CommonClient.Engine.Player;
 
@@ -47,10 +47,10 @@ namespace CommonClient.Engine.Enemy
             var enemy = _enemyStore.Get(enemyId);
             if(enemy != null)
             {
-                enemy.Character.Coordinates = position;
+                enemy.Coordinates = position;
                 enemy.MovementDestination = movementDestination;
-                enemy.Character.MovementSpeed = movementSpeed;
-                enemy.Character.MovementType = MovementUtility.GetDirectionToPoint(position, movementDestination);
+                enemy.MovementSpeed = movementSpeed;
+                enemy.MovementType = MovementUtility.GetDirectionToPoint(position, movementDestination);
                 _enemyStore.Update(enemy);
             }
         }
@@ -102,13 +102,10 @@ namespace CommonClient.Engine.Enemy
                 Type = enemyType,
                 EngageTargetId = targetId,
                 MovementDestination = movementDestination,
-                Character = new CharacterModel
-                {
-                    Name = "Test",
-                    IsAlive = true,
-                    Coordinates = position,
-                    MovementSpeed = movementSpeed
-                }
+                Name = "Test",
+                IsAlive = true,
+                Coordinates = position,
+                MovementSpeed = movementSpeed
             };
         }
     }

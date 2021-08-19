@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Numerics;
+using Common.Model.Base;
 
-namespace Common.Model
+namespace Common.Base
 {
-    public class EnemyModel
+    public class EnemyModel: BaseCharacterModel
     {
         public string Id { get; set; }
 
@@ -35,10 +36,5 @@ namespace Common.Model
         public Vector3 MovementDestination { get; set; }
 
         public Rectangle MovementArea { get; set; }
-
-        /// <summary>
-        /// Character
-        /// </summary>
-        public CharacterModel Character { get; set; }
     }
 }

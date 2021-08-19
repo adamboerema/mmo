@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Model;
+using Common.Base;
 
 namespace CommonClient.Engine.Player
 {
@@ -63,13 +63,10 @@ namespace CommonClient.Engine.Player
             {
                 Id = playerId,
                 IsClient = isClient,
-                Character = new CharacterModel
-                {
-                    Name = "test",
-                    Coordinates = position,
-                    MovementType = movementType,
-                    MovementSpeed = 0.2f
-                }
+                Name = "test",
+                Coordinates = position,
+                MovementType = movementType,
+                MovementSpeed = 0.2f
             };
         }
     }

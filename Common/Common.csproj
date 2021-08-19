@@ -25,6 +25,7 @@
     <Folder Include="Extensions\" />
     <Folder Include="Packets\ServerToClient\Enemy\" />
     <Folder Include="Utility\" />
+    <Folder Include="Model\Base\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\" />
@@ -47,5 +48,6 @@
     <None Remove="Extensions\" />
     <None Remove="Packets\ServerToClient\Enemy\" />
     <None Remove="Utility\" />
+    <None Remove="Model\Base\" />
   </ItemGroup>
 </Project>

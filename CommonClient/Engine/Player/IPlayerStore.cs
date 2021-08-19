@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Numerics;
-using Common.Model;
+using Common.Base;
 using Common.Store;
 
 namespace CommonClient.Engine.Player

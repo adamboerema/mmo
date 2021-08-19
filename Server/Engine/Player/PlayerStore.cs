@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Model;
+using Common.Base;
 
 namespace Server.Engine.Player
 {
@@ -42,8 +42,8 @@ namespace Server.Engine.Player
             var player = Get(playerId);
             if (player != null)
             {
-                player.Character.Coordinates = coordinates;
-                player.Character.MovementType = movementType;
+                player.Coordinates = coordinates;
+                player.MovementType = movementType;
                 Update(player);
             }
         }
