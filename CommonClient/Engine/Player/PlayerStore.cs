@@ -16,7 +16,8 @@ namespace CommonClient.Store
 
         public ClientPlayerModel Get(string playerId)
         {
-            return _players.ContainsKey(playerId) ? _players[playerId] : null;
+            _players.TryGetValue(playerId, out var player);
+            return player;
         }
 
         public void Add(ClientPlayerModel model)
@@ -44,13 +45,13 @@ namespace CommonClient.Store
             _players.TryUpdate(model.Id, model, _players[model.Id]);
         }
 
-        public void UpdateMovement(string playerId, Vector3 coordinates, MovementType movementType)
+        public void UpdateMovement(string playerId, Vector3 coordinates, Direction movementType)
         {
             var player = Get(playerId);
             if(player != null)
             {
                 player.Coordinates = coordinates;
-                player.MovementType = movementType;
+                player.Direction = movementType;
                 Update(player);
             }
         }
@@ -60,17 +61,17 @@ namespace CommonClient.Store
             return Get(_clientPlayerId);
         }
 
-        public void UpdateClientCoordinates(Vector3 coordinates, MovementType movementType)
+        public void UpdateClientCoordinates(Vector3 coordinates, Direction movementType)
         {
             UpdateMovement(_clientPlayerId, coordinates, movementType);
         }
 
-        public void UpdateClientMovementType(MovementType movementType)
+        public void UpdateClientMovementType(Direction movementType)
         {
             var clientPlayer = GetClientPlayer();
             if(clientPlayer != null)
             {
-                clientPlayer.MovementType = movementType;
+                clientPlayer.Direction = movementType;
                 Update(clientPlayer);
             }
         }

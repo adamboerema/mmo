@@ -92,11 +92,12 @@ namespace Server.Engine.Player
             {
                 PlayerId = player.Id,
                 IsClient = isClient,
+                IsMoving = player.IsMoving,
                 Position = new Vector3(
                         player.Coordinates.X,
                         player.Coordinates.Y,
                         player.Coordinates.Z),
-                MovementType = player.MovementType
+                MovementType = player.Direction
             };
 
         /// <summary>
@@ -109,8 +110,9 @@ namespace Server.Engine.Player
             // TODO: Replace with persistent data
             Id = connectionId,
             Name = "Test",
-            MovementType = MovementType.STOPPED,
+            Direction = Direction.DOWN,
             Coordinates = new Vector3(0, 0, 0),
+            IsMoving = false,
             MovementSpeed = 0.2f
         };
     }

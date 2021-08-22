@@ -7,8 +7,6 @@ namespace Common.Base
 {
     public class EnemyModel: BaseCharacterModel
     {
-        public string Id { get; set; }
-
         public EnemyType Type { get; set; }
 
         public double SpawnTime { get; set; }
@@ -36,5 +34,41 @@ namespace Common.Base
         public Vector3 MovementDestination { get; set; }
 
         public Rectangle MovementArea { get; set; }
+
+        /// <summary>
+        /// Engage target character
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public EnemyModel EngageCharacter(BaseCharacterModel characterModel)
+        {
+            EngageTargetId = characterModel.Id;
+            StartMovementTowardsPoint(characterModel.Coordinates);
+            return this;
+        }
+
+        /// <summary>
+        /// Starts movement towards point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public EnemyModel StartMovementTowardsPoint(Vector3 point)
+        {
+            LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            MovementDestination = point;
+            TurnToPoint(point);
+            return this;
+        }
+
+        /// <summary>
+        /// Disengage the target
+        /// </summary>
+        /// <returns></returns>
+        public EnemyModel DisengagePlayer()
+        {
+            EngageTargetId = null;
+            MovementDestination = Coordinates;
+            return this;
+        }
     }
 }

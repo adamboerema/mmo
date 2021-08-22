@@ -22,7 +22,6 @@
     <Folder Include="Packets\ClientToServer\Movement\" />
     <Folder Include="Packets\Definitions\" />
     <Folder Include="Store\" />
-    <Folder Include="Extensions\" />
     <Folder Include="Packets\ServerToClient\Enemy\" />
     <Folder Include="Utility\" />
     <Folder Include="Model\Base\" />
@@ -45,7 +44,6 @@
     <None Remove="Packets\ClientToServer\Movement\" />
     <None Remove="Packets\Definitions\" />
     <None Remove="Store\" />
-    <None Remove="Extensions\" />
     <None Remove="Packets\ServerToClient\Enemy\" />
     <None Remove="Utility\" />
     <None Remove="Model\Base\" />

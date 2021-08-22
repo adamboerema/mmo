@@ -9,11 +9,14 @@ namespace Common.Packets.ClientToServer.Movement
     {
         public PacketType Id => PacketType.MOVEMENT_INPUT;
 
-        public MovementType Direction { get; set; }
+        public Direction Direction { get; set; }
+
+        public bool IsMoving { get; set; }
 
         public IPacket ReadData(PacketReader packetReader)
         {
-            Direction = (MovementType)packetReader.ReadInteger();
+            Direction = (Direction)packetReader.ReadInteger();
+            IsMoving = packetReader.ReadBool();
             return this;
         }
 
@@ -21,6 +24,7 @@ namespace Common.Packets.ClientToServer.Movement
         {
             packetWriter.WriteInteger((int)Id);
             packetWriter.WriteInteger((int)Direction);
+            packetWriter.WriteBool(IsMoving);
             return packetWriter.ToBytes();
         }
     }

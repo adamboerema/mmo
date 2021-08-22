@@ -11,7 +11,7 @@ namespace CommonClient.Engine.Player
             string playerId,
             bool isClient,
             Vector3 position,
-            MovementType movementType);
+            Direction movementType);
 
         public void UpdatePlayer(ClientPlayerModel playerModel);
 

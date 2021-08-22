@@ -18,17 +18,18 @@ namespace CommonClient.Engine.Movement
             _playerStore = playersStore;
         }
 
-        public void UpdateClientMovementInput(MovementType movementType)
+        public void UpdateClientMovementInput(Direction direction, bool isMoving)
         {
-            _playerStore.UpdateClientMovementType(movementType);
+            _playerStore.UpdateClientMovementType(direction);
 
             _dispatchPacket.Publish(new MovementInputPacket
             {
-                Direction = movementType
+                Direction = direction,
+                IsMoving = isMoving
             });
         }
 
-        public void UpdatePlayerCoordinates(string playerId, Vector3 coordinates, MovementType movementType)
+        public void UpdatePlayerCoordinates(string playerId, Vector3 coordinates, Direction movementType)
         {
             _playerStore.UpdateMovement(playerId, coordinates, movementType);
         }

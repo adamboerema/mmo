@@ -7,6 +7,6 @@ namespace Server.Engine.Player
 {
     public interface IPlayerStore: IStore<string, PlayerModel>
     {
-        public void UpdateMovement(string playerId, Vector3 coordinates, MovementType movementType);
+        public void UpdateMovement(string playerId, Vector3 coordinates, Direction movementType);
     }
 }
