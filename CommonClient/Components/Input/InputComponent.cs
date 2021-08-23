@@ -10,6 +10,7 @@ namespace CommonClient.Components.Movement
     {
         private readonly IMovementManager _movementManager;
         private Direction _movementType = Direction.DOWN;
+        private bool _isMoving = false;
 
         public InputComponent(Game game): base(game)
         {
@@ -21,9 +22,10 @@ namespace CommonClient.Components.Movement
             var keyboardState = Keyboard.GetState();
             var isMoving = IsMovementKeyDown(keyboardState);
             var currentMovementType = GetDirection(keyboardState);
-            if(_movementType != currentMovementType)
+            if(_movementType != currentMovementType || _isMoving != isMoving)
             {
-                Console.WriteLine($"Changing to movement type: {currentMovementType}");
+                Console.WriteLine($"Changing to movement type: {currentMovementType} and {isMoving}");
+                _isMoving = isMoving;
                 _movementType = currentMovementType;
                 _movementManager.UpdateClientMovementInput(currentMovementType, isMoving);
             }

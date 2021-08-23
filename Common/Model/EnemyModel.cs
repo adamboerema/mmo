@@ -61,6 +61,20 @@ namespace Common.Base
         }
 
         /// <summary>
+        /// Respawn the enemy
+        /// </summary>
+        /// <param name="respawnCoordinates"></param>
+        /// <returns></returns>
+        public EnemyModel Respawn(Vector3 respawnCoordinates)
+        {
+            SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            Coordinates = respawnCoordinates;
+            IsAlive = true;
+            IsMoving = false;
+            return this;
+        }
+
+        /// <summary>
         /// Disengage the target
         /// </summary>
         /// <returns></returns>

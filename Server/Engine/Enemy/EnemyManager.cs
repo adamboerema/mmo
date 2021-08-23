@@ -140,8 +140,8 @@ namespace Server.Engine.Enemy
             var speed = (float)(enemy.MovementSpeed * elaspedTime);
             enemy.MoveToPoint(enemy.MovementDestination, speed);
 
-            // Stop if at location
-            if(enemy.Coordinates == enemy.MovementDestination)
+            // Stop if moving and have reached location
+            if(enemy.IsMoving && enemy.Coordinates == enemy.MovementDestination)
             {
                 StopMovement(enemy);
             }
@@ -192,10 +192,8 @@ namespace Server.Engine.Enemy
         /// <param name="enemy"></param>
         private void RespawnEnemy(EnemyModel enemy)
         {
-            enemy.SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            enemy.IsAlive = true;
-            enemy.IsMoving = false;
-            enemy.Coordinates = GetRandomWorldPoint(enemy.SpawnArea);
+            var randomWorldPoint = GetRandomWorldPoint(enemy.SpawnArea);
+            enemy.Respawn(randomWorldPoint);
             _enemyStore.Add(enemy);
             DispatchEnemySpawn(enemy);
         }
@@ -238,6 +236,7 @@ namespace Server.Engine.Enemy
                 EngageTargetId = null,
                 Name = "Test",
                 IsAlive = true,
+                IsMoving = false,
                 Coordinates = spawnPoint,
                 Direction = Direction.DOWN,
                 MovementSpeed = 0.2f

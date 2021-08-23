@@ -20,7 +20,7 @@ namespace CommonClient.Engine.Movement
 
         public void UpdateClientMovementInput(Direction direction, bool isMoving)
         {
-            _playerStore.UpdateClientMovementType(direction);
+            _playerStore.UpdateClientMovement(direction, isMoving);
 
             _dispatchPacket.Publish(new MovementInputPacket
             {
@@ -29,9 +29,13 @@ namespace CommonClient.Engine.Movement
             });
         }
 
-        public void UpdatePlayerCoordinates(string playerId, Vector3 coordinates, Direction movementType)
+        public void UpdatePlayerCoordinatesOutput(
+            string playerId,
+            Vector3 coordinates,
+            Direction movementType,
+            bool isMoving)
         {
-            _playerStore.UpdateMovement(playerId, coordinates, movementType);
+            _playerStore.UpdateMovement(playerId, coordinates, movementType, isMoving);
         }
     }
 }

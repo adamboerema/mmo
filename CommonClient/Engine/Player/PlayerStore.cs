@@ -45,33 +45,42 @@ namespace CommonClient.Store
             _players.TryUpdate(model.Id, model, _players[model.Id]);
         }
 
-        public void UpdateMovement(string playerId, Vector3 coordinates, Direction movementType)
+        public ClientPlayerModel GetClientPlayer()
+        {
+            return Get(_clientPlayerId);
+        }
+
+        public void UpdateMovement(
+            string playerId,
+            Vector3 coordinates,
+            Direction movementType,
+            bool isMoving)
         {
             var player = Get(playerId);
             if(player != null)
             {
                 player.Coordinates = coordinates;
                 player.Direction = movementType;
+                player.IsMoving = isMoving;
                 Update(player);
             }
         }
 
-        public ClientPlayerModel GetClientPlayer()
+        public void UpdateClientCoordinates(
+            Vector3 coordinates,
+            Direction movementType,
+            bool isMoving)
         {
-            return Get(_clientPlayerId);
+            UpdateMovement(_clientPlayerId, coordinates, movementType, isMoving);
         }
 
-        public void UpdateClientCoordinates(Vector3 coordinates, Direction movementType)
-        {
-            UpdateMovement(_clientPlayerId, coordinates, movementType);
-        }
-
-        public void UpdateClientMovementType(Direction movementType)
+        public void UpdateClientMovement(Direction movementType, bool isMoving)
         {
             var clientPlayer = GetClientPlayer();
             if(clientPlayer != null)
             {
                 clientPlayer.Direction = movementType;
+                clientPlayer.IsMoving = isMoving;
                 Update(clientPlayer);
             }
         }

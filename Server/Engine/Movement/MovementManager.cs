@@ -71,7 +71,8 @@ namespace Server.Engine.Movement
                     player.Coordinates.X,
                     player.Coordinates.Y,
                     player.Coordinates.Z),
-                MovementType = player.Direction
+                MovementType = player.Direction,
+                IsMoving = player.IsMoving
             });
         }
     }

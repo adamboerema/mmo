@@ -63,9 +63,12 @@ namespace Common.Model.Base
             int maxWidth,
             int maxHeight)
         {
-            var coordinates = MoveInDirection(speed);
-            Coordinates = ClampCoordinates(coordinates, maxWidth, maxHeight);
-            IsMoving = true;
+            if(IsMoving)
+            {
+                var coordinates = MoveInDirection(speed);
+                Coordinates = ClampCoordinates(coordinates, maxWidth, maxHeight);
+                IsMoving = true;
+            }
             return this;
         }
 

@@ -17,10 +17,11 @@ namespace CommonClient.Network.Handler
         public void Handle(MovementOutputPacket packet)
         {
             Console.WriteLine($"Movement Packet: {packet.Position} {packet.MovementType}");
-            _movementManager.UpdatePlayerCoordinates(
+            _movementManager.UpdatePlayerCoordinatesOutput(
                 packet.PlayerId,
                 packet.Position,
-                packet.MovementType);
+                packet.MovementType,
+                packet.IsMoving);
         }
     }
 }

@@ -8,6 +8,10 @@ namespace CommonClient.Engine.Movement
     {
         public void UpdateClientMovementInput(Direction direction, bool isMoving);
 
-        public void UpdatePlayerCoordinates(string playerId, Vector3 coordinates, Direction direction);
+        public void UpdatePlayerCoordinatesOutput(
+            string playerId,
+            Vector3 coordinates,
+            Direction direction,
+            bool isMoving);
     }
 }

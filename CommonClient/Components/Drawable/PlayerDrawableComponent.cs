@@ -48,6 +48,7 @@ namespace CommonClient.Components.Player
             var players = _playerManager.GetPlayers();
             foreach(var player in players)
             {
+
                 var speed = (float)(gameTime.ElapsedGameTime.TotalMilliseconds * player.MovementSpeed);
                 if (player.IsClient)
                 {
