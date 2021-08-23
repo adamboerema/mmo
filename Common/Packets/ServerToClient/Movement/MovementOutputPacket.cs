@@ -12,7 +12,8 @@ namespace Common.Packets.ServerToClient.Movement
 
         public string PlayerId { get; set; }
         public Vector3 Position { get; set; }
-        public MovementType MovementType { get; set; }
+        public Direction MovementType { get; set; }
+        public bool IsMoving { get; set; }
 
         public IPacket ReadData(PacketReader packetReader)
         {
@@ -21,7 +22,8 @@ namespace Common.Packets.ServerToClient.Movement
                 packetReader.ReadFloat(),
                 packetReader.ReadFloat(),
                 packetReader.ReadFloat());
-            MovementType = (MovementType)packetReader.ReadInteger();
+            MovementType = (Direction)packetReader.ReadInteger();
+            IsMoving = packetReader.ReadBool();
             return this;
         }
 
@@ -33,6 +35,7 @@ namespace Common.Packets.ServerToClient.Movement
             packetWriter.WriteFloat(Position.Y);
             packetWriter.WriteFloat(Position.Z);
             packetWriter.WriteInteger((int)MovementType);
+            packetWriter.WriteBool(IsMoving);
             return packetWriter.ToBytes();
         }
     }

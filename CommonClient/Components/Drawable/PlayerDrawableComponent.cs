@@ -1,5 +1,4 @@
 ﻿using System;
-using Common.Extensions;
 using CommonClient.Components.Camera;
 using CommonClient.Engine.Player;
 using Microsoft.Xna.Framework;
@@ -49,6 +48,7 @@ namespace CommonClient.Components.Player
             var players = _playerManager.GetPlayers();
             foreach(var player in players)
             {
+
                 var speed = (float)(gameTime.ElapsedGameTime.TotalMilliseconds * player.MovementSpeed);
                 if (player.IsClient)
                 {

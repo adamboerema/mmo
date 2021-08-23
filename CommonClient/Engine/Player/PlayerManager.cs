@@ -18,7 +18,7 @@ namespace CommonClient.Engine.Player
             string playerId,
             bool isClient,
             Vector3 position,
-            MovementType movementType)
+            Direction movementType)
         {
             var player = CreateNewPlayer(
                 playerId,
@@ -57,7 +57,7 @@ namespace CommonClient.Engine.Player
             string playerId,
             bool isClient,
             Vector3 position,
-            MovementType movementType)
+            Direction movementType)
         {
             return new ClientPlayerModel
             {
@@ -65,7 +65,7 @@ namespace CommonClient.Engine.Player
                 IsClient = isClient,
                 Name = "test",
                 Coordinates = position,
-                MovementType = movementType,
+                Direction = movementType,
                 MovementSpeed = 0.2f
             };
         }

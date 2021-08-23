@@ -9,8 +9,8 @@ namespace CommonClient.Components.Movement
     public class InputComponent: GameComponent
     {
         private readonly IMovementManager _movementManager;
-        private MovementType _movementType = MovementType.STOPPED;
-
+        private Direction _movementType = Direction.DOWN;
+        private bool _isMoving = false;
 
         public InputComponent(Game game): base(game)
         {
@@ -19,14 +19,30 @@ namespace CommonClient.Components.Movement
 
         public override void Update(GameTime gameTime)
         {
-            var currentMovementType = GetmovementType();
-            if(_movementType != currentMovementType)
+            var keyboardState = Keyboard.GetState();
+            var isMoving = IsMovementKeyDown(keyboardState);
+            var currentMovementType = GetDirection(keyboardState);
+            if(_movementType != currentMovementType || _isMoving != isMoving)
             {
-                Console.WriteLine($"Changing to movement type: {currentMovementType}");
+                Console.WriteLine($"Changing to movement type: {currentMovementType} and {isMoving}");
+                _isMoving = isMoving;
                 _movementType = currentMovementType;
-                _movementManager.UpdateClientMovementInput(currentMovementType);
+                _movementManager.UpdateClientMovementInput(currentMovementType, isMoving);
             }
             base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// Check if movement key is down
+        /// </summary>
+        /// <param name="keyState"></param>
+        /// <returns></returns>
+        private bool IsMovementKeyDown(KeyboardState keyState)
+        {
+            return keyState.IsKeyDown(Keys.W)
+                || keyState.IsKeyDown(Keys.A)
+                || keyState.IsKeyDown(Keys.S)
+                || keyState.IsKeyDown(Keys.D);
         }
 
 
@@ -34,45 +50,43 @@ namespace CommonClient.Components.Movement
         /// Get the type of movement based on keys
         /// </summary>
         /// <returns></returns>
-        private MovementType GetmovementType()
+        private Direction GetDirection(KeyboardState keyState)
         {
-            var keyState = Keyboard.GetState();
-
             if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.A))
             {
-                return MovementType.UP_LEFT;
+                return Direction.UP_LEFT;
             }
             else if (keyState.IsKeyDown(Keys.W) && keyState.IsKeyDown(Keys.D))
             {
-                return MovementType.UP_RIGHT;
+                return Direction.UP_RIGHT;
             }
             else if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyDown(Keys.A))
             {
-                return MovementType.DOWN_LEFT;
+                return Direction.DOWN_LEFT;
             }
             else if (keyState.IsKeyDown(Keys.S) && keyState.IsKeyDown(Keys.D))
             {
-                return MovementType.DOWN_RIGHT;
+                return Direction.DOWN_RIGHT;
             }
             else if (keyState.IsKeyDown(Keys.W))
             {
-                return MovementType.UP;
+                return Direction.UP;
             }
             else if (keyState.IsKeyDown(Keys.S))
             {
-                return MovementType.DOWN;
+                return Direction.DOWN;
             }
             else if (keyState.IsKeyDown(Keys.A))
             {
-                return MovementType.LEFT;
+                return Direction.LEFT;
             }
             else if (keyState.IsKeyDown(Keys.D))
             {
-                return MovementType.RIGHT;
+                return Direction.RIGHT;
             }
             else
             {
-                return MovementType.STOPPED;
+                return _movementType;
             }
         }
     }

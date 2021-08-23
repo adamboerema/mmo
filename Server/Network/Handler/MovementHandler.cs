@@ -17,7 +17,10 @@ namespace Server.Network.Handler
         {
             Console.WriteLine($"Connection id: {connectionId}");
             Console.WriteLine($"Movement Packet { packet.Direction }");
-            _movementManager.UpdateMovementInput(connectionId, packet.Direction);
+            _movementManager.UpdateMovementInput(
+                connectionId,
+                packet.Direction,
+                packet.IsMoving);
         }
     }
 }

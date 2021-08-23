@@ -16,7 +16,8 @@ namespace CommonClient.Store
 
         public ClientPlayerModel Get(string playerId)
         {
-            return _players.ContainsKey(playerId) ? _players[playerId] : null;
+            _players.TryGetValue(playerId, out var player);
+            return player;
         }
 
         public void Add(ClientPlayerModel model)
@@ -44,33 +45,39 @@ namespace CommonClient.Store
             _players.TryUpdate(model.Id, model, _players[model.Id]);
         }
 
-        public void UpdateMovement(string playerId, Vector3 coordinates, MovementType movementType)
-        {
-            var player = Get(playerId);
-            if(player != null)
-            {
-                player.Coordinates = coordinates;
-                player.MovementType = movementType;
-                Update(player);
-            }
-        }
-
         public ClientPlayerModel GetClientPlayer()
         {
             return Get(_clientPlayerId);
         }
 
-        public void UpdateClientCoordinates(Vector3 coordinates, MovementType movementType)
+        public void UpdateMovement(
+            string playerId,
+            Vector3 coordinates,
+            Direction direction,
+            bool isMoving)
         {
-            UpdateMovement(_clientPlayerId, coordinates, movementType);
+            var player = Get(playerId);
+            if(player != null)
+            {
+                player.UpdateCoordinates(coordinates, direction, isMoving);
+                Update(player);
+            }
         }
 
-        public void UpdateClientMovementType(MovementType movementType)
+        public void UpdateClientCoordinates(
+            Vector3 coordinates,
+            Direction movementType,
+            bool isMoving)
+        {
+            UpdateMovement(_clientPlayerId, coordinates, movementType, isMoving);
+        }
+
+        public void UpdateClientMovement(Direction direction, bool isMoving)
         {
             var clientPlayer = GetClientPlayer();
             if(clientPlayer != null)
             {
-                clientPlayer.MovementType = movementType;
+                clientPlayer.UpdateDirection(direction, isMoving);
                 Update(clientPlayer);
             }
         }

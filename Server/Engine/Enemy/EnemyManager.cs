@@ -6,7 +6,6 @@ using Common.Base;
 using Common.Packets.ServerToClient.Enemy;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
-using Common.Extensions;
 using Server.Engine.Player;
 using Common.Utility;
 
@@ -78,6 +77,22 @@ namespace Server.Engine.Enemy
         /// <param name="enemy"></param>
         private void EngagePlayer(EnemyModel enemy)
         {
+            if(enemy.EngageTargetId == null)
+            {
+                foreach (var player in _playerStore.GetAll().Values)
+                {
+                    var absoluteDistance = MovementUtility.GetAbsoluteDistanceToPoint(
+                        enemy.Coordinates,
+                        player.Coordinates);
+
+                    if (absoluteDistance < enemy.EngageDistance)
+                    {
+                        enemy.EngageCharacter(player);
+                        DispatchEnemyEngage(enemy);
+                    }
+                }
+            }
+
             if(enemy.EngageTargetId != null)
             {
                 var player = _playerStore.Get(enemy.EngageTargetId);
@@ -90,7 +105,7 @@ namespace Server.Engine.Enemy
 
                     if (distance > disengageDistance)
                     {
-                        enemy.EngageTargetId = null;
+                        enemy.DisengagePlayer();
                         DispatchEnemyDisenage(enemy);
                     }
                     else
@@ -100,26 +115,8 @@ namespace Server.Engine.Enemy
                 }
                 else
                 {
-                    enemy.EngageTargetId = null;
+                    enemy.DisengagePlayer();
                     DispatchEnemyDisenage(enemy);
-                }
-            }
-            else
-            {
-                foreach (var player in _playerStore.GetAll().Values)
-                {
-                    var absoluteDistance = MovementUtility.GetAbsoluteDistanceToPoint(
-                        enemy.Coordinates,
-                        player.Coordinates);
-
-                    if (absoluteDistance < enemy.EngageDistance)
-                    {
-                        enemy.EngageTargetId = player.Id;
-                        enemy.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-                        enemy.MovementDestination = player.Coordinates;
-                        enemy.TurnToPoint(player.Coordinates);
-                        DispatchEnemyEngage(enemy);
-                    }
                 }
             }
         }
@@ -143,9 +140,8 @@ namespace Server.Engine.Enemy
             var speed = (float)(enemy.MovementSpeed * elaspedTime);
             enemy.MoveToPoint(enemy.MovementDestination, speed);
 
-            // Stop if at location
-            if(enemy.Coordinates == enemy.MovementDestination
-                && enemy.MovementType != MovementType.STOPPED)
+            // Stop if moving and have reached location
+            if(enemy.IsMoving && enemy.Coordinates == enemy.MovementDestination)
             {
                 StopMovement(enemy);
             }
@@ -158,10 +154,7 @@ namespace Server.Engine.Enemy
         private EnemyModel StartMovement(EnemyModel enemy)
         {
             var movementPoint = GetRandomWorldPoint(enemy.MovementArea);
-            enemy.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            enemy.MovementDestination = movementPoint;
-            enemy.TurnToPoint(movementPoint);
-
+            enemy.StartMovementTowardsPoint(movementPoint);
             DispatchEnemyMovement(enemy);
             return enemy;
         }
@@ -173,7 +166,7 @@ namespace Server.Engine.Enemy
         /// <returns></returns>
         private EnemyModel StopMovement(EnemyModel enemy)
         {
-            enemy.MovementType = MovementType.STOPPED;
+            enemy.StopMove();
             DispatchEnemyMovement(enemy);
             return enemy;
         }
@@ -199,10 +192,8 @@ namespace Server.Engine.Enemy
         /// <param name="enemy"></param>
         private void RespawnEnemy(EnemyModel enemy)
         {
-            enemy.SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            enemy.IsAlive = true;
-            enemy.Coordinates = GetRandomWorldPoint(enemy.SpawnArea);
-            enemy.MovementType = MovementType.STOPPED;
+            var randomWorldPoint = GetRandomWorldPoint(enemy.SpawnArea);
+            enemy.Respawn(randomWorldPoint);
             _enemyStore.Add(enemy);
             DispatchEnemySpawn(enemy);
         }
@@ -245,8 +236,9 @@ namespace Server.Engine.Enemy
                 EngageTargetId = null,
                 Name = "Test",
                 IsAlive = true,
+                IsMoving = false,
                 Coordinates = spawnPoint,
-                MovementType = MovementType.STOPPED,
+                Direction = Direction.DOWN,
                 MovementSpeed = 0.2f
             };
         }

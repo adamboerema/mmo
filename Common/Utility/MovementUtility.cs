@@ -13,7 +13,7 @@ namespace Common.Utility
         /// <param name="charater"></param>
         /// <param name="point"></param>
         /// <returns></returns>
-        public static MovementType GetDirectionToPoint(Vector3 center, Vector3 point)
+        public static Direction GetDirectionToPoint(Vector3 center, Vector3 point)
         {
             var vectorAngle = (float) GetAngleFromCenter(center, point);
             return GetDirectionFromAngle(vectorAngle);
@@ -36,34 +36,34 @@ namespace Common.Utility
         /// </summary>
         /// <param name="directionAngle"></param>
         /// <returns></returns>
-        public static MovementType GetDirectionFromAngle(float directionAngle)
+        public static Direction GetDirectionFromAngle(float directionAngle)
         {
-            var movementType = MovementType.STOPPED;
+            var movementType = Direction.DOWN;
             switch (directionAngle)
             {
                 case float angle when (angle >= 337.5 && angle < 360 && angle >= 0 && angle < 22.5):
-                    movementType = MovementType.UP;
+                    movementType = Direction.UP;
                     break;
                 case float angle when (angle >= 22.5 && angle < 67.5):
-                    movementType = MovementType.UP_RIGHT;
+                    movementType = Direction.UP_RIGHT;
                     break;
                 case float angle when (angle >= 67.5 && angle < 112.5):
-                    movementType = MovementType.RIGHT;
+                    movementType = Direction.RIGHT;
                     break;
                 case float angle when (angle >= 112.5 && angle < 157.5):
-                    movementType = MovementType.DOWN_RIGHT;
+                    movementType = Direction.DOWN_RIGHT;
                     break;
                 case float angle when (angle >= 157.5 && angle < 202.5):
-                    movementType = MovementType.DOWN;
+                    movementType = Direction.DOWN;
                     break;
                 case float angle when (angle >= 202.5 && angle < 247.5):
-                    movementType = MovementType.DOWN_LEFT;
+                    movementType = Direction.DOWN_LEFT;
                     break;
                 case float angle when (angle >= 247.5 && angle < 292.5):
-                    movementType = MovementType.LEFT;
+                    movementType = Direction.LEFT;
                     break;
                 case float angle when (angle >= 292.5 && angle < 337.5):
-                    movementType = MovementType.UP_LEFT;
+                    movementType = Direction.UP_LEFT;
                     break;
             }
             return movementType;

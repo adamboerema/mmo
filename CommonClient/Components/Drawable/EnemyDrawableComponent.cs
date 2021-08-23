@@ -1,5 +1,4 @@
 ﻿using System;
-using Common.Extensions;
 using CommonClient.Components.Camera;
 using CommonClient.Engine.Enemy;
 using CommonClient.Engine.Player;

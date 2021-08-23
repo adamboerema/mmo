@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Numerics;
 using Common.Base;
-using Common.Extensions;
 using Common.Packets.ServerToClient.Movement;
 using Server.Bus.Packet;
 using Server.Engine.Player;
@@ -29,12 +28,16 @@ namespace Server.Engine.Movement
             UpdateCoordinatesOfPlayers(elapsedTime);
         }
 
-        public void UpdateMovementInput(string playerId, MovementType movementType)
+        public void UpdateMovementInput(
+            string playerId,
+            Direction movementType,
+            bool isMoving)
         {
             var player = _playerStore.Get(playerId);
             if (player != null)
             {
-                player.MovementType = movementType;
+                player.Direction = movementType;
+                player.IsMoving = isMoving;
                 _playerStore.Update(player);
                 DispatchMovementUpdate(player);
             }
@@ -68,7 +71,8 @@ namespace Server.Engine.Movement
                     player.Coordinates.X,
                     player.Coordinates.Y,
                     player.Coordinates.Z),
-                MovementType = player.MovementType
+                MovementType = player.Direction,
+                IsMoving = player.IsMoving
             });
         }
     }

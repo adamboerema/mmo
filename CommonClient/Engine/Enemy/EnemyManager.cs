@@ -50,7 +50,7 @@ namespace CommonClient.Engine.Enemy
                 enemy.Coordinates = position;
                 enemy.MovementDestination = movementDestination;
                 enemy.MovementSpeed = movementSpeed;
-                enemy.MovementType = MovementUtility.GetDirectionToPoint(position, movementDestination);
+                enemy.Direction = MovementUtility.GetDirectionToPoint(position, movementDestination);
                 _enemyStore.Update(enemy);
             }
         }
