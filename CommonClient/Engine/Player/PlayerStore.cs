@@ -53,15 +53,13 @@ namespace CommonClient.Store
         public void UpdateMovement(
             string playerId,
             Vector3 coordinates,
-            Direction movementType,
+            Direction direction,
             bool isMoving)
         {
             var player = Get(playerId);
             if(player != null)
             {
-                player.Coordinates = coordinates;
-                player.Direction = movementType;
-                player.IsMoving = isMoving;
+                player.UpdateCoordinates(coordinates, direction, isMoving);
                 Update(player);
             }
         }
@@ -74,13 +72,12 @@ namespace CommonClient.Store
             UpdateMovement(_clientPlayerId, coordinates, movementType, isMoving);
         }
 
-        public void UpdateClientMovement(Direction movementType, bool isMoving)
+        public void UpdateClientMovement(Direction direction, bool isMoving)
         {
             var clientPlayer = GetClientPlayer();
             if(clientPlayer != null)
             {
-                clientPlayer.Direction = movementType;
-                clientPlayer.IsMoving = isMoving;
+                clientPlayer.UpdateDirection(direction, isMoving);
                 Update(clientPlayer);
             }
         }

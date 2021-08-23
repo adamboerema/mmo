@@ -119,7 +119,6 @@ namespace Common.Model.Base
             {
                 case Direction.UP:
                     coordinates.Y -= speed;
-                    coordinates.Y -= speed;
                     break;
                 case Direction.LEFT:
                     coordinates.X -= speed;
