@@ -60,7 +60,7 @@ namespace CommonClient.Components.Player
                         _clientPlayerTexture.Height);
                 }
 
-                player.MoveCoordinates(speed, WORLD_WIDTH, WORLD_HEIGHT);
+                player.Move(speed, WORLD_WIDTH, WORLD_HEIGHT);
                 _playerManager.UpdatePlayer(player);
             }
             base.Update(gameTime);

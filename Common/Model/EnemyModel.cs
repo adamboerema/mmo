@@ -7,33 +7,35 @@ namespace Common.Base
 {
     public class EnemyModel: BaseCharacterModel
     {
-        public EnemyType Type { get; set; }
+        public EnemyType Type { get; init; }
 
-        public double SpawnTime { get; set; }
+        public int RespawnSeconds { get; init; }
 
-        public double DeathTime { get; set; }
+        public Rectangle SpawnArea { get; init; }
 
-        public int RespawnSeconds { get; set; }
+        public double SpawnTime { get; private set; }
 
-        public Rectangle SpawnArea { get; set; }
+        public double DeathTime { get; private set; }
+
 
         /// <summary>
         /// Behavior
         /// </summary>
-        public int EngageDistance { get; set; }
+        public int EngageDistance { get; init; }
 
-        public string EngageTargetId { get; set; }
+        public string EngageTargetId { get; private set; }
 
         /// <summary>
         /// Movement
         /// </summary>
-        public double LastMovementTime { get; set; }
 
-        public int MovementWaitSeconds { get; set; }
+        public Rectangle MovementArea { get; init; }
 
-        public Vector3 MovementDestination { get; set; }
+        public int MovementWaitSeconds { get; init; }
 
-        public Rectangle MovementArea { get; set; }
+        public double LastMovementTime { get; private set; }
+
+        public Vector3 MovementDestination { get; private set; }
 
         /// <summary>
         /// Engage target character

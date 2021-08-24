@@ -53,7 +53,7 @@ namespace Server.Engine.Movement
             foreach (var player in players.Values)
             {
                 var speed = player.MovementSpeed * (float) elapsedTime;
-                player.MoveCoordinates(speed, MAX_WIDTH, MAX_HEIGHT);
+                player.Move(speed, MAX_WIDTH, MAX_HEIGHT);
                 _playerStore.Update(player);
             }
         }

@@ -7,19 +7,19 @@ namespace Common.Model.Base
 {
     public abstract class BaseCharacterModel
     {
-        public string Id { get; set; }
+        public string Id { get; init; }
 
-        public string Name { get; set; }
+        public string Name { get; init; }
 
-        public bool IsAlive { get; set; }
+        public float MovementSpeed { get; init; } = 0.2f;
 
-        public bool IsMoving { get; set; }
+        public bool IsAlive { get; protected set; } = true;
 
-        public float MovementSpeed { get; set; }
+        public bool IsMoving { get; protected set; } = false;
 
-        public Direction Direction { get; set; }
+        public Direction Direction { get; protected set; } = Direction.DOWN;
 
-        public Vector3 Coordinates { get; set; }
+        public Vector3 Coordinates { get; protected set; }
 
         /// <summary>
         /// Turn to point
@@ -58,7 +58,7 @@ namespace Common.Model.Base
         /// <param name="maxWidth">Max world width</param>
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
-        public BaseCharacterModel MoveCoordinates(
+        public BaseCharacterModel Move(
             float speed,
             int maxWidth,
             int maxHeight)
