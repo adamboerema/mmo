@@ -47,10 +47,7 @@ namespace CommonClient.Engine.Enemy
             var enemy = _enemyStore.Get(enemyId);
             if(enemy != null)
             {
-                enemy.Coordinates = position;
-                enemy.MovementDestination = movementDestination;
-                enemy.MovementSpeed = movementSpeed;
-                enemy.Direction = MovementUtility.GetDirectionToPoint(position, movementDestination);
+                enemy.PathToPoint(enemy.Coordinates, enemy.MovementDestination, enemy.MovementSpeed);
                 _enemyStore.Update(enemy);
             }
         }
@@ -61,7 +58,7 @@ namespace CommonClient.Engine.Enemy
             var player = _playerStore.Get(targetId);
             if(enemy != null && player != null)
             {
-                enemy.EngageTargetId = player.Id;
+                enemy.EngageCharacter(player.Id, player.Coordinates);
                 _enemyStore.Update(enemy);
             }
         }
@@ -71,7 +68,7 @@ namespace CommonClient.Engine.Enemy
             var enemy = _enemyStore.Get(enemyId);
             if (enemy != null)
             {
-                enemy.EngageTargetId = null;
+                enemy.DisengagePlayer();
                 _enemyStore.Update(enemy);
             }
         }
@@ -96,17 +93,15 @@ namespace CommonClient.Engine.Enemy
             Vector3 movementDestination,
             float movementSpeed)
         {
-            return new EnemyModel
-            {
-                Id = enemyId,
-                Type = enemyType,
-                EngageTargetId = targetId,
-                MovementDestination = movementDestination,
-                Name = "Test",
-                IsAlive = true,
-                Coordinates = position,
-                MovementSpeed = movementSpeed
-            };
+            return new EnemyModel(
+                id: enemyId,
+                name: "Test",
+                enemyType: enemyType,
+                engageTargetId: targetId,
+                coordinates: position,
+                movementDestination: movementDestination,
+                movementSpeed: movementSpeed,
+                isAlive: true);
         }
     }
 }

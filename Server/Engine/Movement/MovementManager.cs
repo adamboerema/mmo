@@ -36,8 +36,7 @@ namespace Server.Engine.Movement
             var player = _playerStore.Get(playerId);
             if (player != null)
             {
-                player.Direction = movementType;
-                player.IsMoving = isMoving;
+                player.UpdateDirection(movementType, isMoving);
                 _playerStore.Update(player);
                 DispatchMovementUpdate(player);
             }

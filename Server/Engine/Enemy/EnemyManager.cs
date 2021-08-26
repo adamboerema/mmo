@@ -87,7 +87,7 @@ namespace Server.Engine.Enemy
 
                     if (absoluteDistance < enemy.EngageDistance)
                     {
-                        enemy.EngageCharacter(player);
+                        enemy.EngageCharacter(player.Id, player.Coordinates);
                         DispatchEnemyEngage(enemy);
                     }
                 }
@@ -110,7 +110,7 @@ namespace Server.Engine.Enemy
                     }
                     else
                     {
-                        enemy.MovementDestination = player.Coordinates;
+                        enemy.UpdateDestination(player.Coordinates);
                     }
                 }
                 else
@@ -154,7 +154,7 @@ namespace Server.Engine.Enemy
         private EnemyModel StartMovement(EnemyModel enemy)
         {
             var movementPoint = GetRandomWorldPoint(enemy.MovementArea);
-            enemy.StartMovementTowardsPoint(movementPoint);
+            enemy.MoveToPoint(movementPoint, enemy.MovementSpeed);
             DispatchEnemyMovement(enemy);
             return enemy;
         }
@@ -219,28 +219,16 @@ namespace Server.Engine.Enemy
         {
             var spawnArea = new Rectangle(100, 100, 100, 100);
             var spawnPoint = GetRandomWorldPoint(spawnArea);
-            var now = DateTimeOffset.Now.ToUnixTimeSeconds();
 
-            return new EnemyModel
-            {
-                Id = Guid.NewGuid().ToString(),
-                Type = EnemyType.TEST,
-                SpawnTime = now,
-                RespawnSeconds = 10,
-                SpawnArea = spawnArea,
-                MovementWaitSeconds = 10,
-                MovementDestination = spawnPoint,
-                LastMovementTime = now,
-                MovementArea = new Rectangle(0, 100, 300, 300),
-                EngageDistance = 100,
-                EngageTargetId = null,
-                Name = "Test",
-                IsAlive = true,
-                IsMoving = false,
-                Coordinates = spawnPoint,
-                Direction = Direction.DOWN,
-                MovementSpeed = 0.2f
-            };
+            return new EnemyModel(
+                name: "Test",
+                enemyType: EnemyType.TEST,
+                spawnPoint: spawnPoint,
+                spawnArea: spawnArea,
+                respawnTime: 10,
+                movementSpeed: 0.2f,
+                movementWaitSeconds: 10,
+                movementArea: new Rectangle(0, 100, 300, 300));
         }
 
         /// <summary>

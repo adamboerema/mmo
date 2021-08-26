@@ -46,9 +46,10 @@ namespace CommonClient.Components.Player
                     var player = _playerStore.Get(enemy.EngageTargetId);
                     if(player != null)
                     {
-                        var coordinates = player.Coordinates;
-                        enemy.MovementDestination = coordinates;
-                        enemy.TurnToPoint(coordinates);
+                        enemy.PathToPoint(
+                            enemy.Coordinates,
+                            player.Coordinates,
+                            enemy.MovementSpeed);
                     }
                 }
                 var speed = enemy.MovementSpeed;

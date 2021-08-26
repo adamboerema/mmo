@@ -105,15 +105,13 @@ namespace Server.Engine.Player
         /// </summary>
         /// <param name="connectionId">Connection id that connected</param>
         /// <returns></returns>
-        private PlayerModel CreateNewPlayer(string connectionId) => new PlayerModel
-        {
-            // TODO: Replace with persistent data
-            Id = connectionId,
-            Name = "Test",
-            Direction = Direction.DOWN,
-            Coordinates = new Vector3(0, 0, 0),
-            IsMoving = false,
-            MovementSpeed = 0.2f
-        };
+        private PlayerModel CreateNewPlayer(string connectionId) =>
+            new PlayerModel(
+                id: connectionId,
+                name: "Test",
+                direction: Direction.DOWN,
+                coordinates: new Vector3(0, 0, 0),
+                isMoving: false,
+                movementSpeed: 0.2f);
     }
 }

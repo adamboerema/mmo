@@ -11,11 +11,11 @@ namespace Common.Model.Base
 
         public string Name { get; init; }
 
-        public float MovementSpeed { get; init; } = 0.2f;
-
         public bool IsAlive { get; protected set; } = true;
 
         public bool IsMoving { get; protected set; } = false;
+
+        public float MovementSpeed { get; protected set; } = 0.2f;
 
         public Direction Direction { get; protected set; } = Direction.DOWN;
 
@@ -30,6 +30,17 @@ namespace Common.Model.Base
         public BaseCharacterModel TurnToPoint(Vector3 point)
         {
             Direction = MovementUtility.GetDirectionToPoint(Coordinates, point);
+            return this;
+        }
+
+        /// <summary>
+        /// Adjust the speed of the character
+        /// </summary>
+        /// <param name="movementSpeed"></param>
+        /// <returns></returns>
+        public BaseCharacterModel AdjustSpeed(float movementSpeed)
+        {
+            MovementSpeed = movementSpeed;
             return this;
         }
 

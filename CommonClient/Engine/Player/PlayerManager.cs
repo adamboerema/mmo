@@ -59,15 +59,14 @@ namespace CommonClient.Engine.Player
             Vector3 position,
             Direction movementType)
         {
-            return new ClientPlayerModel
-            {
-                Id = playerId,
-                IsClient = isClient,
-                Name = "test",
-                Coordinates = position,
-                Direction = movementType,
-                MovementSpeed = 0.2f
-            };
+            return new ClientPlayerModel(
+                id: playerId,
+                name: "test",
+                isClient: isClient,
+                direction: movementType,
+                coordinates: position,
+                isMoving: false,
+                movementSpeed: 0.2f);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Common.Packets.ServerToClient.Enemy
         public PacketType Id => PacketType.ENEMY_SPAWN;
         public string EnemyId { get; set; }
         public EnemyType Type { get; set; }
-        public string? TargetId { get; set; }
+        public string TargetId { get; set; }
         public Vector3 Position { get; set; }
         public Vector3 MovementDestination { get; set;}
         public float MovementSpeed { get; set; }
