@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Numerics;
 using Common.Model;
+using Common.Model.Behavior;
 using Common.Utility;
 
 namespace Common.Base
 {
     public class EnemyModel
     {
+        public string Id { get; init; }
+
         public EnemyType Type { get; init; }
 
         public BehaviorSpawnModel BehaviorSpawn { get; init; }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Common.Model
+namespace Common.Model.Behavior
 {
     public class BehaviorSpawnModel
     {

@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Numerics;
 
-namespace Common.Model
+namespace Common.Model.Behavior
 {
     public class BehaviorMovementModel
     {

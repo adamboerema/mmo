@@ -7,8 +7,6 @@ namespace Common.Model
 {
     public class CharacterModel
     {
-        public string Id { get; init; }
-
         public string Name { get; init; }
 
         public bool IsAlive { get; set; } = true;

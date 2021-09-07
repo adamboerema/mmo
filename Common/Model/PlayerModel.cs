@@ -6,6 +6,8 @@ namespace Common.Base
 {
     public class PlayerModel
     {
+        public string Id { get; init; }
+
         public CharacterModel Character { get; private set; }
 
         //public PlayerModel(
