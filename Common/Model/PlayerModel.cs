@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Numerics;
-using Common.Model.Base;
+using Common.Model;
 
 namespace Common.Base
 {
-    public class PlayerModel: BaseCharacterModel
+    public class PlayerModel
     {
+        public CharacterModel Character { get; private set; }
+
+        //public PlayerModel(
+        //    CharacterModel character)
+        //{
+        //    Id = id;
+        //    Name = name;
+        //    Direction = direction;
+        //    Coordinates = coordinates;
+        //    IsMoving = isMoving;
+        //    MovementSpeed = movementSpeed;
+        //}
+
         public PlayerModel(
-            string id,
-            string name,
-            Direction direction,
-            Vector3 coordinates,
-            bool isMoving,
-            float movementSpeed)
+            CharacterModel character)
         {
-            Id = id;
-            Name = name;
-            Direction = direction;
-            Coordinates = coordinates;
-            IsMoving = isMoving;
-            MovementSpeed = movementSpeed;
+            Character = character;
         }
 
         public PlayerModel UpdateCoordinates(
@@ -27,16 +30,16 @@ namespace Common.Base
             Direction direction,
             bool isMoving)
         {
-            Coordinates = coordinates;
-            Direction = direction;
-            IsMoving = isMoving;
+            Character.Coordinates = coordinates;
+            Character.Direction = direction;
+            Character.IsMoving = isMoving;
             return this;
         }
 
         public PlayerModel UpdateDirection(Direction direction, bool isMoving)
         {
-            Direction = direction;
-            IsMoving = isMoving;
+            Character.Direction = direction;
+            Character.IsMoving = isMoving;
             return this;
         }
     }

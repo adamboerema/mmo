@@ -1,92 +1,69 @@
 ﻿using System;
-using System.Drawing;
 using System.Numerics;
-using Common.Model.Base;
+using Common.Model;
 using Common.Utility;
 
 namespace Common.Base
 {
-    public class EnemyModel: BaseCharacterModel
+    public class EnemyModel
     {
         public EnemyType Type { get; init; }
 
-        public int RespawnSeconds { get; init; } = 60;
-        
-        public Rectangle SpawnArea { get; init; }
+        public BehaviorSpawnModel BehaviorSpawn { get; init; }
 
-        public double SpawnTime { get; private set; } = DateTimeOffset.Now.ToUnixTimeSeconds();
+        public BehaviorMovementModel BehaviorMovement { get; init; }
 
-        public double DeathTime { get; private set; }
+        public CharacterModel Character { get; init; } 
 
+        //public EnemyModel(
+        //    string name,
+        //    EnemyType enemyType,
+        //    Vector3 spawnPoint,
+        //    Rectangle spawnArea,
+        //    int respawnTime,
+        //    float movementSpeed,
+        //    int movementWaitSeconds,
+        //    Rectangle movementArea
+        //)
+        //{
+        //    Id = Guid.NewGuid().ToString();
+        //    Name = name;
+        //    Type = enemyType;
+        //    SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+        //    Coordinates = spawnPoint;
+        //    Direction = Direction.DOWN;
+        //    IsAlive = true;
+        //    IsMoving = false;
+        //    RespawnSeconds = respawnTime;
+        //    SpawnArea = spawnArea;
+        //    MovementWaitSeconds = movementWaitSeconds;
+        //    MovementDestination = spawnPoint;
+        //    LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+        //    MovementArea = movementArea;
+        //    EngageDistance = 100;
+        //    EngageTargetId = null;
+        //    MovementSpeed = movementSpeed;
+        //}
 
-        /// <summary>
-        /// Behavior
-        /// </summary>
-        public int EngageDistance { get; init; } = 100;
-
-        public string EngageTargetId { get; private set; }
-
-        /// <summary>
-        /// Movement
-        /// </summary>
-
-        public Rectangle MovementArea { get; init; }
-
-        public int MovementWaitSeconds { get; init; } = 10;
-
-        public double LastMovementTime { get; private set; } = DateTimeOffset.Now.ToUnixTimeSeconds();
-
-        public Vector3 MovementDestination { get; private set; }
-
-        public EnemyModel(
-            string name,
-            EnemyType enemyType,
-            Vector3 spawnPoint,
-            Rectangle spawnArea,
-            int respawnTime,
-            float movementSpeed,
-            int movementWaitSeconds,
-            Rectangle movementArea
-        )
-        {
-            Id = Guid.NewGuid().ToString();
-            Name = name;
-            Type = enemyType;
-            SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            Coordinates = spawnPoint;
-            Direction = Direction.DOWN;
-            IsAlive = true;
-            IsMoving = false;
-            RespawnSeconds = respawnTime;
-            SpawnArea = spawnArea;
-            MovementWaitSeconds = movementWaitSeconds;
-            MovementDestination = spawnPoint;
-            LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            MovementArea = movementArea;
-            EngageDistance = 100;
-            EngageTargetId = null;
-            MovementSpeed = movementSpeed;
-        }
-
-        public EnemyModel(
-            string id,
-            string name,
-            EnemyType enemyType,
-            string engageTargetId,
-            Vector3 coordinates,
-            Vector3 movementDestination,
-            float movementSpeed,
-            bool isAlive)
-        {
-            Id = id;
-            Name = name;
-            Type = enemyType;
-            EngageTargetId = engageTargetId;
-            Coordinates = coordinates;
-            MovementDestination = movementDestination;
-            MovementSpeed = movementSpeed;
-            IsAlive = isAlive;
-        }
+        //public EnemyModel(
+        //    string id,
+        //    string name,
+        //    EnemyType enemyType,
+        //    string engageTargetId,
+        //    Vector3 coordinates,
+        //    Vector3 movementDestination,
+        //    float movementSpeed,
+        //    bool isAlive)
+        //{
+        //    Id = id;
+        //    Name = name;
+        //    Type = enemyType;
+        //    EngageTargetId = engageTargetId;
+        //    Coordinates = coordinates;
+        //    MovementDestination = movementDestination;
+        //    MovementSpeed = movementSpeed;
+        //    IsAlive = isAlive;
+        //}
 
         /// <summary>
         /// Engage target character
@@ -95,8 +72,11 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel EngageCharacter(string id, Vector3 position)
         {
-            EngageTargetId = id;
-            PathToPoint(Coordinates, position, MovementSpeed);
+            BehaviorMovement.EngageTargetId = id;
+            PathToPoint(
+                Character.Coordinates,
+                position,
+                Character.MovementSpeed);
             return this;
         }
 
@@ -107,7 +87,7 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel UpdateDestination(Vector3 destination)
         {
-            MovementDestination = destination;
+            BehaviorMovement.MovementDestination = destination;
             return this;
         }
         
@@ -118,7 +98,10 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel PathToPoint(Vector3 toPoint)
         {
-            PathToPoint(Coordinates, toPoint, MovementSpeed);
+            PathToPoint(
+                Character.Coordinates,
+                toPoint,
+                Character.MovementSpeed);
             return this;
         }
 
@@ -132,11 +115,11 @@ namespace Common.Base
             Vector3 toPoint,
             float movementSpeed)
         {
-            LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            Coordinates = fromPoint;
-            MovementDestination = toPoint;
-            MovementSpeed = movementSpeed;
-            Direction = MovementUtility.GetDirectionToPoint(Coordinates, toPoint);
+            BehaviorMovement.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            Character.Coordinates = fromPoint;
+            BehaviorMovement.MovementDestination = toPoint;
+            Character.MovementSpeed = movementSpeed;
+            Character.Direction = MovementUtility.GetDirectionToPoint(Character.Coordinates, toPoint);
             return this;
         }
 
@@ -147,10 +130,10 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel Respawn(Vector3 respawnCoordinates)
         {
-            SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            Coordinates = respawnCoordinates;
-            IsAlive = true;
-            IsMoving = false;
+            BehaviorSpawn.SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            Character.Coordinates = respawnCoordinates;
+            Character.IsAlive = true;
+            Character.IsMoving = false;
             return this;
         }
 
@@ -160,8 +143,8 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel DisengagePlayer()
         {
-            EngageTargetId = null;
-            MovementDestination = Coordinates;
+            BehaviorMovement.EngageTargetId = null;
+            BehaviorMovement.MovementDestination = Character.Coordinates;
             return this;
         }
     }

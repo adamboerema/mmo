@@ -63,7 +63,7 @@ namespace Server.Engine.Enemy
         /// </summary>
         private void InitializeEnemies()
         {
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 3; i++)
             {
                 var enemy = CreateEnemy();
                 _enemyStore.Add(enemy);
@@ -151,12 +151,11 @@ namespace Server.Engine.Enemy
         /// Turn and start the movement towards a point
         /// </summary>
         /// <param name="enemy"></param>
-        private EnemyModel StartMovement(EnemyModel enemy)
+        private void StartMovement(EnemyModel enemy)
         {
             var movementPoint = GetRandomWorldPoint(enemy.MovementArea);
-            enemy.MoveToPoint(movementPoint, enemy.MovementSpeed);
+            enemy.PathToPoint(movementPoint);
             DispatchEnemyMovement(enemy);
-            return enemy;
         }
 
         /// <summary>
@@ -164,11 +163,10 @@ namespace Server.Engine.Enemy
         /// </summary>
         /// <param name="enemy"></param>
         /// <returns></returns>
-        private EnemyModel StopMovement(EnemyModel enemy)
+        private void StopMovement(EnemyModel enemy)
         {
             enemy.StopMove();
             DispatchEnemyMovement(enemy);
-            return enemy;
         }
 
         /// <summary>

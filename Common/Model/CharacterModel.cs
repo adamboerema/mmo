@@ -3,23 +3,23 @@ using System.Numerics;
 using Common.Base;
 using Common.Utility;
 
-namespace Common.Model.Base
+namespace Common.Model
 {
-    public abstract class BaseCharacterModel
+    public class CharacterModel
     {
         public string Id { get; init; }
 
         public string Name { get; init; }
 
-        public bool IsAlive { get; protected set; } = true;
+        public bool IsAlive { get; set; } = true;
 
-        public bool IsMoving { get; protected set; } = false;
+        public bool IsMoving { get; set; } = false;
 
-        public float MovementSpeed { get; protected set; } = 0.2f;
+        public float MovementSpeed { get; set; } = 0.2f;
 
-        public Direction Direction { get; protected set; } = Direction.DOWN;
+        public Direction Direction { get; set; } = Direction.DOWN;
 
-        public Vector3 Coordinates { get; protected set; }
+        public Vector3 Coordinates { get; set; }
 
         /// <summary>
         /// Turn to point
@@ -27,7 +27,7 @@ namespace Common.Model.Base
         /// <param name="model">center model</param>
         /// <param name="point">point turning towards</param>
         /// <returns></returns>
-        public BaseCharacterModel TurnToPoint(Vector3 point)
+        public CharacterModel TurnToPoint(Vector3 point)
         {
             Direction = MovementUtility.GetDirectionToPoint(Coordinates, point);
             return this;
@@ -38,7 +38,7 @@ namespace Common.Model.Base
         /// </summary>
         /// <param name="movementSpeed"></param>
         /// <returns></returns>
-        public BaseCharacterModel AdjustSpeed(float movementSpeed)
+        public CharacterModel AdjustSpeed(float movementSpeed)
         {
             MovementSpeed = movementSpeed;
             return this;
@@ -51,7 +51,7 @@ namespace Common.Model.Base
         /// <param name="destination"></param>
         /// <param name="speed"></param>
         /// <returns></returns>
-        public BaseCharacterModel MoveToPoint(
+        public CharacterModel MoveToPoint(
             Vector3 destination,
             float speed)
         {
@@ -69,7 +69,7 @@ namespace Common.Model.Base
         /// <param name="maxWidth">Max world width</param>
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
-        public BaseCharacterModel Move(
+        public CharacterModel Move(
             float speed,
             int maxWidth,
             int maxHeight)
@@ -87,7 +87,7 @@ namespace Common.Model.Base
         /// Stop movement
         /// </summary>
         /// <returns></returns>
-        public BaseCharacterModel StopMove()
+        public CharacterModel StopMove()
         {
             IsMoving = false;
             return this;
