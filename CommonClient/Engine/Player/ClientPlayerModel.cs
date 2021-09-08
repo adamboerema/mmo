@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Common.Base;
+using Common.Model;
 
 namespace CommonClient.Engine.Player
 {
@@ -8,18 +9,10 @@ namespace CommonClient.Engine.Player
     {
         public ClientPlayerModel(
             string id,
-            string name,
             bool isClient,
-            Direction direction,
-            Vector3 coordinates,
-            bool isMoving,
-            float movementSpeed) : base(
+            CharacterModel character) : base(
                 id,
-                name,
-                direction,
-                coordinates,
-                isMoving,
-                movementSpeed)
+                character)
         {
             IsClient = isClient;
         }

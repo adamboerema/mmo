@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Common.Model.Behavior
 {
-    public class BehaviorSpawnModel
+    public class SpawnModel
     {
         public int RespawnSeconds { get; set; } = 60;
 

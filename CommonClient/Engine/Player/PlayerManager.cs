@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Common.Base;
+using Common.Model;
 
 namespace CommonClient.Engine.Player
 {
@@ -61,12 +62,15 @@ namespace CommonClient.Engine.Player
         {
             return new ClientPlayerModel(
                 id: playerId,
-                name: "test",
                 isClient: isClient,
-                direction: movementType,
-                coordinates: position,
-                isMoving: false,
-                movementSpeed: 0.2f);
+                character: new CharacterModel
+                {
+                    Name = "test",
+                    Direction = movementType,
+                    Coordinates = position,
+                    IsMoving = false,
+                    MovementSpeed = 0.2f
+                });
         }
     }
 }

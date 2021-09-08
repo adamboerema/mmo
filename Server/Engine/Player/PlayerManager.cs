@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Common.Base;
+using Common.Model;
 using Common.Packets.ServerToClient.Player;
 using Server.Bus.Packet;
 
@@ -92,12 +93,12 @@ namespace Server.Engine.Player
             {
                 PlayerId = player.Id,
                 IsClient = isClient,
-                IsMoving = player.IsMoving,
+                IsMoving = player.Character.IsMoving,
                 Position = new Vector3(
-                        player.Coordinates.X,
-                        player.Coordinates.Y,
-                        player.Coordinates.Z),
-                MovementType = player.Direction
+                        player.Character.Coordinates.X,
+                        player.Character.Coordinates.Y,
+                        player.Character.Coordinates.Z),
+                MovementType = player.Character.Direction
             };
 
         /// <summary>
@@ -108,10 +109,13 @@ namespace Server.Engine.Player
         private PlayerModel CreateNewPlayer(string connectionId) =>
             new PlayerModel(
                 id: connectionId,
-                name: "Test",
-                direction: Direction.DOWN,
-                coordinates: new Vector3(0, 0, 0),
-                isMoving: false,
-                movementSpeed: 0.2f);
+                character: new CharacterModel
+                {
+                    Name = "Test",
+                    Direction = Direction.DOWN,
+                    Coordinates = new Vector3(0, 0, 0),
+                    IsMoving = false,
+                    MovementSpeed = 0.2f
+                });
     }
 }

@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace Common.Model.Behavior
 {
-    public class BehaviorMovementModel
+    public class MovementModel
     {
         /// <summary>
         /// Behavior

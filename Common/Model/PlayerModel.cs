@@ -22,8 +22,10 @@ namespace Common.Base
         //}
 
         public PlayerModel(
+            string id,
             CharacterModel character)
         {
+            Id = id;
             Character = character;
         }
 

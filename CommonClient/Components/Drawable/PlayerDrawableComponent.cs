@@ -49,10 +49,10 @@ namespace CommonClient.Components.Player
             foreach(var player in players)
             {
 
-                var speed = (float)(gameTime.ElapsedGameTime.TotalMilliseconds * player.MovementSpeed);
+                var speed = (float)(gameTime.ElapsedGameTime.TotalMilliseconds * player.Character.MovementSpeed);
                 if (player.IsClient)
                 {
-                    var position = player.Coordinates;
+                    var position = player.Character.Coordinates;
                     var vectorPosition = new Vector3(position.X, position.Y, 0);
                     _camera.UpdatePosition(
                         vectorPosition,
@@ -60,7 +60,7 @@ namespace CommonClient.Components.Player
                         _clientPlayerTexture.Height);
                 }
 
-                player.Move(speed, WORLD_WIDTH, WORLD_HEIGHT);
+                player.Character.Move(speed, WORLD_WIDTH, WORLD_HEIGHT);
                 _playerManager.UpdatePlayer(player);
             }
             base.Update(gameTime);
@@ -89,7 +89,7 @@ namespace CommonClient.Components.Player
         /// <param name="playerModel"></param>
         private void DrawPlayer(ClientPlayerModel playerModel, Texture2D texture)
         {
-            var coordinates = playerModel.Coordinates;
+            var coordinates = playerModel.Character.Coordinates;
 
             _spriteBatch.Draw(
                 texture,

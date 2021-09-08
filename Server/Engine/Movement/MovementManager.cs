@@ -51,8 +51,8 @@ namespace Server.Engine.Movement
             var players = _playerStore.GetAll();
             foreach (var player in players.Values)
             {
-                var speed = player.MovementSpeed * (float) elapsedTime;
-                player.Move(speed, MAX_WIDTH, MAX_HEIGHT);
+                var speed = player.Character.MovementSpeed * (float) elapsedTime;
+                player.Character.Move(speed, MAX_WIDTH, MAX_HEIGHT);
                 _playerStore.Update(player);
             }
         }
@@ -67,11 +67,11 @@ namespace Server.Engine.Movement
             {
                 PlayerId = player.Id,
                 Position = new Vector3(
-                    player.Coordinates.X,
-                    player.Coordinates.Y,
-                    player.Coordinates.Z),
-                MovementType = player.Direction,
-                IsMoving = player.IsMoving
+                    player.Character.Coordinates.X,
+                    player.Character.Coordinates.Y,
+                    player.Character.Coordinates.Z),
+                MovementType = player.Character.Direction,
+                IsMoving = player.Character.IsMoving
             });
         }
     }

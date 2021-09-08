@@ -12,9 +12,9 @@ namespace Common.Base
 
         public EnemyType Type { get; init; }
 
-        public BehaviorSpawnModel BehaviorSpawn { get; init; }
+        public SpawnModel Spawn { get; init; }
 
-        public BehaviorMovementModel BehaviorMovement { get; init; }
+        public MovementModel Movement { get; init; }
 
         public CharacterModel Character { get; init; } 
 
@@ -75,7 +75,7 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel EngageCharacter(string id, Vector3 position)
         {
-            BehaviorMovement.EngageTargetId = id;
+            Movement.EngageTargetId = id;
             PathToPoint(
                 Character.Coordinates,
                 position,
@@ -90,7 +90,7 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel UpdateDestination(Vector3 destination)
         {
-            BehaviorMovement.MovementDestination = destination;
+            Movement.MovementDestination = destination;
             return this;
         }
         
@@ -118,9 +118,9 @@ namespace Common.Base
             Vector3 toPoint,
             float movementSpeed)
         {
-            BehaviorMovement.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            Movement.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
             Character.Coordinates = fromPoint;
-            BehaviorMovement.MovementDestination = toPoint;
+            Movement.MovementDestination = toPoint;
             Character.MovementSpeed = movementSpeed;
             Character.Direction = MovementUtility.GetDirectionToPoint(Character.Coordinates, toPoint);
             return this;
@@ -133,7 +133,7 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel Respawn(Vector3 respawnCoordinates)
         {
-            BehaviorSpawn.SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            Spawn.SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
             Character.Coordinates = respawnCoordinates;
             Character.IsAlive = true;
             Character.IsMoving = false;
@@ -146,8 +146,8 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel DisengagePlayer()
         {
-            BehaviorMovement.EngageTargetId = null;
-            BehaviorMovement.MovementDestination = Character.Coordinates;
+            Movement.EngageTargetId = null;
+            Movement.MovementDestination = Character.Coordinates;
             return this;
         }
     }
