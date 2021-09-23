@@ -37,13 +37,16 @@ namespace Server.Engine.Player
             _players.TryUpdate(model.Id, model, _players[model.Id]);
         }
 
-        public void UpdateMovement(string playerId, Vector3 coordinates, Direction movementType)
+        public void UpdateMovement(
+            string playerId,
+            Vector3 coordinates,
+            Direction direction,
+            bool isMoving)
         {
             var player = Get(playerId);
             if (player != null)
             {
-                player.Coordinates = coordinates;
-                player.Direction = movementType;
+                player.UpdateCoordinates(coordinates, direction, isMoving);
                 Update(player);
             }
         }

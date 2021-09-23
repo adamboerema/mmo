@@ -3,21 +3,19 @@ using System.Numerics;
 using Common.Base;
 using Common.Utility;
 
-namespace Common.Model.Base
+namespace Common.Model.Character
 {
-    public abstract class BaseCharacterModel
+    public class CharacterModel
     {
-        public string Id { get; set; }
+        public string Name { get; init; }
 
-        public string Name { get; set; }
+        public bool IsAlive { get; set; } = true;
 
-        public bool IsAlive { get; set; }
+        public bool IsMoving { get; set; } = false;
 
-        public bool IsMoving { get; set; }
+        public float MovementSpeed { get; set; } = 0.2f;
 
-        public float MovementSpeed { get; set; }
-
-        public Direction Direction { get; set; }
+        public Direction Direction { get; set; } = Direction.DOWN;
 
         public Vector3 Coordinates { get; set; }
 
@@ -27,9 +25,20 @@ namespace Common.Model.Base
         /// <param name="model">center model</param>
         /// <param name="point">point turning towards</param>
         /// <returns></returns>
-        public BaseCharacterModel TurnToPoint(Vector3 point)
+        public CharacterModel TurnToPoint(Vector3 point)
         {
             Direction = MovementUtility.GetDirectionToPoint(Coordinates, point);
+            return this;
+        }
+
+        /// <summary>
+        /// Adjust the speed of the character
+        /// </summary>
+        /// <param name="movementSpeed"></param>
+        /// <returns></returns>
+        public CharacterModel AdjustSpeed(float movementSpeed)
+        {
+            MovementSpeed = movementSpeed;
             return this;
         }
 
@@ -40,7 +49,7 @@ namespace Common.Model.Base
         /// <param name="destination"></param>
         /// <param name="speed"></param>
         /// <returns></returns>
-        public BaseCharacterModel MoveToPoint(
+        public CharacterModel MoveToPoint(
             Vector3 destination,
             float speed)
         {
@@ -58,7 +67,7 @@ namespace Common.Model.Base
         /// <param name="maxWidth">Max world width</param>
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
-        public BaseCharacterModel MoveCoordinates(
+        public CharacterModel Move(
             float speed,
             int maxWidth,
             int maxHeight)
@@ -76,7 +85,7 @@ namespace Common.Model.Base
         /// Stop movement
         /// </summary>
         /// <returns></returns>
-        public BaseCharacterModel StopMove()
+        public CharacterModel StopMove()
         {
             IsMoving = false;
             return this;

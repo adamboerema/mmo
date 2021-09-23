@@ -1,49 +1,61 @@
 ﻿using System;
-using System.Drawing;
 using System.Numerics;
-using Common.Model.Base;
+using Common.Model;
+using Common.Model.Behavior;
+using Common.Model.Character;
+using Common.Utility;
 
 namespace Common.Base
 {
-    public class EnemyModel: BaseCharacterModel
+    public class EnemyModel
     {
-        public EnemyType Type { get; set; }
+        public string Id { get; init; }
 
-        public double SpawnTime { get; set; }
+        public EnemyType Type { get; init; }
 
-        public double DeathTime { get; set; }
+        public SpawnModel Spawn { get; init; }
 
-        public int RespawnSeconds { get; set; }
+        public MovementModel Movement { get; init; }
 
-        public Rectangle SpawnArea { get; set; }
-
-        /// <summary>
-        /// Behavior
-        /// </summary>
-        public int EngageDistance { get; set; }
-
-        public string EngageTargetId { get; set; }
-
-        /// <summary>
-        /// Movement
-        /// </summary>
-        public double LastMovementTime { get; set; }
-
-        public int MovementWaitSeconds { get; set; }
-
-        public Vector3 MovementDestination { get; set; }
-
-        public Rectangle MovementArea { get; set; }
+        public CharacterModel Character { get; init; }
 
         /// <summary>
         /// Engage target character
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public EnemyModel EngageCharacter(BaseCharacterModel characterModel)
+        public EnemyModel EngageCharacter(string id, Vector3 position)
         {
-            EngageTargetId = characterModel.Id;
-            StartMovementTowardsPoint(characterModel.Coordinates);
+            Movement.EngageTargetId = id;
+            PathToPoint(
+                Character.Coordinates,
+                position,
+                Character.MovementSpeed);
+            return this;
+        }
+
+        /// <summary>
+        /// Update the destination
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <returns></returns>
+        public EnemyModel UpdateDestination(Vector3 destination)
+        {
+            Movement.MovementDestination = destination;
+            return this;
+        }
+        
+        /// <summary>
+        /// Path to destintation
+        /// </summary>
+        /// <param name="toPoint"></param>
+        /// <returns></returns>
+        public EnemyModel PathToPoint(Vector3 toPoint)
+        {
+            PathToPoint(
+                Character.Coordinates,
+                toPoint,
+                Character.MovementSpeed);
             return this;
         }
 
@@ -52,11 +64,16 @@ namespace Common.Base
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public EnemyModel StartMovementTowardsPoint(Vector3 point)
+        public EnemyModel PathToPoint(
+            Vector3 fromPoint,
+            Vector3 toPoint,
+            float movementSpeed)
         {
-            LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            MovementDestination = point;
-            TurnToPoint(point);
+            Movement.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            Character.Coordinates = fromPoint;
+            Movement.MovementDestination = toPoint;
+            Character.MovementSpeed = movementSpeed;
+            Character.Direction = MovementUtility.GetDirectionToPoint(Character.Coordinates, toPoint);
             return this;
         }
 
@@ -67,10 +84,10 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel Respawn(Vector3 respawnCoordinates)
         {
-            SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            Coordinates = respawnCoordinates;
-            IsAlive = true;
-            IsMoving = false;
+            Spawn.SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            Character.Coordinates = respawnCoordinates;
+            Character.IsAlive = true;
+            Character.IsMoving = false;
             return this;
         }
 
@@ -80,8 +97,8 @@ namespace Common.Base
         /// <returns></returns>
         public EnemyModel DisengagePlayer()
         {
-            EngageTargetId = null;
-            MovementDestination = Coordinates;
+            Movement.EngageTargetId = null;
+            Movement.MovementDestination = Character.Coordinates;
             return this;
         }
     }

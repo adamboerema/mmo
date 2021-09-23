@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Common.Base;
+using Common.Model;
+using Common.Model.Behavior;
+using Common.Model.Character;
 using Common.Utility;
 using CommonClient.Engine.Player;
 
@@ -47,10 +50,10 @@ namespace CommonClient.Engine.Enemy
             var enemy = _enemyStore.Get(enemyId);
             if(enemy != null)
             {
-                enemy.Coordinates = position;
-                enemy.MovementDestination = movementDestination;
-                enemy.MovementSpeed = movementSpeed;
-                enemy.Direction = MovementUtility.GetDirectionToPoint(position, movementDestination);
+                enemy.PathToPoint(
+                    enemy.Character.Coordinates,
+                    enemy.Movement.MovementDestination,
+                    enemy.Character.MovementSpeed);
                 _enemyStore.Update(enemy);
             }
         }
@@ -61,7 +64,7 @@ namespace CommonClient.Engine.Enemy
             var player = _playerStore.Get(targetId);
             if(enemy != null && player != null)
             {
-                enemy.EngageTargetId = player.Id;
+                enemy.EngageCharacter(player.Id, player.Character.Coordinates);
                 _enemyStore.Update(enemy);
             }
         }
@@ -71,7 +74,7 @@ namespace CommonClient.Engine.Enemy
             var enemy = _enemyStore.Get(enemyId);
             if (enemy != null)
             {
-                enemy.EngageTargetId = null;
+                enemy.DisengagePlayer();
                 _enemyStore.Update(enemy);
             }
         }
@@ -100,12 +103,18 @@ namespace CommonClient.Engine.Enemy
             {
                 Id = enemyId,
                 Type = enemyType,
-                EngageTargetId = targetId,
-                MovementDestination = movementDestination,
-                Name = "Test",
-                IsAlive = true,
-                Coordinates = position,
-                MovementSpeed = movementSpeed
+                Character = new CharacterModel
+                {
+                    Name = "Test",
+                    Coordinates = position,
+                    MovementSpeed = movementSpeed,
+                    IsAlive = true
+                },
+                Movement = new MovementModel
+                {
+                    MovementDestination = movementDestination,
+                    EngageTargetId = targetId
+                }
             };
         }
     }

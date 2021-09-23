@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Common.Base;
+using Common.Model;
+using Common.Model.Character;
 
 namespace CommonClient.Engine.Player
 {
@@ -59,15 +61,17 @@ namespace CommonClient.Engine.Player
             Vector3 position,
             Direction movementType)
         {
-            return new ClientPlayerModel
-            {
-                Id = playerId,
-                IsClient = isClient,
-                Name = "test",
-                Coordinates = position,
-                Direction = movementType,
-                MovementSpeed = 0.2f
-            };
+            return new ClientPlayerModel(
+                id: playerId,
+                isClient: isClient,
+                character: new CharacterModel
+                {
+                    Name = "test",
+                    Direction = movementType,
+                    Coordinates = position,
+                    IsMoving = false,
+                    MovementSpeed = 0.2f
+                });
         }
     }
 }

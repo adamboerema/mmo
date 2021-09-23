@@ -8,10 +8,6 @@ namespace CommonClient.Components.Player
 {
     public class WorldDrawableComponent: DrawableGameComponent
     {
-        private const int WORLD_HEIGHT = 1000;
-        private const int WORLD_WIDTH = 1000;
-
-        private readonly int[,] _worldArea;
 
         private readonly IPlayerManager _playerManager;
 
