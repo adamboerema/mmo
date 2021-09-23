@@ -24,8 +24,8 @@
     <Folder Include="Store\" />
     <Folder Include="Packets\ServerToClient\Enemy\" />
     <Folder Include="Utility\" />
-    <Folder Include="Builders\" />
     <Folder Include="Model\Behavior\" />
+    <Folder Include="Model\Character\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\" />
@@ -49,5 +49,6 @@
     <None Remove="Utility\" />
     <None Remove="Builder\" />
     <None Remove="Model\Behavior\" />
+    <None Remove="Model\Character\" />
   </ItemGroup>
 </Project>

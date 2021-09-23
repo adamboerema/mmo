@@ -3,7 +3,7 @@ using System.Numerics;
 using Common.Base;
 using Common.Utility;
 
-namespace Common.Model
+namespace Common.Model.Character
 {
     public class CharacterModel
     {

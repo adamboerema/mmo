@@ -4,6 +4,7 @@ using System.Numerics;
 using Common.Base;
 using Common.Model;
 using Common.Model.Behavior;
+using Common.Model.Character;
 using Common.Utility;
 using CommonClient.Engine.Player;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Common.Model;
+using Common.Model.Character;
 
 namespace Common.Base
 {
@@ -8,18 +9,7 @@ namespace Common.Base
     {
         public string Id { get; init; }
 
-        public CharacterModel Character { get; private set; }
-
-        //public PlayerModel(
-        //    CharacterModel character)
-        //{
-        //    Id = id;
-        //    Name = name;
-        //    Direction = direction;
-        //    Coordinates = coordinates;
-        //    IsMoving = isMoving;
-        //    MovementSpeed = movementSpeed;
-        //}
+        public CharacterModel Character { get; init; }
 
         public PlayerModel(
             string id,

@@ -2,6 +2,7 @@
 using System.Numerics;
 using Common.Model;
 using Common.Model.Behavior;
+using Common.Model.Character;
 using Common.Utility;
 
 namespace Common.Base
@@ -16,57 +17,7 @@ namespace Common.Base
 
         public MovementModel Movement { get; init; }
 
-        public CharacterModel Character { get; init; } 
-
-        //public EnemyModel(
-        //    string name,
-        //    EnemyType enemyType,
-        //    Vector3 spawnPoint,
-        //    Rectangle spawnArea,
-        //    int respawnTime,
-        //    float movementSpeed,
-        //    int movementWaitSeconds,
-        //    Rectangle movementArea
-        //)
-        //{
-        //    Id = Guid.NewGuid().ToString();
-        //    Name = name;
-        //    Type = enemyType;
-        //    SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-        //    Coordinates = spawnPoint;
-        //    Direction = Direction.DOWN;
-        //    IsAlive = true;
-        //    IsMoving = false;
-        //    RespawnSeconds = respawnTime;
-        //    SpawnArea = spawnArea;
-        //    MovementWaitSeconds = movementWaitSeconds;
-        //    MovementDestination = spawnPoint;
-        //    LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-        //    MovementArea = movementArea;
-        //    EngageDistance = 100;
-        //    EngageTargetId = null;
-        //    MovementSpeed = movementSpeed;
-        //}
-
-        //public EnemyModel(
-        //    string id,
-        //    string name,
-        //    EnemyType enemyType,
-        //    string engageTargetId,
-        //    Vector3 coordinates,
-        //    Vector3 movementDestination,
-        //    float movementSpeed,
-        //    bool isAlive)
-        //{
-        //    Id = id;
-        //    Name = name;
-        //    Type = enemyType;
-        //    EngageTargetId = engageTargetId;
-        //    Coordinates = coordinates;
-        //    MovementDestination = movementDestination;
-        //    MovementSpeed = movementSpeed;
-        //    IsAlive = isAlive;
-        //}
+        public CharacterModel Character { get; init; }
 
         /// <summary>
         /// Engage target character

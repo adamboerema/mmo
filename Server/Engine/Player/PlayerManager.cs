@@ -2,6 +2,7 @@
 using System.Numerics;
 using Common.Base;
 using Common.Model;
+using Common.Model.Character;
 using Common.Packets.ServerToClient.Player;
 using Server.Bus.Packet;
 

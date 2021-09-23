@@ -10,6 +10,7 @@ using Server.Engine.Player;
 using Common.Utility;
 using Common.Model;
 using Common.Model.Behavior;
+using Common.Model.Character;
 
 namespace Server.Engine.Enemy
 {
