@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using Common.Model;
 using Common.Model.Behavior;
 using Common.Model.Character;
 using Common.Utility;

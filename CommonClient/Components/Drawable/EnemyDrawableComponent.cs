@@ -48,7 +48,7 @@ namespace CommonClient.Components.Player
                     {
                         enemy.PathToPoint(
                             enemy.Character.Coordinates,
-                            player.Character.Coordinates,
+                            player.Coordinates,
                             enemy.Character.MovementSpeed);
                     }
                 }

@@ -64,7 +64,7 @@ namespace CommonClient.Engine.Enemy
             var player = _playerStore.Get(targetId);
             if(enemy != null && player != null)
             {
-                enemy.EngageCharacter(player.Id, player.Character.Coordinates);
+                enemy.EngageCharacter(player.Id, player.Coordinates);
                 _enemyStore.Update(enemy);
             }
         }

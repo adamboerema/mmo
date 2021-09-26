@@ -86,11 +86,11 @@ namespace Server.Engine.Enemy
                 {
                     var absoluteDistance = MovementUtility.GetAbsoluteDistanceToPoint(
                         enemy.Character.Coordinates,
-                        player.Character.Coordinates);
+                        player.Coordinates);
 
                     if (absoluteDistance < enemy.Movement.EngageDistance)
                     {
-                        enemy.EngageCharacter(player.Id, player.Character.Coordinates);
+                        enemy.EngageCharacter(player.Id, player.Coordinates);
                         DispatchEnemyEngage(enemy);
                     }
                 }
@@ -103,7 +103,7 @@ namespace Server.Engine.Enemy
                 {
                     var distance = MovementUtility.GetAbsoluteDistanceToPoint(
                         enemy.Character.Coordinates,
-                        player.Character.Coordinates);
+                        player.Coordinates);
                     var disengageDistance = distance * 2;
 
                     if (distance > disengageDistance)
@@ -113,7 +113,7 @@ namespace Server.Engine.Enemy
                     }
                     else
                     {
-                        enemy.UpdateDestination(player.Character.Coordinates);
+                        enemy.UpdateDestination(player.Coordinates);
                     }
                 }
                 else

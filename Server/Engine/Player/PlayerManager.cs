@@ -94,12 +94,12 @@ namespace Server.Engine.Player
             {
                 PlayerId = player.Id,
                 IsClient = isClient,
-                IsMoving = player.Character.IsMoving,
+                IsMoving = player.IsMoving,
                 Position = new Vector3(
-                        player.Character.Coordinates.X,
-                        player.Character.Coordinates.Y,
-                        player.Character.Coordinates.Z),
-                MovementType = player.Character.Direction
+                        player.Coordinates.X,
+                        player.Coordinates.Y,
+                        player.Coordinates.Z),
+                MovementType = player.Direction
             };
 
         /// <summary>
