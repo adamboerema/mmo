@@ -21,8 +21,8 @@
     <Folder Include="Engine\Player\" />
     <Folder Include="Engine\Movement\" />
     <Folder Include="Login\" />
-    <Folder Include="Network\Handler\Router\" />
     <Folder Include="Engine\Enemy\" />
+    <Folder Include="Network\Router\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\Packet\" />
@@ -34,5 +34,6 @@
     <None Remove="Network\Handler\Module\" />
     <None Remove="Network\Handler\Factory\" />
     <None Remove="Engine\Npc\" />
+    <None Remove="Network\Router\" />
   </ItemGroup>
 </Project>

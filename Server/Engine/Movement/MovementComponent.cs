@@ -7,7 +7,7 @@ using Server.Engine.Player;
 
 namespace Server.Engine.Movement
 {
-    public class MovementManager: IMovementManager
+    public class MovementComponent: IMovementComponent
     {
         private const int MAX_WIDTH = 1000;
         private const int MAX_HEIGHT = 1000;
@@ -15,7 +15,7 @@ namespace Server.Engine.Movement
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IPlayerStore _playerStore;
 
-        public MovementManager(
+        public MovementComponent(
             IDispatchPacketBus dispatchPacketBus,
             IPlayerStore playerStore)
         {

@@ -10,12 +10,6 @@ namespace Common.Base
 
         private CharacterModel Character { get; init; }
 
-        public Vector3 Coordinates => Character.Coordinates;
-        public Direction Direction => Character.Direction;
-        public float MovementSpeed => Character.MovementSpeed;
-        public bool IsMoving => Character.IsMoving;
-
-
         public PlayerModel(
             string id,
             CharacterModel character)
@@ -23,6 +17,13 @@ namespace Common.Base
             Id = id;
             Character = character;
         }
+
+
+        public Vector3 Coordinates => Character.Coordinates;
+        public Direction Direction => Character.Direction;
+        public float MovementSpeed => Character.MovementSpeed;
+        public bool IsMoving => Character.IsMoving;
+
 
         /// <summary>
         /// Directly update the coordinates of player

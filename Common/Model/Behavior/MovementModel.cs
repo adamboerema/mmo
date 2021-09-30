@@ -24,5 +24,19 @@ namespace Common.Model.Behavior
         public double LastMovementTime { get; set; } = DateTimeOffset.Now.ToUnixTimeSeconds();
 
         public Vector3 MovementDestination { get; set; }
+
+        /// <summary>
+        /// Gets a random spawn point within a rectangle spawn area
+        /// </summary>
+        /// <param name="spawnArea">Spawn area</param>
+        /// <returns></returns>
+        public Vector3 GetRandomMovementPoint()
+        {
+            var random = new Random();
+            return new Vector3(
+                random.Next(MovementArea.Left, MovementArea.Right),
+                random.Next(MovementArea.Top, MovementArea.Bottom),
+                0);
+        }
     }
 }

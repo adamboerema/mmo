@@ -6,9 +6,9 @@ namespace Server.Network.Handler
 {
     public class MovementHandler: IPacketHandler<MovementInputPacket>
     {
-        private readonly IMovementManager _movementManager;
+        private readonly IMovementComponent _movementManager;
 
-        public MovementHandler(IMovementManager movementManager)
+        public MovementHandler(IMovementComponent movementManager)
         {
             _movementManager = movementManager;
         }

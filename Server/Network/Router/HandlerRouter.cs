@@ -2,8 +2,9 @@
 using Common.Definitions;
 using Common.Packets.ClientToServer.Auth;
 using Common.Packets.ClientToServer.Movement;
+using Server.Network.Handler;
 
-namespace Server.Network.Handler.Factory
+namespace Server.Network.Router
 {
     public class HandlerRouter: IHandlerRouter
     {

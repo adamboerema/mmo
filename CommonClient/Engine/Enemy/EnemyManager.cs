@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Common.Base;
-using Common.Model;
 using Common.Model.Behavior;
 using Common.Model.Character;
-using Common.Utility;
 using CommonClient.Engine.Player;
 
 namespace CommonClient.Engine.Enemy
@@ -51,9 +49,9 @@ namespace CommonClient.Engine.Enemy
             if(enemy != null)
             {
                 enemy.PathToPoint(
-                    enemy.Character.Coordinates,
-                    enemy.Movement.MovementDestination,
-                    enemy.Character.MovementSpeed);
+                    enemy.Coordinates,
+                    enemy.MovementDestination,
+                    enemy.MovementSpeed);
                 _enemyStore.Update(enemy);
             }
         }
@@ -99,23 +97,24 @@ namespace CommonClient.Engine.Enemy
             Vector3 movementDestination,
             float movementSpeed)
         {
-            return new EnemyModel
-            {
-                Id = enemyId,
-                Type = enemyType,
-                Character = new CharacterModel
+            return new EnemyModel(
+                id: enemyId,
+                type: enemyType,
+                spawnModel: new SpawnModel
+                {
+                    IsAlive = true
+                },
+                movementModel: new MovementModel
+                {
+                    MovementDestination = movementDestination,
+                    EngageTargetId = targetId
+                },
+                characterModel: new CharacterModel
                 {
                     Name = "Test",
                     Coordinates = position,
                     MovementSpeed = movementSpeed,
-                    IsAlive = true
-                },
-                Movement = new MovementModel
-                {
-                    MovementDestination = movementDestination,
-                    EngageTargetId = targetId
-                }
-            };
+                });
         }
     }
 }
