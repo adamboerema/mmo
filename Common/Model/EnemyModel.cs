@@ -45,6 +45,8 @@ namespace Common.Base
         public string EngageTargetId => _movement.EngageTargetId;
         public Vector3 MovementDestination => _movement.MovementDestination;
         public Vector3 GetRandomMovementPoint() => _movement.GetRandomMovementPoint();
+        public bool ShouldEngage(Vector3 target) => _movement.ShouldEngage(_character.Coordinates, target);
+        public bool ShouldDisengage(Vector3 target) => _movement.ShouldDisengage(_character.Coordinates, target);
 
         /// <summary>
         /// Spawn
@@ -68,39 +70,13 @@ namespace Common.Base
         }
 
         /// <summary>
-        /// Is target within engage range
-        /// </summary>
-        /// <param name="target">Target to check range on</param>
-        /// <returns></returns>
-        public bool IsInEngageRange(Vector3 target)
-        {
-            var absoluteDistance = MovementUtility.GetAbsoluteDistanceToPoint(
-                _character.Coordinates,
-                target);
-            return absoluteDistance < _movement.EngageDistance;
-        }
-
-        /// <summary>
-        /// Is target outside the 
-        /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public bool IsInDisengageRange(Vector3 target)
-        {
-            var absoluteDistance = MovementUtility.GetAbsoluteDistanceToPoint(
-                _character.Coordinates,
-                target);
-            var disengageDistance = absoluteDistance * 2;
-            return disengageDistance > _movement.EngageDistance;
-        }
-
-        /// <summary>
         /// Disengage the target
         /// </summary>
         /// <returns></returns>
         public void DisengagePlayer()
         {
             _movement.EngageTargetId = null;
+            _movement.LastDisengageTime = DateTimeOffset.Now.ToUnixTimeSeconds();
             _movement.MovementDestination = _character.Coordinates;
         }
 

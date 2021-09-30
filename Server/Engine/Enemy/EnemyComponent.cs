@@ -93,7 +93,7 @@ namespace Server.Engine.Enemy
         {
             foreach (var player in _playerStore.GetAll().Values)
             {
-                if (enemy.IsInEngageRange(player.Coordinates))
+                if (enemy.ShouldEngage(player.Coordinates))
                 {
                     enemy.EngageCharacter(player.Id, player.Coordinates);
                     DispatchEnemyEngage(enemy);
@@ -110,7 +110,7 @@ namespace Server.Engine.Enemy
             var player = _playerStore.Get(enemy.EngageTargetId);
             if (player != null)
             {
-                if (enemy.IsInDisengageRange(player.Coordinates))
+                if (enemy.ShouldDisengage(player.Coordinates))
                 {
                     enemy.DisengagePlayer();
                     DispatchEnemyDisenage(enemy);
