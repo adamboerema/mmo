@@ -117,7 +117,7 @@ namespace CommonClient.Network.Socket
             }
             catch(Exception ex)
             {
-                Console.WriteLine($"Connection Stream failed: {ex.Message}");
+                Console.WriteLine($"Client Connection Stream failed: {ex.Message}");
             }
 
             BeginStreamRead(result.AsyncState as StateBuffer);

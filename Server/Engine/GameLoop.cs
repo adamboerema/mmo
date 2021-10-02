@@ -13,17 +13,20 @@ namespace Server.Engine
         private Stopwatch _gameLoopTimer = new Stopwatch();
 
         private readonly IServerConfiguration _serverConfiguration;
-        private readonly IMovementManager _movementManager;
-        private readonly IEnemyManager _enemyManager;
+        private readonly IMovementComponent _movementComponent;
+        private readonly IEnemyComponent _enemyComponent;
+        private readonly IPlayerComponent _playerComponent;
 
         public GameLoop(
             IServerConfiguration serverConfiguration,
-            IMovementManager movementManager,
-            IEnemyManager enemyManager)
+            IPlayerComponent playerComponent,
+            IMovementComponent movementManager,
+            IEnemyComponent enemyManager)
         {
             _serverConfiguration = serverConfiguration;
-            _movementManager = movementManager;
-            _enemyManager = enemyManager;
+            _playerComponent = playerComponent;
+            _movementComponent = movementManager;
+            _enemyComponent = enemyManager;
         }
 
         public void Start()
@@ -45,8 +48,9 @@ namespace Server.Engine
 
         public void Update(double elapsedTime, double currentTime)
         {
-            _movementManager.Update(elapsedTime, currentTime);
-            _enemyManager.Update(elapsedTime, currentTime);
+            _movementComponent.Update(elapsedTime, currentTime);
+            _enemyComponent.Update(elapsedTime, currentTime);
+            _playerComponent.Update(elapsedTime, currentTime);
         }
 
         public void Stop()

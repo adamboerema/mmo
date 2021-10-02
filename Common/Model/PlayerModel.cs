@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using Common.Model;
 using Common.Model.Character;
 
 namespace Common.Base
@@ -9,7 +8,7 @@ namespace Common.Base
     {
         public string Id { get; init; }
 
-        public CharacterModel Character { get; init; }
+        private CharacterModel Character { get; init; }
 
         public PlayerModel(
             string id,
@@ -19,6 +18,20 @@ namespace Common.Base
             Character = character;
         }
 
+
+        public Vector3 Coordinates => Character.Coordinates;
+        public Direction Direction => Character.Direction;
+        public float MovementSpeed => Character.MovementSpeed;
+        public bool IsMoving => Character.IsMoving;
+
+
+        /// <summary>
+        /// Directly update the coordinates of player
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <param name="direction"></param>
+        /// <param name="isMoving"></param>
+        /// <returns></returns>
         public PlayerModel UpdateCoordinates(
             Vector3 coordinates,
             Direction direction,
@@ -30,10 +43,33 @@ namespace Common.Base
             return this;
         }
 
+        /// <summary>
+        /// Update Direction of the player
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="isMoving"></param>
+        /// <returns></returns>
         public PlayerModel UpdateDirection(Direction direction, bool isMoving)
         {
             Character.Direction = direction;
             Character.IsMoving = isMoving;
+            return this;
+        }
+
+        /// <summary>
+        /// Move Coordinates of player
+        /// </summary>
+        /// <param name="model">Player model</param>
+        /// <param name="speed">Speed of the movement</param>
+        /// <param name="maxWidth">Max world width</param>
+        /// <param name="maxHeight">Max world height</param>
+        /// <returns></returns>
+        public PlayerModel Move(
+            float speed,
+            int maxWidth,
+            int maxHeight)
+        {
+            Character.Move(speed, maxWidth, maxHeight);
             return this;
         }
     }

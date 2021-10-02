@@ -11,7 +11,7 @@ using Server.Engine.Movement;
 using Server.Engine.Player;
 using Server.Network.Connection;
 using Server.Network.Handler;
-using Server.Network.Handler.Factory;
+using Server.Network.Router;
 using Server.Network.Server;
 using Sever;
 
@@ -52,10 +52,10 @@ namespace Server
                     services.AddScoped<IConnectionReceiver, ConnectionReceiver>();
 
                     // Managers
-                    services.AddScoped<IPlayerManager, PlayerManager>();
+                    services.AddScoped<IPlayerComponent, PlayerComponent>();
                     services.AddScoped<IAuthManager, AuthManager>();
-                    services.AddScoped<IMovementManager, MovementManager>();
-                    services.AddScoped<IEnemyManager, EnemyManager>();
+                    services.AddScoped<IMovementComponent, MovementComponent>();
+                    services.AddScoped<IEnemyComponent, EnemyManager>();
 
                     // Stores
                     services.AddSingleton<IPlayerStore, PlayerStore>();

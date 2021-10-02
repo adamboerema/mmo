@@ -1,6 +1,6 @@
 ﻿using Common.Definitions;
 
-namespace Server.Network.Handler.Factory
+namespace Server.Network.Router
 {
     public interface IHandlerRouter
     {

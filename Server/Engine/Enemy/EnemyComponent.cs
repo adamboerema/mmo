@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Drawing;
-using System.Numerics;
 using Common.Bus;
 using Common.Base;
 using Common.Packets.ServerToClient.Enemy;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
 using Server.Engine.Player;
-using Common.Utility;
-using Common.Model;
 using Common.Model.Behavior;
 using Common.Model.Character;
 
 namespace Server.Engine.Enemy
 {
-    public class EnemyManager : IEnemyManager, IEventBusListener<ConnectionEvent>
+    public class EnemyManager : IEnemyComponent, IEventBusListener<ConnectionEvent>
     {
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IConnectionBus _connectionBus;
         private readonly IEnemyStore _enemyStore;
         private readonly IPlayerStore _playerStore;
-        private readonly Random _random;
 
         public EnemyManager(
             IDispatchPacketBus dispatchPacketBus,
@@ -28,7 +24,6 @@ namespace Server.Engine.Enemy
             IEnemyStore enemyStore,
             IPlayerStore pLayerStore)
         {
-            _random = new Random();
             _dispatchPacketBus = dispatchPacketBus;
             _connectionBus = connectionBus;
             _enemyStore = enemyStore;
@@ -80,47 +75,55 @@ namespace Server.Engine.Enemy
         /// <param name="enemy"></param>
         private void EngagePlayer(EnemyModel enemy)
         {
-            if(enemy.Movement.EngageTargetId == null)
+            if(enemy.EngageTargetId == null)
             {
-                foreach (var player in _playerStore.GetAll().Values)
-                {
-                    var absoluteDistance = MovementUtility.GetAbsoluteDistanceToPoint(
-                        enemy.Character.Coordinates,
-                        player.Character.Coordinates);
+                CheckEnemyEngage(enemy);
+            }
+            else
+            {
+                CheckEnemyDisengage(enemy);
+            }
+        }
 
-                    if (absoluteDistance < enemy.Movement.EngageDistance)
-                    {
-                        enemy.EngageCharacter(player.Id, player.Character.Coordinates);
-                        DispatchEnemyEngage(enemy);
-                    }
+        /// <summary>
+        /// Check if enemy should start engaging
+        /// </summary>
+        /// <param name="enemy"></param>
+        private void CheckEnemyEngage(EnemyModel enemy)
+        {
+            foreach (var player in _playerStore.GetAll().Values)
+            {
+                if (enemy.ShouldEngage(player.Coordinates))
+                {
+                    enemy.EngageCharacter(player.Id, player.Coordinates);
+                    DispatchEnemyEngage(enemy);
                 }
             }
+        }
 
-            if(enemy.Movement.EngageTargetId != null)
+        /// <summary>
+        /// Check if enemy should disengage
+        /// </summary>
+        /// <param name="enemy"></param>
+        private void CheckEnemyDisengage(EnemyModel enemy)
+        {
+            var player = _playerStore.Get(enemy.EngageTargetId);
+            if (player != null)
             {
-                var player = _playerStore.Get(enemy.Movement.EngageTargetId);
-                if (player != null)
-                {
-                    var distance = MovementUtility.GetAbsoluteDistanceToPoint(
-                        enemy.Character.Coordinates,
-                        player.Character.Coordinates);
-                    var disengageDistance = distance * 2;
-
-                    if (distance > disengageDistance)
-                    {
-                        enemy.DisengagePlayer();
-                        DispatchEnemyDisenage(enemy);
-                    }
-                    else
-                    {
-                        enemy.UpdateDestination(player.Character.Coordinates);
-                    }
-                }
-                else
+                if (enemy.ShouldDisengage(player.Coordinates))
                 {
                     enemy.DisengagePlayer();
                     DispatchEnemyDisenage(enemy);
                 }
+                else
+                {
+                    enemy.SetDestination(player.Coordinates);
+                }
+            }
+            else
+            {
+                enemy.DisengagePlayer();
+                DispatchEnemyDisenage(enemy);
             }
         }
 
@@ -132,20 +135,15 @@ namespace Server.Engine.Enemy
         /// <param name="enemy"></param>
         private void MoveEnemy(double elaspedTime, double timestamp, EnemyModel enemy)
         {
-            var moveTime = enemy.Movement.LastMovementTime + enemy.Movement.MovementWaitSeconds;
-            var shouldStartMove = moveTime < timestamp && enemy.Movement.EngageTargetId == null;
-
-            if(shouldStartMove)
+            if(enemy.ShouldStartMove(timestamp))
             {
                 StartMovement(enemy);
             }
 
-            var speed = (float)(enemy.Character.MovementSpeed * elaspedTime);
-            enemy.Character.MoveToPoint(enemy.Movement.MovementDestination, speed);
+            enemy.MoveToDestination(elaspedTime);
 
             // Stop if moving and have reached location
-            if(enemy.Character.IsMoving
-                && enemy.Character.Coordinates == enemy.Movement.MovementDestination)
+            if(enemy.ShouldStopMove())
             {
                 StopMovement(enemy);
             }
@@ -157,7 +155,7 @@ namespace Server.Engine.Enemy
         /// <param name="enemy"></param>
         private void StartMovement(EnemyModel enemy)
         {
-            var movementPoint = GetRandomWorldPoint(enemy.Movement.MovementArea);
+            var movementPoint = enemy.GetRandomMovementPoint();
             enemy.PathToPoint(movementPoint);
             DispatchEnemyMovement(enemy);
         }
@@ -169,7 +167,7 @@ namespace Server.Engine.Enemy
         /// <returns></returns>
         private void StopMovement(EnemyModel enemy)
         {
-            enemy.Character.StopMove();
+            enemy.StopMove();
             DispatchEnemyMovement(enemy);
         }
 
@@ -179,10 +177,7 @@ namespace Server.Engine.Enemy
         /// <param name="timestamp">Unix timestamp</param>
         private void SpawnEnemy(double timestamp, EnemyModel enemy)
         {
-            var respawnTime = enemy.Spawn.DeathTime + enemy.Spawn.RespawnSeconds;
-            var shouldRespawn = !enemy.Character.IsAlive && respawnTime < timestamp;
-
-            if (shouldRespawn)
+            if (enemy.ShouldRespawn(timestamp))
             {
                 RespawnEnemy(enemy);
             }
@@ -194,23 +189,9 @@ namespace Server.Engine.Enemy
         /// <param name="enemy"></param>
         private void RespawnEnemy(EnemyModel enemy)
         {
-            var randomWorldPoint = GetRandomWorldPoint(enemy.Spawn.SpawnArea);
-            enemy.Respawn(randomWorldPoint);
+            enemy.Respawn();
             _enemyStore.Add(enemy);
             DispatchEnemySpawn(enemy);
-        }
-
-        /// <summary>
-        /// Gets a random spawn point within a rectangle spawn area
-        /// </summary>
-        /// <param name="spawnArea">Spawn area</param>
-        /// <returns></returns>
-        private Vector3 GetRandomWorldPoint(Rectangle spawnArea)
-        {
-            return new Vector3(
-                _random.Next(spawnArea.Left, spawnArea.Right),
-                _random.Next(spawnArea.Top, spawnArea.Bottom),
-                0);
         }
 
         /// <summary>
@@ -219,37 +200,34 @@ namespace Server.Engine.Enemy
         /// <returns></returns>
         private EnemyModel CreateEnemy()
         {
-            var spawnArea = new Rectangle(100, 100, 100, 100);
-            var spawnPoint = GetRandomWorldPoint(spawnArea);
-
-            return new EnemyModel
+            var spawn = new SpawnModel
             {
-                Id = Guid.NewGuid().ToString(),
-                Type = EnemyType.TEST,
-                Character = new CharacterModel
+                IsAlive = true,
+                SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds(),
+                SpawnArea = new Rectangle(100, 100, 100, 100),
+                RespawnSeconds = 10
+            };
+
+            return new EnemyModel(
+                id: Guid.NewGuid().ToString(),
+                type: EnemyType.TEST,
+                spawnModel: spawn,
+                movementModel: new MovementModel
                 {
-                    Name = "Test",
-                    Coordinates = spawnPoint,
-                    MovementSpeed = 0.2f,
-                    Direction = Direction.DOWN,
-                    IsAlive = true,
-                    IsMoving = false
-                },
-                Spawn = new SpawnModel
-                {
-                    SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds(),
-                    SpawnArea = spawnArea,
-                    RespawnSeconds = 10
-                },
-                Movement = new MovementModel
-                {
-                    MovementDestination = spawnPoint,
+                    MovementDestination = spawn.GetRandomSpawnPoint(),
                     MovementWaitSeconds = 10,
                     MovementArea = new Rectangle(0, 100, 300, 300),
                     EngageDistance = 100,
                     EngageTargetId = null
-                }
-            };
+                },
+                characterModel: new CharacterModel
+                {
+                    Name = "Test",
+                    Coordinates = spawn.GetRandomSpawnPoint(),
+                    MovementSpeed = 0.2f,
+                    Direction = Direction.DOWN,
+                    IsMoving = false
+                });
         }
 
         /// <summary>
@@ -262,7 +240,7 @@ namespace Server.Engine.Enemy
             {
                 EnemyId = enemy.Id,
                 Type = enemy.Type,
-                Position = enemy.Character.Coordinates,
+                Position = enemy.Coordinates,
             };
             _dispatchPacketBus.Publish(packet);
         }
@@ -279,10 +257,10 @@ namespace Server.Engine.Enemy
                 {
                     EnemyId = enemy.Id,
                     Type = enemy.Type,
-                    TargetId = enemy.Movement.EngageTargetId,
-                    Position = enemy.Character.Coordinates,
-                    MovementDestination = enemy.Movement.MovementDestination,
-                    MovementSpeed = enemy.Character.MovementSpeed,
+                    TargetId = enemy.EngageTargetId,
+                    Position = enemy.Coordinates,
+                    MovementDestination = enemy.MovementDestination,
+                    MovementSpeed = enemy.MovementSpeed,
                 };
                 _dispatchPacketBus.Publish(playerId, packet);
             }
@@ -297,9 +275,9 @@ namespace Server.Engine.Enemy
             var packet = new EnemyMovementPacket
             {
                 EnemyId = enemy.Id,
-                Position = enemy.Character.Coordinates,
-                MovementDestination = enemy.Movement.MovementDestination,
-                MovementSpeed = enemy.Character.MovementSpeed
+                Position = enemy.Coordinates,
+                MovementDestination = enemy.MovementDestination,
+                MovementSpeed = enemy.MovementSpeed
             };
             _dispatchPacketBus.Publish(packet);
         }
@@ -313,7 +291,7 @@ namespace Server.Engine.Enemy
             var packet = new EnemyEngagePacket
             {
                 EnemyId = enemy.Id,
-                TargetId = enemy.Movement.EngageTargetId
+                TargetId = enemy.EngageTargetId
             };
             _dispatchPacketBus.Publish(packet);
         }

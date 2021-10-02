@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Server.Engine.Enemy
 {
-    public interface IEnemyManager : IGameLoopEvent
+    public interface IEnemyComponent : IGameComponent
     {
 
     }

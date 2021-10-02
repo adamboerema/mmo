@@ -110,7 +110,7 @@ namespace Server.Network.Connection
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Connection Stream failed: {ex.Message}");
+                Console.WriteLine($"Server Connection Stream failed: {ex.Message}");
                 CloseConnection();
             }
 

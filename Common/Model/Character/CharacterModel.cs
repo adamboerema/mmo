@@ -9,8 +9,6 @@ namespace Common.Model.Character
     {
         public string Name { get; init; }
 
-        public bool IsAlive { get; set; } = true;
-
         public bool IsMoving { get; set; } = false;
 
         public float MovementSpeed { get; set; } = 0.2f;
@@ -25,10 +23,9 @@ namespace Common.Model.Character
         /// <param name="model">center model</param>
         /// <param name="point">point turning towards</param>
         /// <returns></returns>
-        public CharacterModel TurnToPoint(Vector3 point)
+        public void TurnToPoint(Vector3 point)
         {
             Direction = MovementUtility.GetDirectionToPoint(Coordinates, point);
-            return this;
         }
 
         /// <summary>
@@ -36,27 +33,25 @@ namespace Common.Model.Character
         /// </summary>
         /// <param name="movementSpeed"></param>
         /// <returns></returns>
-        public CharacterModel AdjustSpeed(float movementSpeed)
+        public void AdjustSpeed(float movementSpeed)
         {
             MovementSpeed = movementSpeed;
-            return this;
         }
 
         /// <summary>
         /// Move to point
         /// </summary>
-        /// <param name="model">center model</param>
         /// <param name="destination"></param>
-        /// <param name="speed"></param>
+        /// <param name="elapsedTime"></param>
         /// <returns></returns>
-        public CharacterModel MoveToPoint(
+        public void  MoveToPoint(
             Vector3 destination,
-            float speed)
+            double elapsedTime)
         {
+            var speed = (float)(elapsedTime * MovementSpeed);
             var increment = GetCoordinatesToPoint(Coordinates, destination, speed);
             Coordinates = ClampCoordinatesToDestination(Coordinates, destination, increment);
             IsMoving = Coordinates != destination;
-            return this;
         }
 
         /// <summary>
@@ -67,7 +62,7 @@ namespace Common.Model.Character
         /// <param name="maxWidth">Max world width</param>
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
-        public CharacterModel Move(
+        public void Move(
             float speed,
             int maxWidth,
             int maxHeight)
@@ -78,17 +73,15 @@ namespace Common.Model.Character
                 Coordinates = ClampCoordinates(coordinates, maxWidth, maxHeight);
                 IsMoving = true;
             }
-            return this;
         }
 
         /// <summary>
         /// Stop movement
         /// </summary>
         /// <returns></returns>
-        public CharacterModel StopMove()
+        public void StopMove()
         {
             IsMoving = false;
-            return this;
         }
 
         /// <summary>

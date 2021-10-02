@@ -37,7 +37,6 @@
     <Folder Include="Engine\Player\" />
     <Folder Include="Engine\Movement\" />
     <Folder Include="Components\" />
-    <Folder Include="Components\Movement\" />
     <Folder Include="Components\Drawable\" />
     <Folder Include="Components\Camera\" />
     <Folder Include="Engine\Enemy\" />

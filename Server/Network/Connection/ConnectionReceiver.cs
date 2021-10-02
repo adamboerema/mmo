@@ -2,7 +2,7 @@
 using Common.Bus;
 using Common.Definitions;
 using Server.Bus.Packet;
-using Server.Network.Handler.Factory;
+using Server.Network.Router;
 
 namespace Server.Network.Connection
 {

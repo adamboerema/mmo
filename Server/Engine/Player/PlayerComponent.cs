@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Numerics;
 using Common.Base;
-using Common.Model;
 using Common.Model.Character;
 using Common.Packets.ServerToClient.Player;
 using Server.Bus.Packet;
 
 namespace Server.Engine.Player
 {
-    public class PlayerManager : IPlayerManager
+    public class PlayerComponent : IPlayerComponent
     {
         private IDispatchPacketBus _dispatchBus;
         private IPlayerStore _playerStore;
 
-        public PlayerManager(
+        public PlayerComponent(
             IDispatchPacketBus dispatchBus,
             IPlayerStore playersStore)
         {
             _dispatchBus = dispatchBus;
             _playerStore = playersStore;
+        }
+
+        public void Update(double elapsedTime, double timestamp)
+        {
+            // TODO: Update checks
         }
 
         public void InitializePlayer(string connectionId)
@@ -94,12 +98,12 @@ namespace Server.Engine.Player
             {
                 PlayerId = player.Id,
                 IsClient = isClient,
-                IsMoving = player.Character.IsMoving,
+                IsMoving = player.IsMoving,
                 Position = new Vector3(
-                        player.Character.Coordinates.X,
-                        player.Character.Coordinates.Y,
-                        player.Character.Coordinates.Z),
-                MovementType = player.Character.Direction
+                        player.Coordinates.X,
+                        player.Coordinates.Y,
+                        player.Coordinates.Z),
+                MovementType = player.Direction
             };
 
         /// <summary>
@@ -118,5 +122,6 @@ namespace Server.Engine.Player
                     IsMoving = false,
                     MovementSpeed = 0.2f
                 });
+
     }
 }

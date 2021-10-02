@@ -41,20 +41,18 @@ namespace CommonClient.Components.Player
         {
             foreach (var enemy in _enemyStore.GetAll().Values)
             {
-                if(enemy.Movement.EngageTargetId != null)
+                if(enemy.EngageTargetId != null)
                 {
-                    var player = _playerStore.Get(enemy.Movement.EngageTargetId);
+                    var player = _playerStore.Get(enemy.EngageTargetId);
                     if(player != null)
                     {
                         enemy.PathToPoint(
-                            enemy.Character.Coordinates,
-                            player.Character.Coordinates,
-                            enemy.Character.MovementSpeed);
+                            enemy.Coordinates,
+                            player.Coordinates,
+                            enemy.MovementSpeed);
                     }
                 }
-                var speed = enemy.Character.MovementSpeed;
-                var movementSpeed = (float)gameTime.ElapsedGameTime.TotalMilliseconds * speed;
-                enemy.Character.MoveToPoint(enemy.Movement.MovementDestination, movementSpeed);
+                enemy.MoveToDestination(gameTime.ElapsedGameTime.TotalMilliseconds);
             }
             base.Update(gameTime);
         }
@@ -65,7 +63,7 @@ namespace CommonClient.Components.Player
 
             foreach(var enemy in _enemyStore.GetAll().Values)
             {
-                var coordinates = enemy.Character.Coordinates;
+                var coordinates = enemy.Coordinates;
                 _spriteBatch.Draw(
                     _enemyTexture,
                     new Vector2(coordinates.X, coordinates.Y),

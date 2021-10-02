@@ -7,7 +7,7 @@ using Server.Engine.Player;
 
 namespace Server.Engine.Movement
 {
-    public class MovementManager: IMovementManager
+    public class MovementComponent: IMovementComponent
     {
         private const int MAX_WIDTH = 1000;
         private const int MAX_HEIGHT = 1000;
@@ -15,7 +15,7 @@ namespace Server.Engine.Movement
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IPlayerStore _playerStore;
 
-        public MovementManager(
+        public MovementComponent(
             IDispatchPacketBus dispatchPacketBus,
             IPlayerStore playerStore)
         {
@@ -51,8 +51,8 @@ namespace Server.Engine.Movement
             var players = _playerStore.GetAll();
             foreach (var player in players.Values)
             {
-                var speed = player.Character.MovementSpeed * (float) elapsedTime;
-                player.Character.Move(speed, MAX_WIDTH, MAX_HEIGHT);
+                var speed = player.MovementSpeed * (float) elapsedTime;
+                player.Move(speed, MAX_WIDTH, MAX_HEIGHT);
                 _playerStore.Update(player);
             }
         }
@@ -67,11 +67,11 @@ namespace Server.Engine.Movement
             {
                 PlayerId = player.Id,
                 Position = new Vector3(
-                    player.Character.Coordinates.X,
-                    player.Character.Coordinates.Y,
-                    player.Character.Coordinates.Z),
-                MovementType = player.Character.Direction,
-                IsMoving = player.Character.IsMoving
+                    player.Coordinates.X,
+                    player.Coordinates.Y,
+                    player.Coordinates.Z),
+                MovementType = player.Direction,
+                IsMoving = player.IsMoving
             });
         }
     }

@@ -3,7 +3,7 @@ using Common.Base;
 
 namespace Server.Engine.Player
 {
-    public interface IPlayerManager
+    public interface IPlayerComponent: IGameComponent
     {
         /// <summary>
         /// Add Player to the player pool
