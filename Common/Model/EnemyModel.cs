@@ -107,7 +107,8 @@ namespace Common.Base
         public bool ShouldStartMove(double timestamp)
         {
             var moveTime = _movement.LastMovementTime + _movement.MovementWaitSeconds;
-            return moveTime < timestamp && _movement.EngageTargetId == null;
+            return moveTime < timestamp
+                && _movement.EngageTargetId == null;
         }
 
         /// <summary>

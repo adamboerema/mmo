@@ -49,9 +49,9 @@ namespace CommonClient.Engine.Enemy
             if(enemy != null)
             {
                 enemy.PathToPoint(
-                    enemy.Coordinates,
-                    enemy.MovementDestination,
-                    enemy.MovementSpeed);
+                    position,
+                    movementDestination,
+                    movementSpeed);
                 _enemyStore.Update(enemy);
             }
         }

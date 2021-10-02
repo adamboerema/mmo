@@ -52,8 +52,8 @@ namespace Common.Model.Behavior
             var absoluteDistance = MovementUtility.GetAbsoluteDistanceToPoint(
                 currentPosition,
                 target);
-            var disengageDistance = absoluteDistance * 2;
-            return disengageDistance > EngageDistance
+            var disengageDistance = EngageDistance * 2;
+            return absoluteDistance > disengageDistance
                 && currentTime > _disengageOffset;
 
         }

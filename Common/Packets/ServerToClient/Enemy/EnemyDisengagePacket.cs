@@ -17,8 +17,10 @@ namespace Common.Packets.ServerToClient.Enemy
 
         public byte[] WriteData(PacketWriter packetWriter)
         {
+            packetWriter.WriteInteger((int)Id);
             packetWriter.WriteString(EnemyId);
             return packetWriter.ToBytes();
         }
     }
 }
+
