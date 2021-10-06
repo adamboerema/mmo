@@ -18,18 +18,22 @@ namespace Common.Base
 
         private CharacterModel _character;
 
+        private CombatModel _combat;
+
         public EnemyModel(
             string id,
             EnemyType type,
             SpawnModel spawnModel,
             MovementModel movementModel,
-            CharacterModel characterModel)
+            CharacterModel characterModel,
+            CombatModel combatModel)
         {
             Id = id;
             Type = type;
             _spawn = spawnModel;
             _movement = movementModel;
             _character = characterModel;
+            _combat = combatModel;
         }
 
         /// <summary>
@@ -63,9 +67,10 @@ namespace Common.Base
         public void EngageCharacter(string id, Vector3 position)
         {
             _movement.EngageTargetId = id;
+            var toPoint = GetEngagePoint(position);
             PathToPoint(
                 _character.Coordinates,
-                position,
+                toPoint,
                 _character.MovementSpeed);
         }
 
@@ -85,9 +90,10 @@ namespace Common.Base
         /// </summary>
         /// <param name="destination"></param>
         /// <returns></returns>
-        public void SetDestination(Vector3 destination)
+        public void SetEngageDestination(Vector3 destination)
         {
-            _movement.MovementDestination = destination;
+            var toPoint = destination;
+            _movement.MovementDestination = toPoint;
         }
 
         /// <summary>
@@ -96,7 +102,12 @@ namespace Common.Base
         /// <param name="elapsedTime"></param>
         public void MoveToDestination(double elapsedTime)
         {
-            _character.MoveToPoint(_movement.MovementDestination, elapsedTime);
+            var distance = MovementUtility.GetAbsoluteDistanceToPoint(_movement.MovementDestination, _character.Coordinates);
+            var offset = _combat.AttackRange + _character.Bounds.Horizontal;
+            if (distance > offset)
+            {
+                _character.MoveToPoint(_movement.MovementDestination, elapsedTime);
+            }
         }
 
         /// <summary>
@@ -117,8 +128,12 @@ namespace Common.Base
         /// <returns></returns>
         public bool ShouldStopMove()
         {
+            var distance = MovementUtility.GetAbsoluteDistanceToPoint(
+                _character.Coordinates,
+                _movement.MovementDestination);
+
             return _character.IsMoving
-                && _character.Coordinates == _movement.MovementDestination;
+                && distance <= _combat.AttackRange;
         }
 
         /// <summary>
@@ -146,7 +161,7 @@ namespace Common.Base
         {
             _movement.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
             _character.Coordinates = fromPoint;
-            _movement.MovementDestination = toPoint;
+            _movement.MovementDestination = GetEngagePoint(toPoint);
             _character.MovementSpeed = movementSpeed;
             _character.Direction = MovementUtility.GetDirectionToPoint(_character.Coordinates, toPoint);
         }
@@ -164,6 +179,20 @@ namespace Common.Base
             _character.Coordinates = respawnCoordinates;
             _movement.MovementDestination = respawnCoordinates;
             _character.IsMoving = false;
+        }
+
+        /// <summary>
+        /// Get the point from which the enemy engages
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <returns></returns>
+        private Vector3 GetEngagePoint(Vector3 destination)
+        {
+            var distance = _combat.AttackRange + _character.Bounds.Width;
+            return MovementUtility.GetPointFromCenter(
+                destination,
+                _character.Coordinates,
+                distance);
         }
     }
 }

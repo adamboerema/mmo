@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Numerics;
 using Common.Base;
 using Common.Model.Behavior;
@@ -114,7 +115,13 @@ namespace CommonClient.Engine.Enemy
                     Name = "Test",
                     Coordinates = position,
                     MovementSpeed = movementSpeed,
-                });
+                    Bounds = new Bounds(10, 10)
+                },
+                combatModel: new CombatModel
+                {
+                    AttackRange = 30,
+                    AttackSpeed = 1
+                }) ;
         }
     }
 }

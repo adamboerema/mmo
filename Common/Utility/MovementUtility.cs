@@ -82,5 +82,25 @@ namespace Common.Utility
             var degrees = radians * 180 / MathF.PI;
             return (degrees + 450) % 360f;
         }
+
+        /// <summary>
+        /// Get a point that is a certain distance from a center point
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="point"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public static Vector3 GetPointFromCenter(Vector3 center, Vector3 point, float distance)
+        {
+            var angle = GetAngleFromCenter(center, point);
+            var x = (float)(center.X + (distance * Math.Cos(angle)));
+            var y = (float)(center.Y + (distance * Math.Sin(angle)));
+
+            Console.WriteLine($"Angle {angle}");
+            Console.WriteLine($"Center Coords: {center.X} {center.Y}");
+            Console.WriteLine($"Adjusted coords: {x}, {y}");
+
+            return new Vector3(x, y, 0);
+        }
     }
 }
