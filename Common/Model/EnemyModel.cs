@@ -133,8 +133,11 @@ namespace Common.Base
                 _character.Coordinates,
                 _movement.MovementDestination);
 
+            var offset = (float)_character.Bounds.Radius;
+            var attackRange = _combat.GetAttackDistance(offset);
+
             return _character.IsMoving
-                && distance <= _combat.AttackRange;
+                && distance <= attackRange;
         }
 
         /// <summary>
