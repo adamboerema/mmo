@@ -7,7 +7,9 @@ namespace Common.Model.Character
 
         public int Width { get; set; }
 
-        public double Horizontal => Math.Sqrt(Math.Pow(Height, 2) + Math.Pow(Width, 2));
+        public double Diameter => Math.Sqrt(Math.Pow(Height, 2) + Math.Pow(Width, 2));
+
+        public double Radius => Diameter / 2;
 
         public Bounds(int width, int height)
         {

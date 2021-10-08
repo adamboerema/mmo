@@ -92,9 +92,10 @@ namespace Common.Utility
         /// <returns></returns>
         public static Vector3 GetPointFromCenter(Vector3 center, Vector3 point, float distance)
         {
-            var angle = GetAngleFromCenter(center, point);
-            var x = (float)(center.X + (distance * Math.Cos(angle)));
-            var y = (float)(center.Y + (distance * Math.Sin(angle)));
+            var angle = GetAngleFromCenter(point, center);
+            var degrees = angle * Math.PI / 180;
+            var x = (float)(center.X + (distance * Math.Cos(degrees)));
+            var y = (float)(center.Y + (distance * Math.Sin(degrees)));
 
             Console.WriteLine($"Angle {angle}");
             Console.WriteLine($"Center Coords: {center.X} {center.Y}");

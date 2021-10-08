@@ -10,5 +10,12 @@ namespace Common.Model.Behavior
         public float AttackRange { get; init; }
 
         public float AttackSpeed { get; init; }
+
+        /// <summary>
+        /// Get Attack distance to engage target
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        public float GetAttackDistance(float offset) => AttackRange + offset;
     }
 }

@@ -92,8 +92,7 @@ namespace Common.Base
         /// <returns></returns>
         public void SetEngageDestination(Vector3 destination)
         {
-            var toPoint = destination;
-            _movement.MovementDestination = toPoint;
+            _movement.MovementDestination = GetEngagePoint(destination);
         }
 
         /// <summary>
@@ -102,12 +101,14 @@ namespace Common.Base
         /// <param name="elapsedTime"></param>
         public void MoveToDestination(double elapsedTime)
         {
-            var distance = MovementUtility.GetAbsoluteDistanceToPoint(_movement.MovementDestination, _character.Coordinates);
-            var offset = _combat.AttackRange + _character.Bounds.Horizontal;
-            if (distance > offset)
+            var distance = MovementUtility.GetAbsoluteDistanceToPoint(
+                _character.Coordinates,
+                _movement.MovementDestination);
+
+            if(distance >= _combat.AttackRange)
             {
                 _character.MoveToPoint(_movement.MovementDestination, elapsedTime);
-            }
+            }            
         }
 
         /// <summary>
@@ -161,7 +162,7 @@ namespace Common.Base
         {
             _movement.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
             _character.Coordinates = fromPoint;
-            _movement.MovementDestination = GetEngagePoint(toPoint);
+            _movement.MovementDestination = toPoint;
             _character.MovementSpeed = movementSpeed;
             _character.Direction = MovementUtility.GetDirectionToPoint(_character.Coordinates, toPoint);
         }
@@ -188,7 +189,8 @@ namespace Common.Base
         /// <returns></returns>
         private Vector3 GetEngagePoint(Vector3 destination)
         {
-            var distance = _combat.AttackRange + _character.Bounds.Width;
+            var offset = (float)_character.Bounds.Radius;
+            var distance = _combat.GetAttackDistance(offset);
             return MovementUtility.GetPointFromCenter(
                 destination,
                 _character.Coordinates,
