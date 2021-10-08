@@ -97,10 +97,6 @@ namespace Common.Utility
             var x = (float)(center.X + (distance * Math.Cos(degrees)));
             var y = (float)(center.Y + (distance * Math.Sin(degrees)));
 
-            Console.WriteLine($"Angle {angle}");
-            Console.WriteLine($"Center Coords: {center.X} {center.Y}");
-            Console.WriteLine($"Adjusted coords: {x}, {y}");
-
             return new Vector3(x, y, 0);
         }
     }
