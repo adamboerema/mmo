@@ -46,10 +46,7 @@ namespace CommonClient.Components.Player
                     var player = _playerStore.Get(enemy.EngageTargetId);
                     if(player != null)
                     {
-                        enemy.PathToPoint(
-                            enemy.Coordinates,
-                            player.Coordinates,
-                            enemy.MovementSpeed);
+                        enemy.PathToPoint(player.Coordinates);
                     }
                 }
                 enemy.MoveToDestination(gameTime.ElapsedGameTime.TotalMilliseconds);

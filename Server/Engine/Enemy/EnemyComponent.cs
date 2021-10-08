@@ -117,7 +117,7 @@ namespace Server.Engine.Enemy
                 }
                 else
                 {
-                    enemy.SetDestination(player.Coordinates);
+                    enemy.SetEngageDestination(player.Coordinates);
                 }
             }
             else
@@ -207,6 +207,7 @@ namespace Server.Engine.Enemy
                 SpawnArea = new Rectangle(100, 100, 100, 100),
                 RespawnSeconds = 10
             };
+            var spawnPoint = spawn.GetRandomSpawnPoint();
 
             return new EnemyModel(
                 id: Guid.NewGuid().ToString(),
@@ -214,7 +215,7 @@ namespace Server.Engine.Enemy
                 spawnModel: spawn,
                 movementModel: new MovementModel
                 {
-                    MovementDestination = spawn.GetRandomSpawnPoint(),
+                    MovementDestination = spawnPoint,
                     MovementWaitSeconds = 10,
                     MovementArea = new Rectangle(0, 100, 300, 300),
                     EngageDistance = 100,
@@ -223,10 +224,16 @@ namespace Server.Engine.Enemy
                 characterModel: new CharacterModel
                 {
                     Name = "Test",
-                    Coordinates = spawn.GetRandomSpawnPoint(),
+                    Coordinates = spawnPoint,
+                    Bounds = new Bounds(10, 10),
                     MovementSpeed = 0.2f,
                     Direction = Direction.DOWN,
                     IsMoving = false
+                },
+                combatModel: new CombatModel
+                {
+                    AttackRange = 10,
+                    AttackSpeed = 1
                 });
         }
 

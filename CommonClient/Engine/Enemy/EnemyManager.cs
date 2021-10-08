@@ -114,7 +114,13 @@ namespace CommonClient.Engine.Enemy
                     Name = "Test",
                     Coordinates = position,
                     MovementSpeed = movementSpeed,
-                });
+                    Bounds = new Bounds(10, 10)
+                },
+                combatModel: new CombatModel
+                {
+                    AttackRange = 30,
+                    AttackSpeed = 1
+                }) ;
         }
     }
 }

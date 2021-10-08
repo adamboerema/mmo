@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Numerics;
 using Common.Base;
 using Common.Utility;
@@ -16,6 +17,8 @@ namespace Common.Model.Character
         public Direction Direction { get; set; } = Direction.DOWN;
 
         public Vector3 Coordinates { get; set; }
+
+        public Bounds Bounds { get; set; }
 
         /// <summary>
         /// Turn to point
