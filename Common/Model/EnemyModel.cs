@@ -58,6 +58,10 @@ namespace Common.Base
         public bool ShouldRespawn(double timestamp) => _spawn.ShouldRespawn(timestamp);
         public Vector3 GetRandomSpawnPoint() => _spawn.GetRandomSpawnPoint();
 
+        /// <summary>
+        /// Combat
+        /// </summary>
+        public float GetAttackDistance() => _combat.GetAttackDistance((float) _character.Bounds.Diameter);
 
         /// <summary>
         /// Engage target character
@@ -67,10 +71,9 @@ namespace Common.Base
         public void EngageCharacter(string id, Vector3 position)
         {
             _movement.EngageTargetId = id;
-            var toPoint = GetEngagePoint(position);
             PathToPoint(
                 _character.Coordinates,
-                toPoint,
+                position,
                 _character.MovementSpeed);
         }
 
@@ -92,7 +95,7 @@ namespace Common.Base
         /// <returns></returns>
         public void SetEngageDestination(Vector3 destination)
         {
-            _movement.MovementDestination = GetEngagePoint(destination);
+            _movement.MovementDestination = destination;
         }
 
         /// <summary>
@@ -105,7 +108,9 @@ namespace Common.Base
                 _character.Coordinates,
                 _movement.MovementDestination);
 
-            if(distance >= _combat.AttackRange)
+            var attackDistance = GetAttackDistance();
+
+            if (distance > attackDistance)
             {
                 _character.MoveToPoint(_movement.MovementDestination, elapsedTime);
             }            
@@ -133,11 +138,10 @@ namespace Common.Base
                 _character.Coordinates,
                 _movement.MovementDestination);
 
-            var offset = (float)_character.Bounds.Radius;
-            var attackRange = _combat.GetAttackDistance(offset);
+            var attackDistance = GetAttackDistance();
 
             return _character.IsMoving
-                && distance <= attackRange;
+                && distance <= attackDistance;
         }
 
         /// <summary>
@@ -183,21 +187,6 @@ namespace Common.Base
             _character.Coordinates = respawnCoordinates;
             _movement.MovementDestination = respawnCoordinates;
             _character.IsMoving = false;
-        }
-
-        /// <summary>
-        /// Get the point from which the enemy engages
-        /// </summary>
-        /// <param name="destination"></param>
-        /// <returns></returns>
-        private Vector3 GetEngagePoint(Vector3 destination)
-        {
-            var offset = (float)_character.Bounds.Radius;
-            var distance = _combat.GetAttackDistance(offset);
-            return MovementUtility.GetPointFromCenter(
-                destination,
-                _character.Coordinates,
-                distance);
         }
     }
 }
