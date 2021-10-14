@@ -61,7 +61,7 @@ namespace Common.Base
         /// <summary>
         /// Combat
         /// </summary>
-        public float GetAttackDistance() => _combat.GetAttackDistance((float) _character.Bounds.Diameter);
+        public float GetAttackDistance() => _combat.GetAttackDistance((float) _character.Bounds.Radius);
 
         /// <summary>
         /// Engage target character
@@ -129,19 +129,14 @@ namespace Common.Base
         }
 
         /// <summary>
-        /// Should enemy stop movement
+        /// Should enemy stop movement only when enemy reaches target.
+        /// For engaged enemies they should never stop
         /// </summary>
         /// <returns></returns>
         public bool ShouldStopMove()
         {
-            var distance = MovementUtility.GetAbsoluteDistanceToPoint(
-                _character.Coordinates,
-                _movement.MovementDestination);
-
-            var attackDistance = GetAttackDistance();
-
             return _character.IsMoving
-                && distance <= attackDistance;
+                && _character.Coordinates == _movement.MovementDestination;
         }
 
         /// <summary>
