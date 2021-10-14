@@ -51,8 +51,7 @@ namespace Common.Model.Character
             Vector3 destination,
             double elapsedTime)
         {
-            var speed = (float)(elapsedTime * MovementSpeed);
-            var increment = GetCoordinatesToPoint(Coordinates, destination, speed);
+            var increment = GetCoordinatesToPoint(Coordinates, destination, elapsedTime);
             Coordinates = ClampCoordinatesToDestination(Coordinates, destination, increment);
             IsMoving = Coordinates != destination;
         }
@@ -61,18 +60,18 @@ namespace Common.Model.Character
         /// Move Coordinates of player
         /// </summary>
         /// <param name="model">Player model</param>
-        /// <param name="speed">Speed of the movement</param>
+        /// <param name="elapsedTime">Speed of the movement</param>
         /// <param name="maxWidth">Max world width</param>
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
         public void Move(
-            float speed,
+            float elapsedTime,
             int maxWidth,
             int maxHeight)
         {
             if(IsMoving)
             {
-                var coordinates = MoveInDirection(speed);
+                var coordinates = MoveInDirection(elapsedTime);
                 Coordinates = ClampCoordinates(coordinates, maxWidth, maxHeight);
                 IsMoving = true;
             }
@@ -92,27 +91,25 @@ namespace Common.Model.Character
         /// </summary>
         /// <param name="center"></param>
         /// <param name="point"></param>
-        /// <param name="speed"></param>
+        /// <param name="elapsedTime"></param>
         /// <returns></returns>
         private Vector3 GetCoordinatesToPoint(
             Vector3 center,
             Vector3 point,
-            float speed)
+            double elapsedTime)
         {
             var direction = point - center;
             return direction == Vector3.Zero
                 ? Vector3.Zero
-                : Vector3.Normalize(direction) * speed;
+                : Vector3.Normalize(direction) * (float) elapsedTime * MovementSpeed;
         }
 
         /// <summary>
         /// Get the coordinates with direction
         /// </summary>
-        /// <param name="speed"></param>
-        /// <param name="maxWidth"></param>
-        /// <param name="maxHeight"></param>
+        /// <param name="elapsedTime"></param>
         /// <returns></returns>
-        private Vector3 MoveInDirection(float speed)
+        private Vector3 MoveInDirection(double elapsedTime)
         {
             if(!IsMoving)
             {
@@ -120,37 +117,37 @@ namespace Common.Model.Character
             }
 
             var coordinates = Coordinates;
-            switch (Direction)
-            {
-                case Direction.UP:
-                    coordinates.Y -= speed;
-                    break;
-                case Direction.LEFT:
-                    coordinates.X -= speed;
-                    break;
-                case Direction.RIGHT:
-                    coordinates.X += speed;
-                    break;
-                case Direction.DOWN:
-                    coordinates.Y += speed;
-                    break;
-                case Direction.UP_LEFT:
-                    coordinates.X -= speed;
-                    coordinates.Y -= speed;
-                    break;
-                case Direction.UP_RIGHT:
-                    coordinates.X += speed;
-                    coordinates.Y -= speed;
-                    break;
-                case Direction.DOWN_LEFT:
-                    coordinates.X -= speed;
-                    coordinates.Y += speed;
-                    break;
-                case Direction.DOWN_RIGHT:
-                    coordinates.X += speed;
-                    coordinates.Y += speed;
-                    break;
-            }
+            //switch (Direction)
+            //{
+            //    case Direction.UP:
+            //        coordinates.Y -= timeElapsed;
+            //        break;
+            //    case Direction.LEFT:
+            //        coordinates.X -= timeElapsed;
+            //        break;
+            //    case Direction.RIGHT:
+            //        coordinates.X += timeElapsed;
+            //        break;
+            //    case Direction.DOWN:
+            //        coordinates.Y += timeElapsed;
+            //        break;
+            //    case Direction.UP_LEFT:
+            //        coordinates.X -= timeElapsed;
+            //        coordinates.Y -= timeElapsed;
+            //        break;
+            //    case Direction.UP_RIGHT:
+            //        coordinates.X += timeElapsed;
+            //        coordinates.Y += timeElapsed;
+            //        break;
+            //    case Direction.DOWN_LEFT:
+            //        coordinates.X -= timeElapsed;
+            //        coordinates.Y += timeElapsed;
+            //        break;
+            //    case Direction.DOWN_RIGHT:
+            //        coordinates.X += timeElapsed;
+            //        coordinates.Y += timeElapsed;
+            //        break;
+            //}
             return coordinates;
         }
 
