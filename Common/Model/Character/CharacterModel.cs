@@ -51,9 +51,8 @@ namespace Common.Model.Character
             Vector3 destination,
             double elapsedTime)
         {
-            var speed = (float)(elapsedTime * MovementSpeed);
-            var increment = GetCoordinatesToPoint(Coordinates, destination, speed);
-            Coordinates = ClampCoordinatesToDestination(Coordinates, destination, increment);
+            var increment = GetCoordinatesToPoint(Coordinates, destination, elapsedTime);
+            ClampCoordinatesToDestination(destination, increment);
             IsMoving = Coordinates != destination;
         }
 
@@ -61,19 +60,19 @@ namespace Common.Model.Character
         /// Move Coordinates of player
         /// </summary>
         /// <param name="model">Player model</param>
-        /// <param name="speed">Speed of the movement</param>
+        /// <param name="elapsedTime">Elapsed time</param>
         /// <param name="maxWidth">Max world width</param>
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
         public void Move(
-            float speed,
+            double elapsedTime,
             int maxWidth,
             int maxHeight)
         {
             if(IsMoving)
             {
-                var coordinates = MoveInDirection(speed);
-                Coordinates = ClampCoordinates(coordinates, maxWidth, maxHeight);
+                MoveInDirection(elapsedTime);
+                ClampCoordinates(maxWidth, maxHeight);
                 IsMoving = true;
             }
         }
@@ -88,70 +87,42 @@ namespace Common.Model.Character
         }
 
         /// <summary>
-        /// Get coordinates in direction of point
-        /// </summary>
-        /// <param name="center"></param>
-        /// <param name="point"></param>
-        /// <param name="speed"></param>
-        /// <returns></returns>
-        private Vector3 GetCoordinatesToPoint(
-            Vector3 center,
-            Vector3 point,
-            float speed)
-        {
-            var direction = point - center;
-            return direction == Vector3.Zero
-                ? Vector3.Zero
-                : Vector3.Normalize(direction) * speed;
-        }
-
-        /// <summary>
         /// Get the coordinates with direction
         /// </summary>
-        /// <param name="speed"></param>
-        /// <param name="maxWidth"></param>
-        /// <param name="maxHeight"></param>
+        /// <param name="elapsedTime"></param>
         /// <returns></returns>
-        private Vector3 MoveInDirection(float speed)
+        private void MoveInDirection(double elapsedTime)
         {
-            if(!IsMoving)
-            {
-                return Coordinates;
-            }
+            var direction = Vector3.Zero;
 
-            var coordinates = Coordinates;
             switch (Direction)
             {
                 case Direction.UP:
-                    coordinates.Y -= speed;
+                    direction += new Vector3(0, -1, 0);
                     break;
                 case Direction.LEFT:
-                    coordinates.X -= speed;
+                    direction += new Vector3(-1, 0, 0);
                     break;
                 case Direction.RIGHT:
-                    coordinates.X += speed;
+                    direction += new Vector3(1, 0, 0);
                     break;
                 case Direction.DOWN:
-                    coordinates.Y += speed;
+                    direction += new Vector3(0, 1, 0);
                     break;
                 case Direction.UP_LEFT:
-                    coordinates.X -= speed;
-                    coordinates.Y -= speed;
+                    direction += new Vector3(-1, -1, 0);
                     break;
                 case Direction.UP_RIGHT:
-                    coordinates.X += speed;
-                    coordinates.Y -= speed;
+                    direction += new Vector3(1, -1, 0);
                     break;
                 case Direction.DOWN_LEFT:
-                    coordinates.X -= speed;
-                    coordinates.Y += speed;
+                    direction += new Vector3(-1, 1, 0);
                     break;
                 case Direction.DOWN_RIGHT:
-                    coordinates.X += speed;
-                    coordinates.Y += speed;
+                    direction += new Vector3(1, 1, 0);
                     break;
             }
-            return coordinates;
+            Coordinates += GetNormalizedIncrement(direction, elapsedTime);
         }
 
         /// <summary>
@@ -161,17 +132,16 @@ namespace Common.Model.Character
         /// <param name="destination"></param>
         /// <param name="increment"></param>
         /// <returns></returns>
-        private Vector3 ClampCoordinatesToDestination(
-            Vector3 coordinates,
+        private void ClampCoordinatesToDestination(
             Vector3 destination,
             Vector3 increment)
         {
-            var distance = Vector3.Abs(coordinates - destination);
+            var distance = Vector3.Abs(Coordinates - destination);
             var absoluteIncrement = Vector3.Abs(increment);
 
-            return distance.X < absoluteIncrement.X && distance.Y < absoluteIncrement.Y
+            Coordinates = distance.X < absoluteIncrement.X && distance.Y < absoluteIncrement.Y
                 ? destination
-                : coordinates += increment;
+                : Coordinates += increment;
         }
 
         /// <summary>
@@ -181,11 +151,40 @@ namespace Common.Model.Character
         /// <param name="maxX"></param>
         /// <param name="maxY"></param>
         /// <returns></returns>
-        private Vector3 ClampCoordinates(Vector3 coordinates, int maxX, int maxY)
+        private void ClampCoordinates(int maxX, int maxY)
         {
-            coordinates.X = Math.Clamp(coordinates.X, 0, maxX);
-            coordinates.Y = Math.Clamp(coordinates.Y, 0, maxY);
-            return coordinates;
+            var min = new Vector3(0, 0, 0);
+            var max = new Vector3(maxX, maxY, 0);
+            Coordinates = Vector3.Clamp(Coordinates, min, max);
+        }
+
+        /// <summary>
+        /// Get coordinates in direction of point
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="point"></param>
+        /// <param name="elapsedTime"></param>
+        /// <returns></returns>
+        private Vector3 GetCoordinatesToPoint(
+            Vector3 center,
+            Vector3 point,
+            double elapsedTime)
+        {
+            var direction = point - center;
+            return GetNormalizedIncrement(direction, elapsedTime);
+        }
+
+        /// <summary>
+        /// Get the normalized increment for a given direction
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="elapsedTime"></param>
+        /// <returns></returns>
+        private Vector3 GetNormalizedIncrement(Vector3 direction, double elapsedTime)
+        {
+            return direction == Vector3.Zero
+                ? Vector3.Zero
+                : Vector3.Normalize(direction) * (float)elapsedTime * MovementSpeed;
         }
     }
 }

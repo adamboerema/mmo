@@ -46,10 +46,10 @@ namespace CommonClient.Components.Player
         public override void Update(GameTime gameTime)
         {
             var players = _playerManager.GetPlayers();
-            foreach(var player in players)
-            {
+            var elapsedTime = gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                var speed = (float)(gameTime.ElapsedGameTime.TotalMilliseconds * player.MovementSpeed);
+            foreach (var player in players)
+            {
                 if (player.IsClient)
                 {
                     var position = player.Coordinates;
@@ -60,7 +60,7 @@ namespace CommonClient.Components.Player
                         _clientPlayerTexture.Height);
                 }
 
-                player.Move(speed, WORLD_WIDTH, WORLD_HEIGHT);
+                player.Move(elapsedTime, WORLD_WIDTH, WORLD_HEIGHT);
                 _playerManager.UpdatePlayer(player);
             }
             base.Update(gameTime);
