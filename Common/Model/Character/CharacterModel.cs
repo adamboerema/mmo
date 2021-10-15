@@ -122,39 +122,6 @@ namespace Common.Model.Character
                     direction += new Vector3(1, 1, 0);
                     break;
             }
-
-            //switch (Direction)
-            //{
-            //    case Direction.UP:
-            //        direction.Y -= 1;
-            //        break;
-            //    case Direction.LEFT:
-            //        direction.X -= 1;
-            //        break;
-            //    case Direction.RIGHT:
-            //        direction.X += 1;
-            //        break;
-            //    case Direction.DOWN:
-            //        direction.Y += 1;
-            //        break;
-            //    case Direction.UP_LEFT:
-            //        direction.X -= 1;
-            //        direction.Y -= 1;
-            //        break;
-            //    case Direction.UP_RIGHT:
-            //        direction.X += 1;
-            //        direction.Y -= 1;
-            //        break;
-            //    case Direction.DOWN_LEFT:
-            //        direction.X -= 1;
-            //        direction.Y += 1;
-            //        break;
-            //    case Direction.DOWN_RIGHT:
-            //        direction.X += 1;
-            //        direction.Y += 1;
-            //        break;
-            //}
-
             Coordinates += GetNormalizedIncrement(direction, elapsedTime);
         }
 
