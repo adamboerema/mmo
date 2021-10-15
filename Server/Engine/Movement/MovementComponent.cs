@@ -51,8 +51,7 @@ namespace Server.Engine.Movement
             var players = _playerStore.GetAll();
             foreach (var player in players.Values)
             {
-                var speed = player.MovementSpeed * (float) elapsedTime;
-                player.Move(speed, MAX_WIDTH, MAX_HEIGHT);
+                player.Move(elapsedTime, MAX_WIDTH, MAX_HEIGHT);
                 _playerStore.Update(player);
             }
         }

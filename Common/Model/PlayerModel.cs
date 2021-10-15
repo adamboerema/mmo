@@ -60,16 +60,16 @@ namespace Common.Base
         /// Move Coordinates of player
         /// </summary>
         /// <param name="model">Player model</param>
-        /// <param name="speed">Speed of the movement</param>
+        /// <param name="elapsedTime">Increment of time</param>
         /// <param name="maxWidth">Max world width</param>
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
         public PlayerModel Move(
-            float speed,
+            double elapsedTime,
             int maxWidth,
             int maxHeight)
         {
-            Character.Move(speed, maxWidth, maxHeight);
+            Character.Move(elapsedTime, maxWidth, maxHeight);
             return this;
         }
     }
