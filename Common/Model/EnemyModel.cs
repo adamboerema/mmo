@@ -14,6 +14,8 @@ namespace Common.Base
 
         private SpawnModel _spawn;
 
+        private PathingModel _pathing;
+
         private MovementModel _movement;
 
         private CharacterModel _character;
@@ -24,33 +26,35 @@ namespace Common.Base
             string id,
             EnemyType type,
             SpawnModel spawnModel,
-            MovementModel movementModel,
+            PathingModel pathingModel,
             CharacterModel characterModel,
+            MovementModel movementModel,
             CombatModel combatModel)
         {
             Id = id;
             Type = type;
             _spawn = spawnModel;
-            _movement = movementModel;
+            _pathing = pathingModel;
             _character = characterModel;
+            _movement = movementModel;
             _combat = combatModel;
         }
 
         /// <summary>
-        /// Character
+        /// Movement
         /// </summary>
-        public Vector3 Coordinates => _character.Coordinates;
-        public float MovementSpeed => _character.MovementSpeed;
-        public void StopMove() => _character.StopMove();
+        public Vector3 Coordinates => _movement.Coordinates;
+        public float MovementSpeed => _movement.MovementSpeed;
+        public void StopMove() => _movement.StopMove();
 
         /// <summary>
         /// Movement
         /// </summary>
-        public string EngageTargetId => _movement.EngageTargetId;
-        public Vector3 MovementDestination => _movement.MovementDestination;
-        public Vector3 GetRandomMovementPoint() => _movement.GetRandomMovementPoint();
-        public bool ShouldEngage(Vector3 target) => _movement.ShouldEngage(_character.Coordinates, target);
-        public bool ShouldDisengage(Vector3 target) => _movement.ShouldDisengage(_character.Coordinates, target);
+        public string EngageTargetId => _pathing.EngageTargetId;
+        public Vector3 MovementDestination => _pathing.MovementDestination;
+        public Vector3 GetRandomMovementPoint() => _pathing.GetRandomMovementPoint();
+        public bool ShouldEngage(Vector3 target) => _pathing.ShouldEngage(_movement.Coordinates, target);
+        public bool ShouldDisengage(Vector3 target) => _pathing.ShouldDisengage(_movement.Coordinates, target);
 
         /// <summary>
         /// Spawn
@@ -70,11 +74,11 @@ namespace Common.Base
         /// <returns></returns>
         public void EngageCharacter(string id, Vector3 position)
         {
-            _movement.EngageTargetId = id;
+            _pathing.EngageTargetId = id;
             PathToPoint(
-                _character.Coordinates,
+                _movement.Coordinates,
                 position,
-                _character.MovementSpeed);
+                _movement.MovementSpeed);
         }
 
         /// <summary>
@@ -83,9 +87,9 @@ namespace Common.Base
         /// <returns></returns>
         public void DisengagePlayer()
         {
-            _movement.EngageTargetId = null;
-            _movement.LastDisengageTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            _movement.MovementDestination = _character.Coordinates;
+            _pathing.EngageTargetId = null;
+            _pathing.LastDisengageTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            _pathing.MovementDestination = _movement.Coordinates;
         }
 
         /// <summary>
@@ -95,7 +99,7 @@ namespace Common.Base
         /// <returns></returns>
         public void SetEngageDestination(Vector3 destination)
         {
-            _movement.MovementDestination = destination;
+            _pathing.MovementDestination = destination;
         }
 
         /// <summary>
@@ -105,14 +109,14 @@ namespace Common.Base
         public void MoveToDestination(double elapsedTime)
         {
             var distance = MovementUtility.GetAbsoluteDistanceToPoint(
-                _character.Coordinates,
-                _movement.MovementDestination);
+                _movement.Coordinates,
+                _pathing.MovementDestination);
 
             var attackDistance = GetAttackDistance();
 
             if (distance > attackDistance)
             {
-                _character.MoveToPoint(_movement.MovementDestination, elapsedTime);
+                _movement.MoveToPoint(_pathing.MovementDestination, elapsedTime);
             }            
         }
 
@@ -123,9 +127,9 @@ namespace Common.Base
         /// <returns></returns>
         public bool ShouldStartMove(double timestamp)
         {
-            var moveTime = _movement.LastMovementTime + _movement.MovementWaitSeconds;
+            var moveTime = _pathing.LastMovementTime + _pathing.MovementWaitSeconds;
             return moveTime < timestamp
-                && _movement.EngageTargetId == null;
+                && _pathing.EngageTargetId == null;
         }
 
         /// <summary>
@@ -135,8 +139,8 @@ namespace Common.Base
         /// <returns></returns>
         public bool ShouldStopMove()
         {
-            return _character.IsMoving
-                && _character.Coordinates == _movement.MovementDestination;
+            return _movement.IsMoving
+                && _movement.Coordinates == _pathing.MovementDestination;
         }
 
         /// <summary>
@@ -147,9 +151,9 @@ namespace Common.Base
         public void PathToPoint(Vector3 toPoint)
         {
             PathToPoint(
-                _character.Coordinates,
+                _movement.Coordinates,
                 toPoint,
-                _character.MovementSpeed);
+                _movement.MovementSpeed);
         }
 
         /// <summary>
@@ -162,11 +166,11 @@ namespace Common.Base
             Vector3 toPoint,
             float movementSpeed)
         {
-            _movement.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            _character.Coordinates = fromPoint;
-            _movement.MovementDestination = toPoint;
-            _character.MovementSpeed = movementSpeed;
-            _character.Direction = MovementUtility.GetDirectionToPoint(_character.Coordinates, toPoint);
+            _pathing.LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            _movement.Coordinates = fromPoint;
+            _pathing.MovementDestination = toPoint;
+            _movement.MovementSpeed = movementSpeed;
+            _movement.Direction = MovementUtility.GetDirectionToPoint(_movement.Coordinates, toPoint);
         }
 
         /// <summary>
@@ -179,9 +183,9 @@ namespace Common.Base
             var respawnCoordinates = _spawn.GetRandomSpawnPoint();
             _spawn.SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
             _spawn.IsAlive = true;
-            _character.Coordinates = respawnCoordinates;
-            _movement.MovementDestination = respawnCoordinates;
-            _character.IsMoving = false;
+            _movement.Coordinates = respawnCoordinates;
+            _pathing.MovementDestination = respawnCoordinates;
+            _movement.IsMoving = false;
         }
     }
 }

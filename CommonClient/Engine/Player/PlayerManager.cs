@@ -64,9 +64,12 @@ namespace CommonClient.Engine.Player
             return new ClientPlayerModel(
                 id: playerId,
                 isClient: isClient,
-                character: new CharacterModel
+                characterModel: new CharacterModel
                 {
-                    Name = "test",
+                    Name = "test"
+                },
+                movementModel: new MovementModel
+                {
                     Direction = movementType,
                     Coordinates = position,
                     IsMoving = false,

@@ -11,9 +11,11 @@ namespace CommonClient.Engine.Player
         public ClientPlayerModel(
             string id,
             bool isClient,
-            CharacterModel character) : base(
+            CharacterModel characterModel,
+            MovementModel movementModel) : base(
                 id,
-                character)
+                characterModel,
+                movementModel)
         {
             IsClient = isClient;
         }

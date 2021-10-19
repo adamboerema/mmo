@@ -213,7 +213,7 @@ namespace Server.Engine.Enemy
                 id: Guid.NewGuid().ToString(),
                 type: EnemyType.TEST,
                 spawnModel: spawn,
-                movementModel: new MovementModel
+                pathingModel: new PathingModel
                 {
                     MovementDestination = spawnPoint,
                     MovementWaitSeconds = 10,
@@ -224,8 +224,12 @@ namespace Server.Engine.Enemy
                 characterModel: new CharacterModel
                 {
                     Name = "Test",
-                    Coordinates = spawnPoint,
                     Bounds = new Bounds(10, 10),
+                    
+                },
+                movementModel: new MovementModel
+                {
+                    Coordinates = spawnPoint,
                     MovementSpeed = 0.2f,
                     Direction = Direction.DOWN,
                     IsMoving = false

@@ -104,7 +104,7 @@ namespace CommonClient.Engine.Enemy
                 {
                     IsAlive = true
                 },
-                movementModel: new MovementModel
+                pathingModel: new PathingModel
                 {
                     MovementDestination = movementDestination,
                     EngageTargetId = targetId
@@ -112,9 +112,12 @@ namespace CommonClient.Engine.Enemy
                 characterModel: new CharacterModel
                 {
                     Name = "Test",
+                    Bounds = new Bounds(10, 10)
+                },
+                movementModel: new MovementModel
+                {
                     Coordinates = position,
                     MovementSpeed = movementSpeed,
-                    Bounds = new Bounds(10, 10)
                 },
                 combatModel: new CombatModel
                 {

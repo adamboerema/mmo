@@ -8,21 +8,25 @@ namespace Common.Base
     {
         public string Id { get; init; }
 
-        private CharacterModel Character { get; init; }
+        private CharacterModel _character { get; set; }
+
+        private MovementModel _movement { get; init; }
 
         public PlayerModel(
             string id,
-            CharacterModel character)
+            CharacterModel characterModel,
+            MovementModel movementModel)
         {
             Id = id;
-            Character = character;
+            _character = characterModel;
+            _movement = movementModel;
         }
 
 
-        public Vector3 Coordinates => Character.Coordinates;
-        public Direction Direction => Character.Direction;
-        public float MovementSpeed => Character.MovementSpeed;
-        public bool IsMoving => Character.IsMoving;
+        public Vector3 Coordinates => _movement.Coordinates;
+        public Direction Direction => _movement.Direction;
+        public float MovementSpeed => _movement.MovementSpeed;
+        public bool IsMoving => _movement.IsMoving;
 
 
         /// <summary>
@@ -37,9 +41,9 @@ namespace Common.Base
             Direction direction,
             bool isMoving)
         {
-            Character.Coordinates = coordinates;
-            Character.Direction = direction;
-            Character.IsMoving = isMoving;
+            _movement.Coordinates = coordinates;
+            _movement.Direction = direction;
+            _movement.IsMoving = isMoving;
             return this;
         }
 
@@ -51,8 +55,8 @@ namespace Common.Base
         /// <returns></returns>
         public PlayerModel UpdateDirection(Direction direction, bool isMoving)
         {
-            Character.Direction = direction;
-            Character.IsMoving = isMoving;
+            _movement.Direction = direction;
+            _movement.IsMoving = isMoving;
             return this;
         }
 
@@ -69,7 +73,7 @@ namespace Common.Base
             int maxWidth,
             int maxHeight)
         {
-            Character.Move(elapsedTime, maxWidth, maxHeight);
+            _movement.Move(elapsedTime, maxWidth, maxHeight);
             return this;
         }
     }

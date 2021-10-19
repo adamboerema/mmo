@@ -114,9 +114,11 @@ namespace Server.Engine.Player
         private PlayerModel CreateNewPlayer(string connectionId) =>
             new PlayerModel(
                 id: connectionId,
-                character: new CharacterModel
+                characterModel: new CharacterModel
                 {
                     Name = "Test",
+                },
+                movementModel: new MovementModel {
                     Direction = Direction.DOWN,
                     Coordinates = new Vector3(0, 0, 0),
                     IsMoving = false,

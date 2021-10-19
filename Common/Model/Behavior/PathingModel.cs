@@ -5,7 +5,7 @@ using Common.Utility;
 
 namespace Common.Model.Behavior
 {
-    public class MovementModel
+    public class PathingModel
     {
         private const int DISENGAGE_WAIT_SECONDS = 5;
         private double _disengageOffset => LastDisengageTime + DISENGAGE_WAIT_SECONDS;
