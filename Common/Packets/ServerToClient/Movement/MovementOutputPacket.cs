@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Numerics;
 using Common.Definitions;
-using Common.Base;
 using Common.Network.IO;
+using Common.Model.Character;
 
 namespace Common.Packets.ServerToClient.Movement
 {

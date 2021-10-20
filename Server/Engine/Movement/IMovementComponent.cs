@@ -1,5 +1,6 @@
 ﻿using System;
 using Common.Base;
+using Common.Model.Character;
 
 namespace Server.Engine.Movement
 {

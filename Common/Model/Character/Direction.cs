@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Base
+namespace Common.Model.Character
 {
     public enum Direction : int
     {
