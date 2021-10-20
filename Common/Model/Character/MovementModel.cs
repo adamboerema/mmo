@@ -47,6 +47,9 @@ namespace Common.Model.Character
             double elapsedTime)
         {
             var increment = GetCoordinatesToPoint(Coordinates, destination, elapsedTime);
+
+            Console.WriteLine($"Coordinates ({Coordinates.X} {Coordinates.Y}) --- Destination ({destination.X} {destination.Y})");
+
             ClampCoordinatesToDestination(destination, increment);
             IsMoving = Coordinates != destination;
         }

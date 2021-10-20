@@ -22,6 +22,8 @@ namespace Common.Base
 
         private CombatModel _combat;
 
+        private CollisionModel _collision;
+
         public EnemyModel(
             string id,
             EnemyType type,
@@ -29,7 +31,8 @@ namespace Common.Base
             PathingModel pathingModel,
             CharacterModel characterModel,
             MovementModel movementModel,
-            CombatModel combatModel)
+            CombatModel combatModel,
+            CollisionModel collisionModel)
         {
             Id = id;
             Type = type;
@@ -38,6 +41,7 @@ namespace Common.Base
             _character = characterModel;
             _movement = movementModel;
             _combat = combatModel;
+            _collision = collisionModel;
         }
 
         /// <summary>
@@ -65,7 +69,7 @@ namespace Common.Base
         /// <summary>
         /// Combat
         /// </summary>
-        public float GetAttackDistance() => _combat.GetAttackDistance((float) _character.Bounds.Radius);
+        public float GetAttackDistance() => _combat.GetAttackDistance(_collision.GetCollisionDistance());
 
         /// <summary>
         /// Engage target character
@@ -85,12 +89,22 @@ namespace Common.Base
         /// Disengage the target
         /// </summary>
         /// <returns></returns>
-        public void DisengagePlayer()
+        public void DisengageCharacter()
         {
             _pathing.EngageTargetId = null;
             _pathing.LastDisengageTime = DateTimeOffset.Now.ToUnixTimeSeconds();
             _pathing.MovementDestination = _movement.Coordinates;
         }
+
+        /// <summary>
+        /// Attack target
+        /// </summary>
+        /// <param name="elapsedTime"></param>
+        public void AttackTarget(double elapsedTime)
+        {
+
+        }
+
 
         /// <summary>
         /// Update the destination
@@ -112,9 +126,11 @@ namespace Common.Base
                 _movement.Coordinates,
                 _pathing.MovementDestination);
 
-            var attackDistance = GetAttackDistance();
+            var targetDistance = _pathing.EngageTargetId == null
+                ? _collision.GetCollisionDistance()
+                : GetAttackDistance();
 
-            if (distance > attackDistance)
+            if (distance > targetDistance)
             {
                 _movement.MoveToPoint(_pathing.MovementDestination, elapsedTime);
             }            
@@ -127,8 +143,7 @@ namespace Common.Base
         /// <returns></returns>
         public bool ShouldStartMove(double timestamp)
         {
-            var moveTime = _pathing.LastMovementTime + _pathing.MovementWaitSeconds;
-            return moveTime < timestamp
+            return _pathing.ShouldStartMove(timestamp)
                 && _pathing.EngageTargetId == null;
         }
 

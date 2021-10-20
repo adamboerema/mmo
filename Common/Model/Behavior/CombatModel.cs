@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Numerics;
+using Common.Utility;
+
 namespace Common.Model.Behavior
 {
     public class CombatModel
@@ -17,5 +20,15 @@ namespace Common.Model.Behavior
         /// <param name="offset"></param>
         /// <returns></returns>
         public float GetAttackDistance(float offset) => AttackRange + offset;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="timestamp"></param>
+        /// <returns></returns>
+        public void ShouldAttack(Vector3 location, double timestamp)
+        {
+        }
     }
 }

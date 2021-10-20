@@ -112,7 +112,7 @@ namespace Server.Engine.Enemy
             {
                 if (enemy.ShouldDisengage(player.Coordinates))
                 {
-                    enemy.DisengagePlayer();
+                    enemy.DisengageCharacter();
                     DispatchEnemyDisenage(enemy);
                 }
                 else
@@ -122,7 +122,7 @@ namespace Server.Engine.Enemy
             }
             else
             {
-                enemy.DisengagePlayer();
+                enemy.DisengageCharacter();
                 DispatchEnemyDisenage(enemy);
             }
         }
@@ -223,9 +223,11 @@ namespace Server.Engine.Enemy
                 },
                 characterModel: new CharacterModel
                 {
-                    Name = "Test",
-                    Bounds = new Bounds(10, 10),
-                    
+                    Name = "Test"
+                },
+                collisionModel: new CollisionModel
+                {
+                    Bounds = new Bounds(10, 10)
                 },
                 movementModel: new MovementModel
                 {

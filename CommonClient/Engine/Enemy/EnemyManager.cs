@@ -72,7 +72,7 @@ namespace CommonClient.Engine.Enemy
             var enemy = _enemyStore.Get(enemyId);
             if (enemy != null)
             {
-                enemy.DisengagePlayer();
+                enemy.DisengageCharacter();
                 _enemyStore.Update(enemy);
             }
         }
@@ -111,7 +111,10 @@ namespace CommonClient.Engine.Enemy
                 },
                 characterModel: new CharacterModel
                 {
-                    Name = "Test",
+                    Name = "Test"
+                },
+                collisionModel: new CollisionModel
+                {
                     Bounds = new Bounds(10, 10)
                 },
                 movementModel: new MovementModel
