@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Model.Character;
+using Common.Model.Shared;
 
 namespace Common.Model.Behavior
 {

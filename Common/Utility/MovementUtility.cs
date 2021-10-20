@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Common.Base;
-using Common.Model.Character;
+using Common.Model.Shared;
 
 namespace Common.Utility
 {

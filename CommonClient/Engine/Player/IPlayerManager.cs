@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Common.Base;
-using Common.Model.Character;
+using Common.Model.Shared;
 
 namespace CommonClient.Engine.Player
 {

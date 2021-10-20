@@ -2,7 +2,7 @@
 using System.Numerics;
 using Common.Definitions;
 using Common.Network.IO;
-using Common.Model.Character;
+using Common.Model.Shared;
 
 namespace Common.Packets.ServerToClient.Movement
 {

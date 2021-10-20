@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using Common.Base;
 using Common.Model.Behavior;
-using Common.Model.Character;
+using Common.Model.Shared;
 using CommonClient.Engine.Player;
 
 namespace CommonClient.Engine.Enemy

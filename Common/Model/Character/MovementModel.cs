@@ -3,7 +3,7 @@ using System.Numerics;
 using Common.Base;
 using Common.Utility;
 
-namespace Common.Model.Character
+namespace Common.Model.Shared
 {
     public class MovementModel
     {

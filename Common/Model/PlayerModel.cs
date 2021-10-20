@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Numerics;
-using Common.Model.Character;
+using Common.Model.Shared;
 
 namespace Common.Base
 {

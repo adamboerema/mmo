@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Common.Model.Character
+namespace Common.Model.Shared
 {
     public struct Bounds
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Common.Base;
-using Common.Model.Character;
+using Common.Model.Shared;
 using Common.Store;
 
 namespace CommonClient.Engine.Player

@@ -1,5 +1,5 @@
 ﻿
-namespace Common.Model.Character
+namespace Common.Model.Shared
 {
     public class CharacterModel
     {

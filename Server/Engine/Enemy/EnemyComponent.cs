@@ -7,7 +7,7 @@ using Server.Bus.Connection;
 using Server.Bus.Packet;
 using Server.Engine.Player;
 using Common.Model.Behavior;
-using Common.Model.Character;
+using Common.Model.Shared;
 
 namespace Server.Engine.Enemy
 {

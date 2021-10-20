@@ -3,7 +3,7 @@ using System.Numerics;
 using Common.Definitions;
 using Common.Base;
 using Common.Network.IO;
-using Common.Model.Character;
+using Common.Model.Shared;
 
 namespace Common.Packets.ServerToClient.Player
 {
