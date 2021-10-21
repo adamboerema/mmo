@@ -1,6 +1,6 @@
 ﻿using System;
 using Common.Base;
-using Common.Model.Shared;
+using Common.Model.Character;
 
 namespace CommonClient.Engine.Player
 {

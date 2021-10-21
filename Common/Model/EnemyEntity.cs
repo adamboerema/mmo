@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Numerics;
 using Common.Model.Behavior;
+using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Utility;
 
 namespace Common.Base
 {
-    public class EnemyModel
+    public class EnemyEntity
     {
         public string Id { get; }
 
@@ -24,7 +25,7 @@ namespace Common.Base
 
         private CollisionModel _collision;
 
-        public EnemyModel(
+        public EnemyEntity(
             string id,
             EnemyType type,
             SpawnModel spawnModel,
@@ -63,7 +64,7 @@ namespace Common.Base
         /// <summary>
         /// Spawn
         /// </summary>
-        public bool ShouldRespawn(double timestamp) => _spawn.ShouldRespawn(timestamp);
+        public bool ShouldRespawn(GameTick gameTime) => _spawn.ShouldRespawn(gameTime);
         public Vector3 GetRandomSpawnPoint() => _spawn.GetRandomSpawnPoint();
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace Common.Base
         /// Attack target
         /// </summary>
         /// <param name="elapsedTime"></param>
-        public void AttackTarget(double elapsedTime)
+        public void AttackTarget(GameTick gameTime)
         {
 
         }
@@ -120,7 +121,7 @@ namespace Common.Base
         /// Increments the movement towards the movement destination
         /// </summary>
         /// <param name="elapsedTime"></param>
-        public void MoveToDestination(double elapsedTime)
+        public void MoveToDestination(GameTick gameTime)
         {
             var distance = MovementUtility.GetAbsoluteDistanceToPoint(
                 _movement.Coordinates,
@@ -132,7 +133,7 @@ namespace Common.Base
 
             if (distance > targetDistance)
             {
-                _movement.MoveToPoint(_pathing.MovementDestination, elapsedTime);
+                _movement.MoveToPoint(_pathing.MovementDestination, gameTime.ElapsedTime);
             }            
         }
 
@@ -141,9 +142,9 @@ namespace Common.Base
         /// </summary>
         /// <param name="timestamp"></param>
         /// <returns></returns>
-        public bool ShouldStartMove(double timestamp)
+        public bool ShouldStartMove(GameTick gameTime)
         {
-            return _pathing.ShouldStartMove(timestamp)
+            return _pathing.ShouldStartMove(gameTime.Timestamp)
                 && _pathing.EngageTargetId == null;
         }
 

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Numerics;
 using Common.Base;
+using Common.Model.Shared;
 using Common.Utility;
 
-namespace Common.Model.Shared
+namespace Common.Model.Character
 {
     public class MovementModel
     {

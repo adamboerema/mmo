@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using Common.Base;
 using Common.Model.Behavior;
+using Common.Model.Character;
 using Common.Model.Shared;
 using CommonClient.Engine.Player;
 
@@ -77,7 +78,7 @@ namespace CommonClient.Engine.Enemy
             }
         }
 
-        public IEnumerable<EnemyModel> GetEnemies()
+        public IEnumerable<EnemyEntity> GetEnemies()
         {
             return _enemyStore.GetAll().Values;
         }
@@ -89,7 +90,7 @@ namespace CommonClient.Engine.Enemy
         /// <param name="enemyType">enemy type</param>
         /// <param name="position">position</param>
         /// <returns></returns>
-        private EnemyModel CreateEnemy(
+        private EnemyEntity CreateEnemy(
             string enemyId,
             EnemyType enemyType,
             string targetId,
@@ -97,7 +98,7 @@ namespace CommonClient.Engine.Enemy
             Vector3 movementDestination,
             float movementSpeed)
         {
-            return new EnemyModel(
+            return new EnemyEntity(
                 id: enemyId,
                 type: enemyType,
                 spawnModel: new SpawnModel

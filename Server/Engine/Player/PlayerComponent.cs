@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Common.Base;
+using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Packets.ServerToClient.Player;
 using Server.Bus.Packet;
@@ -20,7 +21,7 @@ namespace Server.Engine.Player
             _playerStore = playersStore;
         }
 
-        public void Update(double elapsedTime, double timestamp)
+        public void Update(GameTick gameTick)
         {
             // TODO: Update checks
         }

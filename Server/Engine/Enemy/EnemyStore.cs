@@ -7,20 +7,20 @@ namespace Server.Engine.Enemy
 {
     public class EnemyStore: IEnemyStore
     {
-        private ConcurrentDictionary<string, EnemyModel> _enemies
-            = new ConcurrentDictionary<string, EnemyModel>();
+        private ConcurrentDictionary<string, EnemyEntity> _enemies
+            = new ConcurrentDictionary<string, EnemyEntity>();
 
-        public void Add(EnemyModel model)
+        public void Add(EnemyEntity model)
         {
             _enemies[model.Id] = model;
         }
 
-        public EnemyModel Get(string id)
+        public EnemyEntity Get(string id)
         {
             return _enemies.ContainsKey(id) ? _enemies[id] : null;
         }
 
-        public IDictionary<string, EnemyModel> GetAll()
+        public IDictionary<string, EnemyEntity> GetAll()
         {
             return _enemies;
         }
@@ -30,7 +30,7 @@ namespace Server.Engine.Enemy
             _enemies.TryRemove(id, out _);
         }
 
-        public void Update(EnemyModel model)
+        public void Update(EnemyEntity model)
         {
             _enemies.TryUpdate(model.Id, model, _enemies[model.Id]);
         }

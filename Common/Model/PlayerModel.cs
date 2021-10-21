@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Common.Model.Character;
 using Common.Model.Shared;
 
 namespace Common.Base
@@ -69,11 +70,11 @@ namespace Common.Base
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
         public PlayerModel Move(
-            double elapsedTime,
+            GameTick gameTime,
             int maxWidth,
             int maxHeight)
         {
-            _movement.Move(elapsedTime, maxWidth, maxHeight);
+            _movement.Move(gameTime.ElapsedTime, maxWidth, maxHeight);
             return this;
         }
     }

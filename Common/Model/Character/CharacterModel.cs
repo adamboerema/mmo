@@ -1,5 +1,6 @@
-﻿
-namespace Common.Model.Shared
+﻿using System;
+
+namespace Common.Model.Character
 {
     public class CharacterModel
     {

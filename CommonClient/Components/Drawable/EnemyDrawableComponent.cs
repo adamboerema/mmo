@@ -2,6 +2,7 @@
 using CommonClient.Components.Camera;
 using CommonClient.Engine.Enemy;
 using CommonClient.Engine.Player;
+using CommonClient.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -49,7 +50,8 @@ namespace CommonClient.Components.Player
                         enemy.PathToPoint(player.Coordinates);
                     }
                 }
-                enemy.MoveToDestination(gameTime.ElapsedGameTime.TotalMilliseconds);
+                
+                enemy.MoveToDestination(gameTime.ToGameTick());
             }
             base.Update(gameTime);
         }

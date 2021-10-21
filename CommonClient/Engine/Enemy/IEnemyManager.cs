@@ -56,6 +56,6 @@ namespace CommonClient.Engine.Enemy
         /// Get list of enemies
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<EnemyModel> GetEnemies();
+        public IEnumerable<EnemyEntity> GetEnemies();
     }
 }

@@ -24,9 +24,9 @@ namespace Server.Engine.Movement
             _playerStore = playerStore;
         }
 
-        public void Update(double elapsedTime, double timestamp)
+        public void Update(GameTick gameTick)
         {
-            UpdateCoordinatesOfPlayers(elapsedTime);
+            UpdateCoordinatesOfPlayers(gameTick);
         }
 
         public void UpdateMovementInput(
@@ -47,12 +47,12 @@ namespace Server.Engine.Movement
         /// Updates the coordinates of the player
         /// </summary>
         /// <param name="elapsedTime"></param>
-        private void UpdateCoordinatesOfPlayers(double elapsedTime)
+        private void UpdateCoordinatesOfPlayers(GameTick gameTick)
         {
             var players = _playerStore.GetAll();
             foreach (var player in players.Values)
             {
-                player.Move(elapsedTime, MAX_WIDTH, MAX_HEIGHT);
+                player.Move(gameTick, MAX_WIDTH, MAX_HEIGHT);
                 _playerStore.Update(player);
             }
         }

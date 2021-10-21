@@ -1,6 +1,7 @@
 ﻿using System;
 using CommonClient.Components.Camera;
 using CommonClient.Engine.Player;
+using CommonClient.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -46,7 +47,6 @@ namespace CommonClient.Components.Player
         public override void Update(GameTime gameTime)
         {
             var players = _playerManager.GetPlayers();
-            var elapsedTime = gameTime.ElapsedGameTime.TotalMilliseconds;
 
             foreach (var player in players)
             {
@@ -60,7 +60,7 @@ namespace CommonClient.Components.Player
                         _clientPlayerTexture.Height);
                 }
 
-                player.Move(elapsedTime, WORLD_WIDTH, WORLD_HEIGHT);
+                player.Move(gameTime.ToGameTick(), WORLD_WIDTH, WORLD_HEIGHT);
                 _playerManager.UpdatePlayer(player);
             }
             base.Update(gameTime);

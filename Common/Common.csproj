@@ -27,6 +27,7 @@
     <Folder Include="Model\Behavior\" />
     <Folder Include="Model\Character\" />
     <Folder Include="Model\Shared\" />
+    <Folder Include="Model\World\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\" />
@@ -52,5 +53,6 @@
     <None Remove="Model\Behavior\" />
     <None Remove="Model\Character\" />
     <None Remove="Model\Shared\" />
+    <None Remove="Model\World\" />
   </ItemGroup>
 </Project>

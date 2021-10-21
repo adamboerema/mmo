@@ -4,7 +4,7 @@ using Common.Store;
 
 namespace CommonClient.Engine.Enemy
 {
-    public interface IEnemyStore: IStore<string, EnemyModel>
+    public interface IEnemyStore: IStore<string, EnemyEntity>
     {
     }
 }
