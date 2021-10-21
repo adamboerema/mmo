@@ -6,6 +6,22 @@ namespace Common.Model.Character
     {
         public string Name { get; init; }
 
+        /// <summary>
+        /// Health and mana
+        /// </summary>
+
+        public int Health { get; set; }
+
+        public int Mana { get; set; }
+
+        public int MaxHealth { get; set; }
+
+        public int MaxMana { get; set; }
+
+        /// <summary>
+        /// Stats
+        /// </summary>
+
         public int Strength { get; set; }
 
         public int Dexterity { get; set; }
