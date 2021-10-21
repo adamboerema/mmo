@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Common.Base
+namespace Common.Model.Shared
 {
     public enum EnemyType: int
     {

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Base;
+using Common.Entity;
+using Common.Model.Shared;
 
 namespace CommonClient.Engine.Enemy
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Common.Base;
+using Common.Entity;
 
 namespace Server.Engine.Enemy
 {

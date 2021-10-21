@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using Common.Base;
 using Common.Model.Shared;
 using Common.Utility;
 
@@ -48,9 +47,6 @@ namespace Common.Model.Character
             double elapsedTime)
         {
             var increment = GetCoordinatesToPoint(Coordinates, destination, elapsedTime);
-
-            Console.WriteLine($"Coordinates ({Coordinates.X} {Coordinates.Y}) --- Destination ({destination.X} {destination.Y})");
-
             ClampCoordinatesToDestination(destination, increment);
             IsMoving = Coordinates != destination;
         }
@@ -64,13 +60,13 @@ namespace Common.Model.Character
         /// <param name="maxHeight">Max world height</param>
         /// <returns></returns>
         public void Move(
-            double elapsedTime,
+            GameTick gameTick,
             int maxWidth,
             int maxHeight)
         {
             if (IsMoving)
             {
-                MoveInDirection(elapsedTime);
+                MoveInDirection(gameTick.ElapsedTime);
                 ClampCoordinates(maxWidth, maxHeight);
                 IsMoving = true;
             }

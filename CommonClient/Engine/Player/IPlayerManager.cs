@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Base;
 using Common.Model.Shared;
 
 namespace CommonClient.Engine.Player
@@ -14,13 +13,13 @@ namespace CommonClient.Engine.Player
             Vector3 position,
             Direction movementType);
 
-        public void UpdatePlayer(ClientPlayerModel playerModel);
+        public void UpdatePlayer(ClientPlayerEntity playerModel);
 
         public void RemovePlayer(string playerId);
 
-        public IEnumerable<ClientPlayerModel> GetPlayers();
+        public IEnumerable<ClientPlayerEntity> GetPlayers();
 
-        public ClientPlayerModel GetClientPlayer();
+        public ClientPlayerEntity GetClientPlayer();
 
     }
 }

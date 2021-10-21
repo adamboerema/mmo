@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Numerics;
-using Common.Base;
+using Common.Entity;
 using Common.Model.Shared;
 using Common.Packets.ServerToClient.Movement;
+using Common.Utility;
 using Server.Bus.Packet;
 using Server.Engine.Player;
 
@@ -52,7 +53,7 @@ namespace Server.Engine.Movement
             var players = _playerStore.GetAll();
             foreach (var player in players.Values)
             {
-                player.Move(gameTick, MAX_WIDTH, MAX_HEIGHT);
+                player.Update(gameTick, WorldUtility.GetWorld());
                 _playerStore.Update(player);
             }
         }
@@ -61,7 +62,7 @@ namespace Server.Engine.Movement
         /// Dispatch the movement update to all of the clients
         /// </summary>
         /// <param name="player"></param>
-        private void DispatchMovementUpdate(PlayerModel player)
+        private void DispatchMovementUpdate(PlayerEntity player)
         {
             _dispatchPacketBus.Publish(new MovementOutputPacket
             {

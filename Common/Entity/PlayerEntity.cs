@@ -2,10 +2,11 @@
 using System.Numerics;
 using Common.Model.Character;
 using Common.Model.Shared;
+using Common.Model.World;
 
-namespace Common.Base
+namespace Common.Entity
 {
-    public class PlayerModel
+    public class PlayerEntity: IEntity
     {
         public string Id { get; init; }
 
@@ -13,7 +14,7 @@ namespace Common.Base
 
         private MovementModel _movement { get; init; }
 
-        public PlayerModel(
+        public PlayerEntity(
             string id,
             CharacterModel characterModel,
             MovementModel movementModel)
@@ -29,6 +30,14 @@ namespace Common.Base
         public float MovementSpeed => _movement.MovementSpeed;
         public bool IsMoving => _movement.IsMoving;
 
+        /// <summary>
+        /// Game tick
+        /// </summary>
+        /// <param name="gameTick"></param>
+        public void Update(GameTick gameTick, World world)
+        {
+            _movement.Move(gameTick, world.Width, world.Height);
+        }
 
         /// <summary>
         /// Directly update the coordinates of player
@@ -37,7 +46,7 @@ namespace Common.Base
         /// <param name="direction"></param>
         /// <param name="isMoving"></param>
         /// <returns></returns>
-        public PlayerModel UpdateCoordinates(
+        public PlayerEntity UpdateCoordinates(
             Vector3 coordinates,
             Direction direction,
             bool isMoving)
@@ -54,27 +63,10 @@ namespace Common.Base
         /// <param name="direction"></param>
         /// <param name="isMoving"></param>
         /// <returns></returns>
-        public PlayerModel UpdateDirection(Direction direction, bool isMoving)
+        public PlayerEntity UpdateDirection(Direction direction, bool isMoving)
         {
             _movement.Direction = direction;
             _movement.IsMoving = isMoving;
-            return this;
-        }
-
-        /// <summary>
-        /// Move Coordinates of player
-        /// </summary>
-        /// <param name="model">Player model</param>
-        /// <param name="elapsedTime">Increment of time</param>
-        /// <param name="maxWidth">Max world width</param>
-        /// <param name="maxHeight">Max world height</param>
-        /// <returns></returns>
-        public PlayerModel Move(
-            GameTick gameTime,
-            int maxWidth,
-            int maxHeight)
-        {
-            _movement.Move(gameTime.ElapsedTime, maxWidth, maxHeight);
             return this;
         }
     }

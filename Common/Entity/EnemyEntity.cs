@@ -3,11 +3,12 @@ using System.Numerics;
 using Common.Model.Behavior;
 using Common.Model.Character;
 using Common.Model.Shared;
+using Common.Model.World;
 using Common.Utility;
 
-namespace Common.Base
+namespace Common.Entity
 {
-    public class EnemyEntity
+    public class EnemyEntity: IEntity
     {
         public string Id { get; }
 
@@ -73,13 +74,37 @@ namespace Common.Base
         public float GetAttackDistance() => _combat.GetAttackDistance(_collision.GetCollisionDistance());
 
         /// <summary>
+        /// Game Tick
+        /// </summary>
+        /// <param name="gameTick"></param>
+        public void Update(GameTick gameTick, World world)
+        {
+            var distance = MovementUtility.GetAbsoluteDistanceToPoint(
+                _movement.Coordinates,
+                _pathing.MovementDestination);
+
+            var targetDistance = _pathing.EngageTargetId == null
+                ? _collision.GetCollisionDistance()
+                : GetAttackDistance();
+
+            if (distance > targetDistance)
+            {
+                _movement.MoveToPoint(_pathing.MovementDestination, gameTick.ElapsedTime);
+            }
+            else if(_pathing.EngageTargetId != null)
+            {
+                AttackTarget(gameTick);
+            }
+        }
+
+        /// <summary>
         /// Engage target character
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="targetId">Character Id</param>
         /// <returns></returns>
-        public void EngageCharacter(string id, Vector3 position)
+        public void EngageTarget(string targedId, Vector3 position)
         {
-            _pathing.EngageTargetId = id;
+            _pathing.EngageTargetId = targedId;
             PathToPoint(
                 _movement.Coordinates,
                 position,
@@ -103,9 +128,8 @@ namespace Common.Base
         /// <param name="elapsedTime"></param>
         public void AttackTarget(GameTick gameTime)
         {
-
+            // TODO: attack logic
         }
-
 
         /// <summary>
         /// Update the destination
@@ -115,26 +139,6 @@ namespace Common.Base
         public void SetEngageDestination(Vector3 destination)
         {
             _pathing.MovementDestination = destination;
-        }
-
-        /// <summary>
-        /// Increments the movement towards the movement destination
-        /// </summary>
-        /// <param name="elapsedTime"></param>
-        public void MoveToDestination(GameTick gameTime)
-        {
-            var distance = MovementUtility.GetAbsoluteDistanceToPoint(
-                _movement.Coordinates,
-                _pathing.MovementDestination);
-
-            var targetDistance = _pathing.EngageTargetId == null
-                ? _collision.GetCollisionDistance()
-                : GetAttackDistance();
-
-            if (distance > targetDistance)
-            {
-                _movement.MoveToPoint(_pathing.MovementDestination, gameTime.ElapsedTime);
-            }            
         }
 
         /// <summary>

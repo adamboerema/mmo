@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Numerics;
-using Common.Base;
 using Common.Model.Shared;
 using Common.Store;
 
 namespace CommonClient.Engine.Player
 {
-    public interface IPlayerStore: IStore<string, ClientPlayerModel>
+    public interface IPlayerStore: IStore<string, ClientPlayerEntity>
     {
         /// <summary>
         /// Update the movement
@@ -25,7 +24,7 @@ namespace CommonClient.Engine.Player
         /// Get Client player
         /// </summary>
         /// <returns></returns>
-        public ClientPlayerModel GetClientPlayer();
+        public ClientPlayerEntity GetClientPlayer();
 
         /// <summary>
         /// Update the client coordinates

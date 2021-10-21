@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using Common.Bus;
-using Common.Base;
 using Common.Packets.ServerToClient.Enemy;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
@@ -9,6 +8,8 @@ using Server.Engine.Player;
 using Common.Model.Behavior;
 using Common.Model.Shared;
 using Common.Model.Character;
+using Common.Entity;
+using Common.Utility;
 
 namespace Server.Engine.Enemy
 {
@@ -96,7 +97,7 @@ namespace Server.Engine.Enemy
             {
                 if (enemy.ShouldEngage(player.Coordinates))
                 {
-                    enemy.EngageCharacter(player.Id, player.Coordinates);
+                    enemy.EngageTarget(player.Id, player.Coordinates);
                     DispatchEnemyEngage(enemy);
                 }
             }
@@ -141,7 +142,7 @@ namespace Server.Engine.Enemy
                 StartMovement(enemy);
             }
 
-            enemy.MoveToDestination(gameTick);
+            enemy.Update(gameTick, WorldUtility.GetWorld());
 
             // Stop if moving and have reached location
             if(enemy.ShouldStopMove())

@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Utility;
 using CommonClient.Components.Camera;
 using CommonClient.Engine.Player;
 using CommonClient.Extensions;
@@ -9,9 +10,6 @@ namespace CommonClient.Components.Player
 {
     public class PlayerDrawableComponent : DrawableGameComponent
     {
-        private const int WORLD_HEIGHT = 1000;
-        private const int WORLD_WIDTH = 1000;
-
         private SpriteBatch _spriteBatch;
         private IPlayerManager _playerManager;
         private Texture2D _clientPlayerTexture;
@@ -60,7 +58,7 @@ namespace CommonClient.Components.Player
                         _clientPlayerTexture.Height);
                 }
 
-                player.Move(gameTime.ToGameTick(), WORLD_WIDTH, WORLD_HEIGHT);
+                player.Update(gameTime.ToGameTick(), WorldUtility.GetWorld());
                 _playerManager.UpdatePlayer(player);
             }
             base.Update(gameTime);
@@ -87,7 +85,7 @@ namespace CommonClient.Components.Player
         /// Draw player with coordinates
         /// </summary>
         /// <param name="playerModel"></param>
-        private void DrawPlayer(ClientPlayerModel playerModel, Texture2D texture)
+        private void DrawPlayer(ClientPlayerEntity playerModel, Texture2D texture)
         {
             var coordinates = playerModel.Coordinates;
 

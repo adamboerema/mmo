@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Base;
 using Common.Model;
 using Common.Model.Character;
 using Common.Model.Shared;
@@ -31,7 +30,7 @@ namespace CommonClient.Engine.Player
             _playerStore.Add(player);
         }
 
-        public void UpdatePlayer(ClientPlayerModel model)
+        public void UpdatePlayer(ClientPlayerEntity model)
         {
             _playerStore.Update(model);
         }
@@ -41,12 +40,12 @@ namespace CommonClient.Engine.Player
             _playerStore.Remove(playerId);
         }
 
-        public IEnumerable<ClientPlayerModel> GetPlayers()
+        public IEnumerable<ClientPlayerEntity> GetPlayers()
         {
             return _playerStore.GetAll().Values;
         }
 
-        public ClientPlayerModel GetClientPlayer()
+        public ClientPlayerEntity GetClientPlayer()
         {
             return _playerStore.GetClientPlayer();
         }
@@ -56,13 +55,13 @@ namespace CommonClient.Engine.Player
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private ClientPlayerModel CreateNewPlayer(
+        private ClientPlayerEntity CreateNewPlayer(
             string playerId,
             bool isClient,
             Vector3 position,
             Direction movementType)
         {
-            return new ClientPlayerModel(
+            return new ClientPlayerEntity(
                 id: playerId,
                 isClient: isClient,
                 characterModel: new CharacterModel

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Base;
+using Common.Entity;
 using Common.Model.Behavior;
 using Common.Model.Character;
 using Common.Model.Shared;
@@ -63,7 +63,7 @@ namespace CommonClient.Engine.Enemy
             var player = _playerStore.Get(targetId);
             if(enemy != null && player != null)
             {
-                enemy.EngageCharacter(player.Id, player.Coordinates);
+                enemy.EngageTarget(player.Id, player.Coordinates);
                 _enemyStore.Update(enemy);
             }
         }
