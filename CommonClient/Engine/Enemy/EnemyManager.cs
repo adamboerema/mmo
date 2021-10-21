@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Base;
+using Common.Entity;
 using Common.Model.Behavior;
 using Common.Model.Character;
+using Common.Model.Shared;
 using CommonClient.Engine.Player;
 
 namespace CommonClient.Engine.Enemy
@@ -62,7 +63,7 @@ namespace CommonClient.Engine.Enemy
             var player = _playerStore.Get(targetId);
             if(enemy != null && player != null)
             {
-                enemy.EngageCharacter(player.Id, player.Coordinates);
+                enemy.EngageTarget(player.Id, player.Coordinates);
                 _enemyStore.Update(enemy);
             }
         }
@@ -72,12 +73,12 @@ namespace CommonClient.Engine.Enemy
             var enemy = _enemyStore.Get(enemyId);
             if (enemy != null)
             {
-                enemy.DisengagePlayer();
+                enemy.DisengageCharacter();
                 _enemyStore.Update(enemy);
             }
         }
 
-        public IEnumerable<EnemyModel> GetEnemies()
+        public IEnumerable<EnemyEntity> GetEnemies()
         {
             return _enemyStore.GetAll().Values;
         }
@@ -89,7 +90,7 @@ namespace CommonClient.Engine.Enemy
         /// <param name="enemyType">enemy type</param>
         /// <param name="position">position</param>
         /// <returns></returns>
-        private EnemyModel CreateEnemy(
+        private EnemyEntity CreateEnemy(
             string enemyId,
             EnemyType enemyType,
             string targetId,
@@ -97,24 +98,30 @@ namespace CommonClient.Engine.Enemy
             Vector3 movementDestination,
             float movementSpeed)
         {
-            return new EnemyModel(
+            return new EnemyEntity(
                 id: enemyId,
                 type: enemyType,
                 spawnModel: new SpawnModel
                 {
                     IsAlive = true
                 },
-                movementModel: new MovementModel
+                pathingModel: new PathingModel
                 {
                     MovementDestination = movementDestination,
                     EngageTargetId = targetId
                 },
                 characterModel: new CharacterModel
                 {
-                    Name = "Test",
+                    Name = "Test"
+                },
+                collisionModel: new CollisionModel
+                {
+                    Bounds = new Bounds(10, 10)
+                },
+                movementModel: new MovementModel
+                {
                     Coordinates = position,
                     MovementSpeed = movementSpeed,
-                    Bounds = new Bounds(10, 10)
                 },
                 combatModel: new CombatModel
                 {

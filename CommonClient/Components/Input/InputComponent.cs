@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Base;
+using Common.Model.Shared;
 using CommonClient.Engine.Movement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;

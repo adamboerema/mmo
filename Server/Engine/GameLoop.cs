@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Common.Model.Shared;
 using Server.Configuration;
 using Server.Engine.Enemy;
 using Server.Engine.Movement;
@@ -40,17 +41,19 @@ namespace Server.Engine
                 if (elapsedTime > _serverConfiguration.ServerTickRate)
                 {
                     var currentTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-                    Update(elapsedTime, currentTime);
+                    
+                    Update(new GameTick(elapsedTime, currentTime));
                     _gameLoopTimer.Restart();
                 }
             }
         }
 
-        public void Update(double elapsedTime, double currentTime)
+        public void Update(GameTick gameTick)
         {
-            _movementComponent.Update(elapsedTime, currentTime);
-            _enemyComponent.Update(elapsedTime, currentTime);
-            _playerComponent.Update(elapsedTime, currentTime);
+
+            _movementComponent.Update(gameTick);
+            _enemyComponent.Update(gameTick);
+            _playerComponent.Update(gameTick);
         }
 
         public void Stop()

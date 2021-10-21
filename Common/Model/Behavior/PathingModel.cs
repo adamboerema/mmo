@@ -5,7 +5,7 @@ using Common.Utility;
 
 namespace Common.Model.Behavior
 {
-    public class MovementModel
+    public class PathingModel
     {
         private const int DISENGAGE_WAIT_SECONDS = 5;
         private double _disengageOffset => LastDisengageTime + DISENGAGE_WAIT_SECONDS;
@@ -58,6 +58,15 @@ namespace Common.Model.Behavior
 
         }
 
+        /// <summary>
+        /// Check if movement wait time has exceeded
+        /// </summary>
+        /// <param name="timestamp"></param>
+        /// <returns></returns>
+        public bool ShouldStartMove(double timestamp)
+        {
+            return LastMovementTime + MovementWaitSeconds < timestamp;
+        }
 
         /// <summary>
         /// Gets a random spawn point within a rectangle spawn area

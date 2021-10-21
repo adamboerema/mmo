@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Numerics;
-using Common.Base;
+using Common.Model.Shared;
 
 namespace CommonClient.Engine.Movement
 {

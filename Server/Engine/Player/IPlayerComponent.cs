@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Base;
+using Common.Entity;
 
 namespace Server.Engine.Player
 {
@@ -9,7 +9,7 @@ namespace Server.Engine.Player
         /// Add Player to the player pool
         /// </summary>
         /// <param name="player">Player object</param>
-        public void AddPlayer(PlayerModel player);
+        public void AddPlayer(PlayerEntity player);
 
         /// <summary>
         /// Creates a new player and adds it to the store

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Numerics;
+using Common.Model.Shared;
 
 namespace Common.Model.Behavior
 {
@@ -36,10 +37,10 @@ namespace Common.Model.Behavior
         /// </summary>
         /// <param name="timestamp"></param>
         /// <returns></returns>
-        public bool ShouldRespawn(double timestamp)
+        public bool ShouldRespawn(GameTick gameTime)
         {
             var respawnTime = DeathTime + RespawnSeconds;
-            return !IsAlive && respawnTime < timestamp;
+            return !IsAlive && respawnTime < gameTime.Timestamp;
         }
     }
 }

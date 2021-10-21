@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Numerics;
-using Common.Base;
+using Common.Entity;
 using Common.Model.Character;
+using Common.Model.Shared;
 using Common.Packets.ServerToClient.Player;
 using Server.Bus.Packet;
 
@@ -20,7 +21,7 @@ namespace Server.Engine.Player
             _playerStore = playersStore;
         }
 
-        public void Update(double elapsedTime, double timestamp)
+        public void Update(GameTick gameTick)
         {
             // TODO: Update checks
         }
@@ -31,7 +32,7 @@ namespace Server.Engine.Player
             AddPlayer(player);
         }
 
-        public void AddPlayer(PlayerModel player)
+        public void AddPlayer(PlayerEntity player)
         {
             DispatchConnectPlayer(player);
             DispatchOtherPlayers(player);
@@ -50,7 +51,7 @@ namespace Server.Engine.Player
         /// Dispatch all current player location to new player
         /// </summary>
         /// <param name="player">New Player to notify</param>
-        private void DispatchOtherPlayers(PlayerModel player)
+        private void DispatchOtherPlayers(PlayerEntity player)
         {
             var allPlayers = _playerStore.GetAll();
             foreach(var playerValue in allPlayers)
@@ -67,7 +68,7 @@ namespace Server.Engine.Player
         /// </summary>
         /// <param name="player">Player model</param>
         /// <param name="isClient">Same client that requested connection</param>
-        private void DispatchConnectPlayer(PlayerModel player)
+        private void DispatchConnectPlayer(PlayerEntity player)
         {
             _dispatchBus.PublishExcept(player.Id, CreatePlayerConnectPacket(player, false));
             _dispatchBus.Publish(player.Id, CreatePlayerConnectPacket(player, true));
@@ -93,7 +94,7 @@ namespace Server.Engine.Player
         /// <param name="player">Player model</param>
         /// <param name="isClient">Is Player for the connecting client?</param>
         /// <returns></returns>
-        private PlayerConnectPacket CreatePlayerConnectPacket(PlayerModel player, bool isClient) =>
+        private PlayerConnectPacket CreatePlayerConnectPacket(PlayerEntity player, bool isClient) =>
             new PlayerConnectPacket
             {
                 PlayerId = player.Id,
@@ -111,12 +112,14 @@ namespace Server.Engine.Player
         /// </summary>
         /// <param name="connectionId">Connection id that connected</param>
         /// <returns></returns>
-        private PlayerModel CreateNewPlayer(string connectionId) =>
-            new PlayerModel(
+        private PlayerEntity CreateNewPlayer(string connectionId) =>
+            new PlayerEntity(
                 id: connectionId,
-                character: new CharacterModel
+                characterModel: new CharacterModel
                 {
                     Name = "Test",
+                },
+                movementModel: new MovementModel {
                     Direction = Direction.DOWN,
                     Coordinates = new Vector3(0, 0, 0),
                     IsMoving = false,

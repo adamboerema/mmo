@@ -2,25 +2,25 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Base;
+using Common.Model.Shared;
 using CommonClient.Engine.Player;
 
 namespace CommonClient.Store
 {
     public class PlayerStore: IPlayerStore
     {
-        private ConcurrentDictionary<string, ClientPlayerModel> _players
-            = new ConcurrentDictionary<string, ClientPlayerModel>();
+        private ConcurrentDictionary<string, ClientPlayerEntity> _players
+            = new ConcurrentDictionary<string, ClientPlayerEntity>();
 
         private string _clientPlayerId;
 
-        public ClientPlayerModel Get(string playerId)
+        public ClientPlayerEntity Get(string playerId)
         {
             _players.TryGetValue(playerId, out var player);
             return player;
         }
 
-        public void Add(ClientPlayerModel model)
+        public void Add(ClientPlayerEntity model)
         {
             // Store reference to client player id
             if(model.IsClient)
@@ -30,7 +30,7 @@ namespace CommonClient.Store
             _players[model.Id] = model;
         }
 
-        public IDictionary<string, ClientPlayerModel> GetAll()
+        public IDictionary<string, ClientPlayerEntity> GetAll()
         {
             return _players;
         }
@@ -40,12 +40,12 @@ namespace CommonClient.Store
             _players.TryRemove(id, out _);
         }
 
-        public void Update(ClientPlayerModel model)
+        public void Update(ClientPlayerEntity model)
         {
             _players.TryUpdate(model.Id, model, _players[model.Id]);
         }
 
-        public ClientPlayerModel GetClientPlayer()
+        public ClientPlayerEntity GetClientPlayer()
         {
             return Get(_clientPlayerId);
         }

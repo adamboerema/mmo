@@ -1,7 +1,9 @@
 ﻿using System;
+using Common.Utility;
 using CommonClient.Components.Camera;
 using CommonClient.Engine.Enemy;
 using CommonClient.Engine.Player;
+using CommonClient.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -49,7 +51,8 @@ namespace CommonClient.Components.Player
                         enemy.PathToPoint(player.Coordinates);
                     }
                 }
-                enemy.MoveToDestination(gameTime.ElapsedGameTime.TotalMilliseconds);
+
+                enemy.Update(gameTime.ToGameTick(), WorldUtility.GetWorld());
             }
             base.Update(gameTime);
         }

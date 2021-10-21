@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using Common.Bus;
-using Common.Base;
 using Common.Packets.ServerToClient.Enemy;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
 using Server.Engine.Player;
 using Common.Model.Behavior;
+using Common.Model.Shared;
 using Common.Model.Character;
+using Common.Entity;
+using Common.Utility;
 
 namespace Server.Engine.Enemy
 {
@@ -45,13 +47,13 @@ namespace Server.Engine.Enemy
         /// </summary>
         /// <param name="elapsedTime"></param>
         /// <param name="timestamp"></param>
-        public void Update(double elapsedTime, double timestamp)
+        public void Update(GameTick gameTime)
         {
             foreach(var enemy in _enemyStore.GetAll().Values)
             {
-                SpawnEnemy(timestamp, enemy);
+                SpawnEnemy(gameTime, enemy);
                 EngagePlayer(enemy);
-                MoveEnemy(elapsedTime, timestamp, enemy);
+                MoveEnemy(gameTime, enemy);
                 _enemyStore.Update(enemy);
             }
         }
@@ -73,7 +75,7 @@ namespace Server.Engine.Enemy
         /// Engage player
         /// </summary>
         /// <param name="enemy"></param>
-        private void EngagePlayer(EnemyModel enemy)
+        private void EngagePlayer(EnemyEntity enemy)
         {
             if(enemy.EngageTargetId == null)
             {
@@ -89,13 +91,13 @@ namespace Server.Engine.Enemy
         /// Check if enemy should start engaging
         /// </summary>
         /// <param name="enemy"></param>
-        private void CheckEnemyEngage(EnemyModel enemy)
+        private void CheckEnemyEngage(EnemyEntity enemy)
         {
             foreach (var player in _playerStore.GetAll().Values)
             {
                 if (enemy.ShouldEngage(player.Coordinates))
                 {
-                    enemy.EngageCharacter(player.Id, player.Coordinates);
+                    enemy.EngageTarget(player.Id, player.Coordinates);
                     DispatchEnemyEngage(enemy);
                 }
             }
@@ -105,14 +107,14 @@ namespace Server.Engine.Enemy
         /// Check if enemy should disengage
         /// </summary>
         /// <param name="enemy"></param>
-        private void CheckEnemyDisengage(EnemyModel enemy)
+        private void CheckEnemyDisengage(EnemyEntity enemy)
         {
             var player = _playerStore.Get(enemy.EngageTargetId);
             if (player != null)
             {
                 if (enemy.ShouldDisengage(player.Coordinates))
                 {
-                    enemy.DisengagePlayer();
+                    enemy.DisengageCharacter();
                     DispatchEnemyDisenage(enemy);
                 }
                 else
@@ -122,7 +124,7 @@ namespace Server.Engine.Enemy
             }
             else
             {
-                enemy.DisengagePlayer();
+                enemy.DisengageCharacter();
                 DispatchEnemyDisenage(enemy);
             }
         }
@@ -133,14 +135,14 @@ namespace Server.Engine.Enemy
         /// <param name="elaspedTime"></param>
         /// <param name="timestamp"></param>
         /// <param name="enemy"></param>
-        private void MoveEnemy(double elaspedTime, double timestamp, EnemyModel enemy)
+        private void MoveEnemy(GameTick gameTick, EnemyEntity enemy)
         {
-            if(enemy.ShouldStartMove(timestamp))
+            if(enemy.ShouldStartMove(gameTick))
             {
                 StartMovement(enemy);
             }
 
-            enemy.MoveToDestination(elaspedTime);
+            enemy.Update(gameTick, WorldUtility.GetWorld());
 
             // Stop if moving and have reached location
             if(enemy.ShouldStopMove())
@@ -153,7 +155,7 @@ namespace Server.Engine.Enemy
         /// Turn and start the movement towards a point
         /// </summary>
         /// <param name="enemy"></param>
-        private void StartMovement(EnemyModel enemy)
+        private void StartMovement(EnemyEntity enemy)
         {
             var movementPoint = enemy.GetRandomMovementPoint();
             enemy.PathToPoint(movementPoint);
@@ -165,7 +167,7 @@ namespace Server.Engine.Enemy
         /// </summary>
         /// <param name="enemy"></param>
         /// <returns></returns>
-        private void StopMovement(EnemyModel enemy)
+        private void StopMovement(EnemyEntity enemy)
         {
             enemy.StopMove();
             DispatchEnemyMovement(enemy);
@@ -175,9 +177,9 @@ namespace Server.Engine.Enemy
         /// Find dead enemies and respawn if a certain time has past
         /// </summary>
         /// <param name="timestamp">Unix timestamp</param>
-        private void SpawnEnemy(double timestamp, EnemyModel enemy)
+        private void SpawnEnemy(GameTick gameTick, EnemyEntity enemy)
         {
-            if (enemy.ShouldRespawn(timestamp))
+            if (enemy.ShouldRespawn(gameTick))
             {
                 RespawnEnemy(enemy);
             }
@@ -187,7 +189,7 @@ namespace Server.Engine.Enemy
         /// Will reset timers and respawn enemy
         /// </summary>
         /// <param name="enemy"></param>
-        private void RespawnEnemy(EnemyModel enemy)
+        private void RespawnEnemy(EnemyEntity enemy)
         {
             enemy.Respawn();
             _enemyStore.Add(enemy);
@@ -198,7 +200,7 @@ namespace Server.Engine.Enemy
         /// Create Enemy model
         /// </summary>
         /// <returns></returns>
-        private EnemyModel CreateEnemy()
+        private EnemyEntity CreateEnemy()
         {
             var spawn = new SpawnModel
             {
@@ -209,11 +211,11 @@ namespace Server.Engine.Enemy
             };
             var spawnPoint = spawn.GetRandomSpawnPoint();
 
-            return new EnemyModel(
+            return new EnemyEntity(
                 id: Guid.NewGuid().ToString(),
                 type: EnemyType.TEST,
                 spawnModel: spawn,
-                movementModel: new MovementModel
+                pathingModel: new PathingModel
                 {
                     MovementDestination = spawnPoint,
                     MovementWaitSeconds = 10,
@@ -223,9 +225,15 @@ namespace Server.Engine.Enemy
                 },
                 characterModel: new CharacterModel
                 {
-                    Name = "Test",
+                    Name = "Test"
+                },
+                collisionModel: new CollisionModel
+                {
+                    Bounds = new Bounds(10, 10)
+                },
+                movementModel: new MovementModel
+                {
                     Coordinates = spawnPoint,
-                    Bounds = new Bounds(10, 10),
                     MovementSpeed = 0.2f,
                     Direction = Direction.DOWN,
                     IsMoving = false
@@ -241,7 +249,7 @@ namespace Server.Engine.Enemy
         /// Dispatch when an enemy spawns
         /// </summary>
         /// <param name="enemy"></param>
-        private void DispatchEnemySpawn(EnemyModel enemy)
+        private void DispatchEnemySpawn(EnemyEntity enemy)
         {
             var packet = new EnemySpawnPacket
             {
@@ -277,7 +285,7 @@ namespace Server.Engine.Enemy
         /// Dispatch when an enemy moves
         /// </summary>
         /// <param name="enemy"></param>
-        private void DispatchEnemyMovement(EnemyModel enemy)
+        private void DispatchEnemyMovement(EnemyEntity enemy)
         {
             var packet = new EnemyMovementPacket
             {
@@ -293,7 +301,7 @@ namespace Server.Engine.Enemy
         /// Dispatch enemy engagement
         /// </summary>
         /// <param name="enemy"></param>
-        private void DispatchEnemyEngage(EnemyModel enemy)
+        private void DispatchEnemyEngage(EnemyEntity enemy)
         {
             var packet = new EnemyEngagePacket
             {
@@ -307,7 +315,7 @@ namespace Server.Engine.Enemy
         /// Dispatch enemy disengagement
         /// </summary>
         /// <param name="enemy"></param>
-        private void DispatchEnemyDisenage(EnemyModel enemy)
+        private void DispatchEnemyDisenage(EnemyEntity enemy)
         {
             var packet = new EnemyDisengagePacket
             {
