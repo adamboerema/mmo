@@ -15,14 +15,14 @@ namespace Server.Engine
 
         private readonly IServerConfiguration _serverConfiguration;
         private readonly IMovementComponent _movementComponent;
-        private readonly IEnemyComponent _enemyComponent;
-        private readonly IPlayerComponent _playerComponent;
+        private readonly IEnemyManager _enemyComponent;
+        private readonly IPlayerManager _playerComponent;
 
         public GameLoop(
             IServerConfiguration serverConfiguration,
-            IPlayerComponent playerComponent,
+            IPlayerManager playerComponent,
             IMovementComponent movementManager,
-            IEnemyComponent enemyManager)
+            IEnemyManager enemyManager)
         {
             _serverConfiguration = serverConfiguration;
             _playerComponent = playerComponent;

@@ -22,7 +22,7 @@ namespace CommonClient.Engine.Movement
         {
             _playerStore.UpdateClientMovement(direction, isMoving);
 
-            _dispatchPacket.Publish(new MovementInputPacket
+            _dispatchPacket.Publish(new PlayerMovementPacket
             {
                 Direction = direction,
                 IsMoving = isMoving

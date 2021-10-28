@@ -5,7 +5,7 @@ using Common.Model.Shared;
 
 namespace Common.Packets.ClientToServer.Movement
 {
-    public class MovementInputPacket: IPacket
+    public class PlayerMovementPacket: IPacket
     {
         public PacketType Id => PacketType.MOVEMENT_INPUT;
 

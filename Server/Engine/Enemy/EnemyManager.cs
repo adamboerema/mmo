@@ -13,7 +13,7 @@ using Common.Utility;
 
 namespace Server.Engine.Enemy
 {
-    public class EnemyManager : IEnemyComponent, IEventBusListener<ConnectionEvent>
+    public class EnemyManager : IEnemyManager, IEventBusListener<ConnectionEvent>
     {
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IConnectionBus _connectionBus;
@@ -55,6 +55,27 @@ namespace Server.Engine.Enemy
                 EngagePlayer(enemy);
                 MoveEnemy(gameTime, enemy);
                 _enemyStore.Update(enemy);
+            }
+        }
+
+        /// <summary>
+        /// Dispatch all enemies to a player
+        /// </summary>
+        /// <param name="playerId"></param>
+        public void DispatchEnemiesToPlayer(string playerId)
+        {
+            foreach (var enemy in _enemyStore.GetAll().Values)
+            {
+                var packet = new EnemySpawnPacket
+                {
+                    EnemyId = enemy.Id,
+                    Type = enemy.Type,
+                    TargetId = enemy.EngageTargetId,
+                    Position = enemy.Coordinates,
+                    MovementDestination = enemy.MovementDestination,
+                    MovementSpeed = enemy.MovementSpeed,
+                };
+                _dispatchPacketBus.Publish(playerId, packet);
             }
         }
 
@@ -243,85 +264,6 @@ namespace Server.Engine.Enemy
                     AttackRange = 10,
                     AttackSpeed = 1
                 });
-        }
-
-        /// <summary>
-        /// Dispatch when an enemy spawns
-        /// </summary>
-        /// <param name="enemy"></param>
-        private void DispatchEnemySpawn(EnemyEntity enemy)
-        {
-            var packet = new EnemySpawnPacket
-            {
-                EnemyId = enemy.Id,
-                Type = enemy.Type,
-                Position = enemy.Coordinates,
-            };
-            _dispatchPacketBus.Publish(packet);
-        }
-
-        /// <summary>
-        /// Dispatch all enemies to player
-        /// </summary>
-        /// <param name="playerId"></param>
-        private void DispatchEnemiesToPlayer(string playerId)
-        {
-            foreach (var enemy in _enemyStore.GetAll().Values)
-            {
-                var packet = new EnemySpawnPacket
-                {
-                    EnemyId = enemy.Id,
-                    Type = enemy.Type,
-                    TargetId = enemy.EngageTargetId,
-                    Position = enemy.Coordinates,
-                    MovementDestination = enemy.MovementDestination,
-                    MovementSpeed = enemy.MovementSpeed,
-                };
-                _dispatchPacketBus.Publish(playerId, packet);
-            }
-        }
-
-        /// <summary>
-        /// Dispatch when an enemy moves
-        /// </summary>
-        /// <param name="enemy"></param>
-        private void DispatchEnemyMovement(EnemyEntity enemy)
-        {
-            var packet = new EnemyMovementPacket
-            {
-                EnemyId = enemy.Id,
-                Position = enemy.Coordinates,
-                MovementDestination = enemy.MovementDestination,
-                MovementSpeed = enemy.MovementSpeed
-            };
-            _dispatchPacketBus.Publish(packet);
-        }
-
-        /// <summary>
-        /// Dispatch enemy engagement
-        /// </summary>
-        /// <param name="enemy"></param>
-        private void DispatchEnemyEngage(EnemyEntity enemy)
-        {
-            var packet = new EnemyEngagePacket
-            {
-                EnemyId = enemy.Id,
-                TargetId = enemy.EngageTargetId
-            };
-            _dispatchPacketBus.Publish(packet);
-        }
-
-        /// <summary>
-        /// Dispatch enemy disengagement
-        /// </summary>
-        /// <param name="enemy"></param>
-        private void DispatchEnemyDisenage(EnemyEntity enemy)
-        {
-            var packet = new EnemyDisengagePacket
-            {
-                EnemyId = enemy.Id
-            };
-            _dispatchPacketBus.Publish(packet);
         }
     }
 }

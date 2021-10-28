@@ -2,25 +2,26 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Common.Entity;
+using Server.Component.Enemy;
 
 namespace Server.Engine.Enemy
 {
     public class EnemyStore: IEnemyStore
     {
-        private ConcurrentDictionary<string, EnemyEntity> _enemies
-            = new ConcurrentDictionary<string, EnemyEntity>();
+        private ConcurrentDictionary<string, EnemyComponent> _enemies
+            = new ConcurrentDictionary<string, EnemyComponent>();
 
-        public void Add(EnemyEntity model)
+        public void Add(EnemyComponent component)
         {
-            _enemies[model.Id] = model;
+            _enemies[component.Id] = component;
         }
 
-        public EnemyEntity Get(string id)
+        public EnemyComponent Get(string id)
         {
             return _enemies.ContainsKey(id) ? _enemies[id] : null;
         }
 
-        public IDictionary<string, EnemyEntity> GetAll()
+        public IDictionary<string, EnemyComponent> GetAll()
         {
             return _enemies;
         }
@@ -30,7 +31,7 @@ namespace Server.Engine.Enemy
             _enemies.TryRemove(id, out _);
         }
 
-        public void Update(EnemyEntity model)
+        public void Update(EnemyComponent model)
         {
             _enemies.TryUpdate(model.Id, model, _enemies[model.Id]);
         }

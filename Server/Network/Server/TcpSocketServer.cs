@@ -15,7 +15,7 @@ namespace Server.Network.Server
     public class TcpSocketServer: IServer, IEventBusListener<ConnectionEvent>
     {
         private readonly IConnectionManager _connectionManager;
-        private readonly IPlayerComponent _playerComponent;
+        private readonly IPlayerManager _playerComponent;
         private readonly IReceiverPacketBus _receiverPacketBus;
         private readonly IConnectionBus _connectionBus;
         private readonly TcpListener _socket;
@@ -24,7 +24,7 @@ namespace Server.Network.Server
         public TcpSocketServer(
             IServerConfiguration configuration,
             IConnectionManager connectionManager,
-            IPlayerComponent playerComponent,
+            IPlayerManager playerComponent,
             IConnectionBus connectionBus,
             IReceiverPacketBus receiverPacketBus)
         {

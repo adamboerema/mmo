@@ -4,26 +4,27 @@ using System.Collections.Generic;
 using System.Numerics;
 using Common.Entity;
 using Common.Model.Shared;
+using Server.Component.Player;
 
 namespace Server.Engine.Player
 {
     public class PlayerStore: IPlayerStore
     {
 
-        private ConcurrentDictionary<string, PlayerEntity> _players
-            = new ConcurrentDictionary<string, PlayerEntity>();
+        private ConcurrentDictionary<string, PlayerComponent> _players
+            = new ConcurrentDictionary<string, PlayerComponent>();
 
-        public void Add(PlayerEntity model)
+        public void Add(PlayerComponent component)
         {
-            _players[model.Id] = model;
+            _players[component.Id] = component;
         }
 
-        public PlayerEntity Get(string id)
+        public PlayerComponent Get(string id)
         {
             return _players.ContainsKey(id) ? _players[id] : null;
         }
 
-        public IDictionary<string, PlayerEntity> GetAll()
+        public IDictionary<string, PlayerComponent> GetAll()
         {
             return _players;
         }
@@ -33,7 +34,7 @@ namespace Server.Engine.Player
             _players.TryRemove(id, out _);
         }
 
-        public void Update(PlayerEntity model)
+        public void Update(PlayerComponent model)
         {
             _players.TryUpdate(model.Id, model, _players[model.Id]);
         }

@@ -1,15 +1,17 @@
 ﻿using System;
 using Common.Entity;
+using Common.Model.Shared;
+using Server.Component.Player;
 
 namespace Server.Engine.Player
 {
-    public interface IPlayerComponent: IGameComponent
+    public interface IPlayerManager: IGameComponent
     {
         /// <summary>
         /// Add Player to the player pool
         /// </summary>
         /// <param name="player">Player object</param>
-        public void AddPlayer(PlayerEntity player);
+        public void AddPlayer(PlayerComponent player);
 
         /// <summary>
         /// Creates a new player and adds it to the store
@@ -22,5 +24,17 @@ namespace Server.Engine.Player
         /// </summary>
         /// <param name="connectionId">Connection id associated with player</param>
         public void RemovePlayer(string connectionId);
+
+
+        /// <summary>
+        /// Update Movement state of player
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="movementType"></param>
+        /// <param name="isMoving"></param>
+        public void UpdateMovementInput(
+            string playerId,
+            Direction movementType,
+            bool isMoving);
     }
 }

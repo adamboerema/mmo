@@ -10,6 +10,7 @@ using Server.Engine.Enemy;
 using Server.Engine.Movement;
 using Server.Engine.Player;
 using Server.Network.Connection;
+using Server.Network.Dispatch;
 using Server.Network.Handler;
 using Server.Network.Router;
 using Server.Network.Server;
@@ -52,10 +53,9 @@ namespace Server
                     services.AddScoped<IConnectionReceiver, ConnectionReceiver>();
 
                     // Managers
-                    services.AddScoped<IPlayerComponent, PlayerComponent>();
+                    services.AddScoped<IPlayerManager, PlayerManager>();
                     services.AddScoped<IAuthManager, AuthManager>();
-                    services.AddScoped<IMovementComponent, MovementComponent>();
-                    services.AddScoped<IEnemyComponent, EnemyManager>();
+                    services.AddScoped<IEnemyManager, EnemyManager>();
 
                     // Stores
                     services.AddSingleton<IPlayerStore, PlayerStore>();
@@ -64,7 +64,11 @@ namespace Server
                     // Receiver handlers
                     services.AddScoped<IHandlerRouter, HandlerRouter>();
                     services.AddScoped<AuthHandler>();
-                    services.AddScoped<MovementHandler>();
+                    services.AddScoped<PlayerHandler>();
+
+                    //Dispatchers
+                    services.AddScoped<IEnemyDispatch, EnemyDispatch>();
+                    services.AddScoped<IPlayerDispatch, PlayerDispatch>();
                 });
         }
 
