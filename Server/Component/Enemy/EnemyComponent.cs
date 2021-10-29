@@ -41,34 +41,17 @@ namespace Server.Component.Enemy
 
             _enemyDispatch = enemyDispatch;
             _playerStore = playerStore;
+
+            Initialize();
         }
 
-        ///// <summary>
-        ///// Movement
-        ///// </summary>
-        //public Vector3 Coordinates => _movement.Coordinates;
-        //public float MovementSpeed => _movement.MovementSpeed;
-        //public void StopMove() => _movement.StopMove();
-
-        ///// <summary>
-        ///// Movement
-        ///// </summary>
-        //public string EngageTargetId => _pathing.EngageTargetId;
-        //public Vector3 MovementDestination => _pathing.MovementDestination;
-        //public Vector3 GetRandomMovementPoint() => _pathing.GetRandomMovementPoint();
-        //public bool ShouldEngage(Vector3 target) => _pathing.ShouldEngage(_movement.Coordinates, target);
-        //public bool ShouldDisengage(Vector3 target) => _pathing.ShouldDisengage(_movement.Coordinates, target);
-
-        ///// <summary>
-        ///// Spawn
-        ///// </summary>
-        //public bool ShouldRespawn(GameTick gameTime) => _spawn.ShouldRespawn(gameTime);
-        //public Vector3 GetRandomSpawnPoint() => _spawn.GetRandomSpawnPoint();
-
-        ///// <summary>
-        ///// Combat
-        ///// </summary>
-        //public float GetAttackDistance() => _combat.GetAttackDistance(_collision.GetCollisionDistance());
+        /// <summary>
+        /// Initialize
+        /// </summary>
+        private void Initialize()
+        {
+            RespawnEnemy();
+        }
 
         /// <summary>
         /// Game Tick
@@ -173,6 +156,15 @@ namespace Server.Component.Enemy
         }
 
         /// <summary>
+        /// Attack target
+        /// </summary>
+        /// <param name="elapsedTime"></param>
+        private void AttackTarget(GameTick gameTime)
+        {
+            // TODO: attack logic
+        }
+
+        /// <summary>
         /// Check if enemy should start engaging
         /// </summary>
         private void CheckEnemyEngage()
@@ -219,7 +211,13 @@ namespace Server.Component.Enemy
         /// <param name="enemy"></param>
         private void RespawnEnemy()
         {
-            Respawn();
+            var respawnCoordinates = _spawn.GetRandomSpawnPoint();
+            _spawn.SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            _spawn.IsAlive = true;
+            _movement.Coordinates = respawnCoordinates;
+            _pathing.MovementDestination = respawnCoordinates;
+            _movement.IsMoving = false;
+
             _enemyDispatch.DispatchEnemySpawn(
                 Id,
                 Type,
@@ -231,7 +229,7 @@ namespace Server.Component.Enemy
         /// </summary>
         /// <param name="targetId">Character Id</param>
         /// <returns></returns>
-        public void EngageTarget(string targedId, Vector3 position)
+        private void EngageTarget(string targedId, Vector3 position)
         {
             _pathing.EngageTargetId = targedId;
             PathToPoint(
@@ -244,7 +242,7 @@ namespace Server.Component.Enemy
         /// Disengage the target
         /// </summary>
         /// <returns></returns>
-        public void DisengageCharacter()
+        private void DisengageCharacter()
         {
             _pathing.EngageTargetId = null;
             _pathing.LastDisengageTime = DateTimeOffset.Now.ToUnixTimeSeconds();
@@ -252,30 +250,11 @@ namespace Server.Component.Enemy
         }
 
         /// <summary>
-        /// Attack target
-        /// </summary>
-        /// <param name="elapsedTime"></param>
-        public void AttackTarget(GameTick gameTime)
-        {
-            // TODO: attack logic
-        }
-
-        /// <summary>
-        /// Update the destination
-        /// </summary>
-        /// <param name="destination"></param>
-        /// <returns></returns>
-        public void SetEngageDestination(Vector3 destination)
-        {
-            _pathing.MovementDestination = destination;
-        }
-
-        /// <summary>
         /// Should enemy start moving
         /// </summary>
         /// <param name="timestamp"></param>
         /// <returns></returns>
-        public bool ShouldStartMove(GameTick gameTime)
+        private bool ShouldStartMove(GameTick gameTime)
         {
             return _pathing.ShouldStartMove(gameTime.Timestamp)
                 && _pathing.EngageTargetId == null;
@@ -297,7 +276,7 @@ namespace Server.Component.Enemy
         /// </summary>
         /// <param name="toPoint"></param>
         /// <returns></returns>
-        public void PathToPoint(Vector3 toPoint)
+        private void PathToPoint(Vector3 toPoint)
         {
             PathToPoint(
                 _movement.Coordinates,
@@ -310,7 +289,7 @@ namespace Server.Component.Enemy
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public void PathToPoint(
+        private void PathToPoint(
             Vector3 fromPoint,
             Vector3 toPoint,
             float movementSpeed)
@@ -320,21 +299,6 @@ namespace Server.Component.Enemy
             _pathing.MovementDestination = toPoint;
             _movement.MovementSpeed = movementSpeed;
             _movement.Direction = MovementUtility.GetDirectionToPoint(_movement.Coordinates, toPoint);
-        }
-
-        /// <summary>
-        /// Respawn the enemy
-        /// </summary>
-        /// <param name="respawnCoordinates"></param>
-        /// <returns></returns>
-        public void Respawn()
-        {
-            var respawnCoordinates = _spawn.GetRandomSpawnPoint();
-            _spawn.SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            _spawn.IsAlive = true;
-            _movement.Coordinates = respawnCoordinates;
-            _pathing.MovementDestination = respawnCoordinates;
-            _movement.IsMoving = false;
         }
     }
 }

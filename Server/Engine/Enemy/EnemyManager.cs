@@ -8,7 +8,6 @@ using Server.Engine.Player;
 using Common.Model.Behavior;
 using Common.Model.Shared;
 using Common.Model.Character;
-using Common.Entity;
 using Common.Utility;
 using Server.Component.Enemy;
 using Server.Network.Dispatch;
@@ -90,7 +89,6 @@ namespace Server.Engine.Enemy
             {
                 var enemy = CreateEnemy();
                 _enemyStore.Add(enemy);
-                DispatchEnemySpawn(enemy);
             }
         }
 
@@ -100,24 +98,20 @@ namespace Server.Engine.Enemy
         /// <returns></returns>
         private EnemyComponent CreateEnemy()
         {
-            var spawn = new SpawnModel
-            {
-                IsAlive = true,
-                SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds(),
-                SpawnArea = new Rectangle(100, 100, 100, 100),
-                RespawnSeconds = 10
-            };
-            var spawnPoint = spawn.GetRandomSpawnPoint();
-
             return new EnemyComponent(
                 new EnemyConfiguration
                 {
                     Id = Guid.NewGuid().ToString(),
                     Type = EnemyType.TEST,
-                    Spawn = spawn,
+                    Spawn = new SpawnModel
+                    {
+                        IsAlive = true,
+                        SpawnTime = DateTimeOffset.Now.ToUnixTimeSeconds(),
+                        SpawnArea = new Rectangle(100, 100, 100, 100),
+                        RespawnSeconds = 10
+                    },
                     Pathing = new PathingModel
                     {
-                        MovementDestination = spawnPoint,
                         MovementWaitSeconds = 10,
                         MovementArea = new Rectangle(0, 100, 300, 300),
                         EngageDistance = 100,
@@ -133,7 +127,6 @@ namespace Server.Engine.Enemy
                     },
                     Movement = new MovementModel
                     {
-                        Coordinates = spawnPoint,
                         MovementSpeed = 0.2f,
                         Direction = Direction.DOWN,
                         IsMoving = false

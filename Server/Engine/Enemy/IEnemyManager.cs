@@ -3,6 +3,5 @@ namespace Server.Engine.Enemy
 {
     public interface IEnemyManager : IGameComponent
     {
-
     }
 }
