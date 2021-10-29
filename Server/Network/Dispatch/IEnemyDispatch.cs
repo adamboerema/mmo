@@ -9,16 +9,21 @@ namespace Server.Network.Dispatch
         /// <summary>
         /// Dispatch when an enemy spawns
         /// </summary>
-        /// <param name="enemy"></param>
+        /// <param name="id">Id of enemy spawn</param>
+        /// <param name="enemyType">type of enemy</param>
+        /// <param name="coordinates">coordinates of spawn</param>
         public void DispatchEnemySpawn(
             string id,
             EnemyType enemyType,
             Vector3 coordinates);
 
         /// <summary>
-        /// Dispatch when an enemy moves
+        /// Dispatch enemy movement
         /// </summary>
-        /// <param name="enemy"></param>
+        /// <param name="id">enemy id</param>
+        /// <param name="coordinates">coordinates of enemy</param>
+        /// <param name="movementDestination">coordinates of enemy destination</param>
+        /// <param name="movementSpeed">movement speed of enemy</param>
         public void DispatchEnemyMovement(
             string id,
             Vector3 coordinates,
@@ -26,17 +31,18 @@ namespace Server.Network.Dispatch
             float movementSpeed);
 
         /// <summary>
-        /// Dispatch enemy engagement
+        /// Dispatch enemy engage
         /// </summary>
-        /// <param name="enemy"></param>
+        /// <param name="id">Enemy id</param>
+        /// <param name="targetId">Target Id</param>
         public void DispatchEnemyEngage(
             string id,
             string targetId);
 
         /// <summary>
-        /// Dispatch enemy disengagement
+        /// Dispatch enemy disengage
         /// </summary>
-        /// <param name="enemy"></param>
+        /// <param name="id"></param>
         public void DispatchEnemyDisenage(string id);
        
     }

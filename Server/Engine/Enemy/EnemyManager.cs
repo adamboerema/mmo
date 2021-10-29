@@ -10,6 +10,8 @@ using Common.Model.Shared;
 using Common.Model.Character;
 using Common.Entity;
 using Common.Utility;
+using Server.Component.Enemy;
+using Server.Network.Dispatch;
 
 namespace Server.Engine.Enemy
 {
@@ -17,17 +19,20 @@ namespace Server.Engine.Enemy
     {
         private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IConnectionBus _connectionBus;
+        private readonly IEnemyDispatch _enemyDispatch;
         private readonly IEnemyStore _enemyStore;
         private readonly IPlayerStore _playerStore;
 
         public EnemyManager(
             IDispatchPacketBus dispatchPacketBus,
             IConnectionBus connectionBus,
+            IEnemyDispatch enemyDispatch,
             IEnemyStore enemyStore,
             IPlayerStore pLayerStore)
         {
             _dispatchPacketBus = dispatchPacketBus;
             _connectionBus = connectionBus;
+            _enemyDispatch = enemyDispatch;
             _enemyStore = enemyStore;
             _playerStore = pLayerStore;
             _connectionBus.Subscribe(this);
@@ -47,14 +52,11 @@ namespace Server.Engine.Enemy
         /// </summary>
         /// <param name="elapsedTime"></param>
         /// <param name="timestamp"></param>
-        public void Update(GameTick gameTime)
+        public void Update(GameTick gameTick)
         {
             foreach(var enemy in _enemyStore.GetAll().Values)
             {
-                SpawnEnemy(gameTime, enemy);
-                EngagePlayer(enemy);
-                MoveEnemy(gameTime, enemy);
-                _enemyStore.Update(enemy);
+                enemy.Update(gameTick, WorldUtility.GetWorld());
             }
         }
 
@@ -93,135 +95,10 @@ namespace Server.Engine.Enemy
         }
 
         /// <summary>
-        /// Engage player
-        /// </summary>
-        /// <param name="enemy"></param>
-        private void EngagePlayer(EnemyEntity enemy)
-        {
-            if(enemy.EngageTargetId == null)
-            {
-                CheckEnemyEngage(enemy);
-            }
-            else
-            {
-                CheckEnemyDisengage(enemy);
-            }
-        }
-
-        /// <summary>
-        /// Check if enemy should start engaging
-        /// </summary>
-        /// <param name="enemy"></param>
-        private void CheckEnemyEngage(EnemyEntity enemy)
-        {
-            foreach (var player in _playerStore.GetAll().Values)
-            {
-                if (enemy.ShouldEngage(player.Coordinates))
-                {
-                    enemy.EngageTarget(player.Id, player.Coordinates);
-                    DispatchEnemyEngage(enemy);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Check if enemy should disengage
-        /// </summary>
-        /// <param name="enemy"></param>
-        private void CheckEnemyDisengage(EnemyEntity enemy)
-        {
-            var player = _playerStore.Get(enemy.EngageTargetId);
-            if (player != null)
-            {
-                if (enemy.ShouldDisengage(player.Coordinates))
-                {
-                    enemy.DisengageCharacter();
-                    DispatchEnemyDisenage(enemy);
-                }
-                else
-                {
-                    enemy.SetEngageDestination(player.Coordinates);
-                }
-            }
-            else
-            {
-                enemy.DisengageCharacter();
-                DispatchEnemyDisenage(enemy);
-            }
-        }
-
-        /// <summary>
-        /// Trigger movement 
-        /// </summary>
-        /// <param name="elaspedTime"></param>
-        /// <param name="timestamp"></param>
-        /// <param name="enemy"></param>
-        private void MoveEnemy(GameTick gameTick, EnemyEntity enemy)
-        {
-            if(enemy.ShouldStartMove(gameTick))
-            {
-                StartMovement(enemy);
-            }
-
-            enemy.Update(gameTick, WorldUtility.GetWorld());
-
-            // Stop if moving and have reached location
-            if(enemy.ShouldStopMove())
-            {
-                StopMovement(enemy);
-            }
-        }
-
-        /// <summary>
-        /// Turn and start the movement towards a point
-        /// </summary>
-        /// <param name="enemy"></param>
-        private void StartMovement(EnemyEntity enemy)
-        {
-            var movementPoint = enemy.GetRandomMovementPoint();
-            enemy.PathToPoint(movementPoint);
-            DispatchEnemyMovement(enemy);
-        }
-
-        /// <summary>
-        /// Stop movement
-        /// </summary>
-        /// <param name="enemy"></param>
-        /// <returns></returns>
-        private void StopMovement(EnemyEntity enemy)
-        {
-            enemy.StopMove();
-            DispatchEnemyMovement(enemy);
-        }
-
-        /// <summary>
-        /// Find dead enemies and respawn if a certain time has past
-        /// </summary>
-        /// <param name="timestamp">Unix timestamp</param>
-        private void SpawnEnemy(GameTick gameTick, EnemyEntity enemy)
-        {
-            if (enemy.ShouldRespawn(gameTick))
-            {
-                RespawnEnemy(enemy);
-            }
-        }
-
-        /// <summary>
-        /// Will reset timers and respawn enemy
-        /// </summary>
-        /// <param name="enemy"></param>
-        private void RespawnEnemy(EnemyEntity enemy)
-        {
-            enemy.Respawn();
-            _enemyStore.Add(enemy);
-            DispatchEnemySpawn(enemy);
-        }
-
-        /// <summary>
         /// Create Enemy model
         /// </summary>
         /// <returns></returns>
-        private EnemyEntity CreateEnemy()
+        private EnemyComponent CreateEnemy()
         {
             var spawn = new SpawnModel
             {
@@ -232,38 +109,43 @@ namespace Server.Engine.Enemy
             };
             var spawnPoint = spawn.GetRandomSpawnPoint();
 
-            return new EnemyEntity(
-                id: Guid.NewGuid().ToString(),
-                type: EnemyType.TEST,
-                spawnModel: spawn,
-                pathingModel: new PathingModel
+            return new EnemyComponent(
+                new EnemyConfiguration
                 {
-                    MovementDestination = spawnPoint,
-                    MovementWaitSeconds = 10,
-                    MovementArea = new Rectangle(0, 100, 300, 300),
-                    EngageDistance = 100,
-                    EngageTargetId = null
+                    Id = Guid.NewGuid().ToString(),
+                    Type = EnemyType.TEST,
+                    Spawn = spawn,
+                    Pathing = new PathingModel
+                    {
+                        MovementDestination = spawnPoint,
+                        MovementWaitSeconds = 10,
+                        MovementArea = new Rectangle(0, 100, 300, 300),
+                        EngageDistance = 100,
+                        EngageTargetId = null
+                    },
+                    Character = new CharacterModel
+                    {
+                        Name = "Test"
+                    },
+                    Collision = new CollisionModel
+                    {
+                        Bounds = new Bounds(10, 10)
+                    },
+                    Movement = new MovementModel
+                    {
+                        Coordinates = spawnPoint,
+                        MovementSpeed = 0.2f,
+                        Direction = Direction.DOWN,
+                        IsMoving = false
+                    },
+                    Combat = new CombatModel
+                    {
+                        AttackRange = 10,
+                        AttackSpeed = 1
+                    }
                 },
-                characterModel: new CharacterModel
-                {
-                    Name = "Test"
-                },
-                collisionModel: new CollisionModel
-                {
-                    Bounds = new Bounds(10, 10)
-                },
-                movementModel: new MovementModel
-                {
-                    Coordinates = spawnPoint,
-                    MovementSpeed = 0.2f,
-                    Direction = Direction.DOWN,
-                    IsMoving = false
-                },
-                combatModel: new CombatModel
-                {
-                    AttackRange = 10,
-                    AttackSpeed = 1
-                });
+                _enemyDispatch,
+                _playerStore);
         }
     }
 }

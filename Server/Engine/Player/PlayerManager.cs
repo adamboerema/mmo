@@ -110,7 +110,6 @@ namespace Server.Engine.Player
             {
                 player.UpdateDirection(movementType, isMoving);
                 _playerStore.Update(player);
-                DispatchMovementUpdate(player);
             }
         }
 

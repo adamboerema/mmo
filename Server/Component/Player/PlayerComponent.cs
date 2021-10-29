@@ -68,6 +68,11 @@ namespace Server.Component.Player
             _movement.Direction = direction;
             _movement.IsMoving = isMoving;
 
+            _playerDispatch.DispatchMovementUpdate(
+                Id,
+                _movement.Coordinates,
+                _movement.Direction,
+                _movement.IsMoving);
         }
     }
 }

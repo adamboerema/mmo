@@ -5,6 +5,7 @@ using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Model.World;
 using Common.Utility;
+using Server.Engine.Player;
 using Server.Network.Dispatch;
 
 namespace Server.Component.Enemy
@@ -22,10 +23,12 @@ namespace Server.Component.Enemy
         private CollisionModel _collision;
 
         private readonly IEnemyDispatch _enemyDispatch;
+        private readonly IPlayerStore _playerStore;
 
         public EnemyComponent(
             EnemyConfiguration config,
-            IEnemyDispatch enemyDispatch)
+            IEnemyDispatch enemyDispatch,
+            IPlayerStore playerStore)
         {
             Id = config.Id;
             Type = config.Type;
@@ -37,34 +40,35 @@ namespace Server.Component.Enemy
             _collision = config.Collision;
 
             _enemyDispatch = enemyDispatch;
+            _playerStore = playerStore;
         }
 
-        /// <summary>
-        /// Movement
-        /// </summary>
-        public Vector3 Coordinates => _movement.Coordinates;
-        public float MovementSpeed => _movement.MovementSpeed;
-        public void StopMove() => _movement.StopMove();
+        ///// <summary>
+        ///// Movement
+        ///// </summary>
+        //public Vector3 Coordinates => _movement.Coordinates;
+        //public float MovementSpeed => _movement.MovementSpeed;
+        //public void StopMove() => _movement.StopMove();
 
-        /// <summary>
-        /// Movement
-        /// </summary>
-        public string EngageTargetId => _pathing.EngageTargetId;
-        public Vector3 MovementDestination => _pathing.MovementDestination;
-        public Vector3 GetRandomMovementPoint() => _pathing.GetRandomMovementPoint();
-        public bool ShouldEngage(Vector3 target) => _pathing.ShouldEngage(_movement.Coordinates, target);
-        public bool ShouldDisengage(Vector3 target) => _pathing.ShouldDisengage(_movement.Coordinates, target);
+        ///// <summary>
+        ///// Movement
+        ///// </summary>
+        //public string EngageTargetId => _pathing.EngageTargetId;
+        //public Vector3 MovementDestination => _pathing.MovementDestination;
+        //public Vector3 GetRandomMovementPoint() => _pathing.GetRandomMovementPoint();
+        //public bool ShouldEngage(Vector3 target) => _pathing.ShouldEngage(_movement.Coordinates, target);
+        //public bool ShouldDisengage(Vector3 target) => _pathing.ShouldDisengage(_movement.Coordinates, target);
 
-        /// <summary>
-        /// Spawn
-        /// </summary>
-        public bool ShouldRespawn(GameTick gameTime) => _spawn.ShouldRespawn(gameTime);
-        public Vector3 GetRandomSpawnPoint() => _spawn.GetRandomSpawnPoint();
+        ///// <summary>
+        ///// Spawn
+        ///// </summary>
+        //public bool ShouldRespawn(GameTick gameTime) => _spawn.ShouldRespawn(gameTime);
+        //public Vector3 GetRandomSpawnPoint() => _spawn.GetRandomSpawnPoint();
 
-        /// <summary>
-        /// Combat
-        /// </summary>
-        public float GetAttackDistance() => _combat.GetAttackDistance(_collision.GetCollisionDistance());
+        ///// <summary>
+        ///// Combat
+        ///// </summary>
+        //public float GetAttackDistance() => _combat.GetAttackDistance(_collision.GetCollisionDistance());
 
         /// <summary>
         /// Game Tick
@@ -72,22 +76,154 @@ namespace Server.Component.Enemy
         /// <param name="gameTick"></param>
         public void Update(GameTick gameTick, World world)
         {
+            SpawnEnemy(gameTick);
+            EngagePlayer(gameTick);
+            StartMovement(gameTick);
+            MoveEnemy(gameTick);
+            StopMovement(gameTick);
+        }
+
+        /// <summary>
+        /// Trigger movement 
+        /// </summary>
+        /// <param name="elaspedTime"></param>
+        /// <param name="timestamp"></param>
+        /// <param name="enemy"></param>
+        private void MoveEnemy(GameTick gameTick)
+        {
             var distance = MovementUtility.GetAbsoluteDistanceToPoint(
                 _movement.Coordinates,
                 _pathing.MovementDestination);
 
             var targetDistance = _pathing.EngageTargetId == null
                 ? _collision.GetCollisionDistance()
-                : GetAttackDistance();
+                : _combat.GetAttackDistance(_collision.GetCollisionDistance());
 
             if (distance > targetDistance)
             {
                 _movement.MoveToPoint(_pathing.MovementDestination, gameTick.ElapsedTime);
             }
-            else if(_pathing.EngageTargetId != null)
+            else if (_pathing.EngageTargetId != null)
             {
                 AttackTarget(gameTick);
             }
+        }
+
+        /// <summary>
+        /// Find dead enemies and respawn if a certain time has past
+        /// </summary>
+        /// <param name="timestamp">Unix timestamp</param>
+        private void SpawnEnemy(GameTick gameTick)
+        {
+            if (_spawn.ShouldRespawn(gameTick))
+            {
+                RespawnEnemy();
+            }
+        }
+
+        /// <summary>
+        /// Start Movement
+        /// </summary>
+        /// <param name="gameTick"></param>
+        private void StartMovement(GameTick gameTick)
+        {
+            if (ShouldStartMove(gameTick))
+            {
+                var movementPoint = _pathing.GetRandomMovementPoint();
+                PathToPoint(movementPoint);
+                _enemyDispatch.DispatchEnemyMovement(
+                    Id,
+                    _movement.Coordinates,
+                    _pathing.MovementDestination,
+                    _movement.MovementSpeed);
+            }
+        }
+
+        /// <summary>
+        /// Stop movement
+        /// </summary>
+        /// <param name="gameTick"></param>
+        private void StopMovement(GameTick gameTick)
+        {
+            if (ShouldStopMove())
+            {
+                _movement.StopMove();
+                _enemyDispatch.DispatchEnemyMovement(
+                    Id,
+                    _movement.Coordinates,
+                    _pathing.MovementDestination,
+                    _movement.MovementSpeed);
+            }
+        }
+
+        /// <summary>
+        /// Engage player
+        /// </summary>
+        /// <param name="gameTick"></param>
+        private void EngagePlayer(GameTick gameTick)
+        {
+            if (_pathing.EngageTargetId == null)
+            {
+                CheckEnemyEngage();
+            }
+            else
+            {
+                CheckEnemyDisengage();
+            }
+        }
+
+        /// <summary>
+        /// Check if enemy should start engaging
+        /// </summary>
+        private void CheckEnemyEngage()
+        {
+            foreach (var player in _playerStore.GetAll().Values)
+            {
+                if (_pathing.ShouldEngage(_movement.Coordinates, player.Coordinates))
+                {
+                    EngageTarget(player.Id, player.Coordinates);
+                    _enemyDispatch.DispatchEnemyEngage(Id, player.Id);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check if enemy should disengage
+        /// </summary>
+        /// <param name="enemy"></param>
+        private void CheckEnemyDisengage()
+        {
+            var player = _playerStore.Get(_pathing.EngageTargetId);
+            if (player != null)
+            {
+                if (_pathing.ShouldDisengage(_movement.Coordinates, player.Coordinates))
+                {
+                    DisengageCharacter();
+                    _enemyDispatch.DispatchEnemyDisenage(Id);
+                }
+                else
+                {
+                    _pathing.MovementDestination = player.Coordinates;
+                }
+            }
+            else
+            {
+                DisengageCharacter();
+                _enemyDispatch.DispatchEnemyDisenage(Id);
+            }
+        }
+
+        /// <summary>
+        /// Will reset timers and respawn enemy
+        /// </summary>
+        /// <param name="enemy"></param>
+        private void RespawnEnemy()
+        {
+            Respawn();
+            _enemyDispatch.DispatchEnemySpawn(
+                Id,
+                Type,
+                _movement.Coordinates);
         }
 
         /// <summary>
