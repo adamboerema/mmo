@@ -147,11 +147,11 @@ namespace Server.Component.Enemy
         {
             if (_pathing.EngageTargetId == null)
             {
-                CheckEnemyEngage();
+                CheckEnemyEngage(gameTick);
             }
             else
             {
-                CheckEnemyDisengage();
+                CheckEnemyDisengage(gameTick);
             }
         }
 
@@ -167,7 +167,7 @@ namespace Server.Component.Enemy
         /// <summary>
         /// Check if enemy should start engaging
         /// </summary>
-        private void CheckEnemyEngage()
+        private void CheckEnemyEngage(GameTick gameTick)
         {
             foreach (var player in _playerStore.GetAll().Values)
             {
@@ -183,7 +183,7 @@ namespace Server.Component.Enemy
         /// Check if enemy should disengage
         /// </summary>
         /// <param name="enemy"></param>
-        private void CheckEnemyDisengage()
+        private void CheckEnemyDisengage(GameTick gameTick)
         {
             var player = _playerStore.Get(_pathing.EngageTargetId);
             if (player != null)
