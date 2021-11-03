@@ -10,6 +10,7 @@ namespace Server.Component.Player
     public class PlayerComponent: IComponent
     {
         public readonly string Id;
+        public Vector3 Coordinates => _movement.Coordinates;
 
         private readonly CharacterModel _character;
         private readonly MovementModel _movement;
@@ -26,11 +27,6 @@ namespace Server.Component.Player
         }
 
 
-        //public Vector3 Coordinates => _movement.Coordinates;
-        //public Direction Direction => _movement.Direction;
-        //public float MovementSpeed => _movement.MovementSpeed;
-        //public bool IsMoving => _movement.IsMoving;
-
         /// <summary>
         /// Game tick
         /// </summary>
@@ -39,23 +35,6 @@ namespace Server.Component.Player
         {
             _movement.Move(gameTick, world.Width, world.Height);
         }
-
-        /// <summary>
-        /// Directly update the coordinates of player
-        /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="direction"></param>
-        /// <param name="isMoving"></param>
-        /// <returns></returns>
-        //public void UpdateCoordinates(
-        //    Vector3 coordinates,
-        //    Direction direction,
-        //    bool isMoving)
-        //{
-        //    _movement.Coordinates = coordinates;
-        //    _movement.Direction = direction;
-        //    _movement.IsMoving = isMoving;
-        //}
 
         /// <summary>
         /// Update Direction of the player

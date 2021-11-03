@@ -15,6 +15,8 @@ namespace Server.Component.Enemy
         public readonly string Id;
         public readonly EnemyType Type;
 
+        public Vector3 Coordinates => _movement.Coordinates;
+
         private SpawnModel _spawn;
         private PathingModel _pathing;
         private MovementModel _movement;
@@ -190,7 +192,7 @@ namespace Server.Component.Enemy
             {
                 if (_pathing.ShouldDisengage(_movement.Coordinates, player.Coordinates))
                 {
-                    DisengageCharacter();
+                    _pathing.DisengagetoPoint(_movement.Coordinates);
                     _enemyDispatch.DispatchEnemyDisenage(Id);
                 }
                 else
@@ -200,7 +202,7 @@ namespace Server.Component.Enemy
             }
             else
             {
-                DisengageCharacter();
+                _pathing.DisengagetoPoint(_movement.Coordinates);
                 _enemyDispatch.DispatchEnemyDisenage(Id);
             }
         }
@@ -232,21 +234,7 @@ namespace Server.Component.Enemy
         private void EngageTarget(string targedId, Vector3 position)
         {
             _pathing.EngageTargetId = targedId;
-            PathToPoint(
-                _movement.Coordinates,
-                position,
-                _movement.MovementSpeed);
-        }
-
-        /// <summary>
-        /// Disengage the target
-        /// </summary>
-        /// <returns></returns>
-        private void DisengageCharacter()
-        {
-            _pathing.EngageTargetId = null;
-            _pathing.LastDisengageTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-            _pathing.MovementDestination = _movement.Coordinates;
+            PathToPoint(_movement.Coordinates, position, _movement.MovementSpeed);
         }
 
         /// <summary>

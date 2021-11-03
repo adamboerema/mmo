@@ -8,10 +8,10 @@ namespace Server.Engine.Player
 {
     public interface IPlayerStore: IStore<string, PlayerComponent>
     {
-        public void UpdateMovement(
-            string playerId,
-            Vector3 coordinates,
-            Direction direction,
-            bool isMoving);
+        //public void UpdateMovement(
+        //    string playerId,
+        //    Vector3 coordinates,
+        //    Direction direction,
+        //    bool isMoving);
     }
 }

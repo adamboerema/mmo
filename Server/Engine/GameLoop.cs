@@ -3,7 +3,6 @@ using System.Diagnostics;
 using Common.Model.Shared;
 using Server.Configuration;
 using Server.Engine.Enemy;
-using Server.Engine.Movement;
 using Server.Engine.Player;
 
 namespace Server.Engine
@@ -14,20 +13,17 @@ namespace Server.Engine
         private Stopwatch _gameLoopTimer = new Stopwatch();
 
         private readonly IServerConfiguration _serverConfiguration;
-        private readonly IMovementComponent _movementComponent;
-        private readonly IEnemyManager _enemyComponent;
-        private readonly IPlayerManager _playerComponent;
+        private readonly IEnemyManager _enemyManager;
+        private readonly IPlayerManager _playerManager;
 
         public GameLoop(
             IServerConfiguration serverConfiguration,
-            IPlayerManager playerComponent,
-            IMovementComponent movementManager,
+            IPlayerManager playerManager,
             IEnemyManager enemyManager)
         {
             _serverConfiguration = serverConfiguration;
-            _playerComponent = playerComponent;
-            _movementComponent = movementManager;
-            _enemyComponent = enemyManager;
+            _playerManager = playerManager;
+            _enemyManager = enemyManager;
         }
 
         public void Start()
@@ -51,9 +47,8 @@ namespace Server.Engine
         public void Update(GameTick gameTick)
         {
 
-            _movementComponent.Update(gameTick);
-            _enemyComponent.Update(gameTick);
-            _playerComponent.Update(gameTick);
+            _enemyManager.Update(gameTick);
+            _playerManager.Update(gameTick);
         }
 
         public void Stop()
