@@ -10,14 +10,32 @@ namespace Server.Network.Dispatch
     public class EnemyDispatch: IEnemyDispatch
     {
         private readonly IDispatchPacketBus _dispatchPacketBus;
-        private readonly IEnemyStore _enemyStore;
 
         public EnemyDispatch(
-            IDispatchPacketBus dispatchPacketBus,
-            IEnemyStore enemyStore)
+            IDispatchPacketBus dispatchPacketBus)
         {
             _dispatchPacketBus = dispatchPacketBus;
-            _enemyStore = enemyStore;
+        }
+
+        public void DispatchEnemyToPlayer(
+            string playerId,
+            string enemyId,
+            EnemyType enemyType,
+            Vector3 coordinates,
+            float movementSpeed,
+            string engageTargetId,
+            Vector3 movementDestination)
+        {
+            var packet = new EnemySpawnPacket
+            {
+                EnemyId = enemyId,
+                Type = enemyType,
+                TargetId = engageTargetId,
+                Position = coordinates,
+                MovementDestination = movementDestination,
+                MovementSpeed = movementSpeed,
+            };
+            _dispatchPacketBus.Publish(playerId, packet);
         }
 
         public void DispatchEnemyDisenage(string id)

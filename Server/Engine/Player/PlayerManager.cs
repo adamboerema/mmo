@@ -63,10 +63,8 @@ namespace Server.Engine.Player
         /// <param name="player">New Player to notify</param>
         private void DispatchOtherPlayers(PlayerComponent player)
         {
-            var allPlayers = _playerStore.GetAll();
-            foreach(var playerValue in allPlayers)
+            foreach(var otherPlayer in _playerStore.GetAll().Values)
             {
-                var otherPlayer = playerValue.Value;
                 Console.WriteLine($"OTHER PLAYER: {otherPlayer.Id}");
                 var packet = CreatePlayerConnectPacket(otherPlayer, false);
                 _dispatchBus.Publish(player.Id, packet);

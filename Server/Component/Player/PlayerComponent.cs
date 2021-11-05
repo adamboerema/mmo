@@ -26,7 +26,6 @@ namespace Server.Component.Player
             _playerDispatch = playerDispatch;
         }
 
-
         /// <summary>
         /// Game tick
         /// </summary>

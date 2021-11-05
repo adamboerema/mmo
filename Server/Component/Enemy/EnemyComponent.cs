@@ -48,14 +48,6 @@ namespace Server.Component.Enemy
         }
 
         /// <summary>
-        /// Initialize
-        /// </summary>
-        private void Initialize()
-        {
-            RespawnEnemy();
-        }
-
-        /// <summary>
         /// Game Tick
         /// </summary>
         /// <param name="gameTick"></param>
@@ -66,6 +58,30 @@ namespace Server.Component.Enemy
             StartMovement(gameTick);
             MoveEnemy(gameTick);
             StopMovement(gameTick);
+        }
+
+        /// <summary>
+        /// Dispatch enemy to player id
+        /// </summary>
+        /// <param name="playerId"></param>
+        public void DispatchEnemyToPlayer(string playerId)
+        {
+            _enemyDispatch.DispatchEnemyToPlayer(
+                playerId,
+                Id,
+                Type,
+                _movement.Coordinates,
+                _movement.MovementSpeed,
+                _pathing.EngageTargetId,
+                _pathing.MovementDestination);
+        }
+
+        /// <summary>
+        /// Initialize
+        /// </summary>
+        private void Initialize()
+        {
+            RespawnEnemy();
         }
 
         /// <summary>

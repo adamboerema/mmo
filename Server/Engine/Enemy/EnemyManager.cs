@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Common.Bus;
-using Common.Packets.ServerToClient.Enemy;
 using Server.Bus.Connection;
-using Server.Bus.Packet;
 using Server.Engine.Player;
 using Common.Model.Behavior;
 using Common.Model.Shared;
@@ -16,20 +14,17 @@ namespace Server.Engine.Enemy
 {
     public class EnemyManager : IEnemyManager, IEventBusListener<ConnectionEvent>
     {
-        private readonly IDispatchPacketBus _dispatchPacketBus;
         private readonly IConnectionBus _connectionBus;
         private readonly IEnemyDispatch _enemyDispatch;
         private readonly IEnemyStore _enemyStore;
         private readonly IPlayerStore _playerStore;
 
         public EnemyManager(
-            IDispatchPacketBus dispatchPacketBus,
             IConnectionBus connectionBus,
             IEnemyDispatch enemyDispatch,
             IEnemyStore enemyStore,
             IPlayerStore pLayerStore)
         {
-            _dispatchPacketBus = dispatchPacketBus;
             _connectionBus = connectionBus;
             _enemyDispatch = enemyDispatch;
             _enemyStore = enemyStore;
@@ -67,16 +62,7 @@ namespace Server.Engine.Enemy
         {
             foreach (var enemy in _enemyStore.GetAll().Values)
             {
-                var packet = new EnemySpawnPacket
-                {
-                    EnemyId = enemy.Id,
-                    Type = enemy.Type,
-                    TargetId = enemy.EngageTargetId,
-                    Position = enemy.Coordinates,
-                    MovementDestination = enemy.MovementDestination,
-                    MovementSpeed = enemy.MovementSpeed,
-                };
-                _dispatchPacketBus.Publish(playerId, packet);
+                enemy.DispatchEnemyToPlayer(playerId);
             }
         }
 

@@ -7,6 +7,26 @@ namespace Server.Network.Dispatch
     public interface IEnemyDispatch
     {
         /// <summary>
+        /// Dispatches the enemy to an existing player
+        /// </summary>
+        /// <param name="playerId">Id of player</param>
+        /// <param name="enemyId">Id of enemy</param>
+        /// <param name="enemyType">Type of enemy</param>
+        /// <param name="coordinates">Coordinates of the enemy</param>
+        /// <param name="movementSpeed">Movement speed of the enemy</param>
+        /// <param name="engageTargetId">Target id of the enemy</param>
+        /// <param name="movementDestination">Movement destination of the enemy</param>
+
+        public void DispatchEnemyToPlayer(
+            string playerId,
+            string enemyId,
+            EnemyType enemyType,
+            Vector3 coordinates,
+            float movementSpeed,
+            string engageTargetId,
+            Vector3 movementDestination);
+
+        /// <summary>
         /// Dispatch when an enemy spawns
         /// </summary>
         /// <param name="id">Id of enemy spawn</param>
