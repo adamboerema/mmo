@@ -24,7 +24,7 @@ namespace Server.Bus.Packet
         /// Publish all packet
         /// </summary>
         /// <param name="packet"></param>
-        public void Publish(IPacket packet);
+        public void PublishAll(IPacket packet);
 
     }
 }

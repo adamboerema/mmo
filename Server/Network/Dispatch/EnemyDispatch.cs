@@ -44,7 +44,7 @@ namespace Server.Network.Dispatch
             {
                 EnemyId = id
             };
-            _dispatchPacketBus.Publish(packet);
+            _dispatchPacketBus.PublishAll(packet);
         }
 
         public void DispatchEnemyEngage(string id, string targetId)
@@ -54,7 +54,7 @@ namespace Server.Network.Dispatch
                 EnemyId = id,
                 TargetId = targetId
             };
-            _dispatchPacketBus.Publish(packet);
+            _dispatchPacketBus.PublishAll(packet);
         }
 
         public void DispatchEnemyMovement(
@@ -70,7 +70,7 @@ namespace Server.Network.Dispatch
                 MovementDestination = movementDestination,
                 MovementSpeed = movementSpeed
             };
-            _dispatchPacketBus.Publish(packet);
+            _dispatchPacketBus.PublishAll(packet);
         }
 
         public void DispatchEnemySpawn(
@@ -84,7 +84,7 @@ namespace Server.Network.Dispatch
                 Type = enemyType,
                 Position = coordinates,
             };
-            _dispatchPacketBus.Publish(packet);
+            _dispatchPacketBus.PublishAll(packet);
         }
     }
 }

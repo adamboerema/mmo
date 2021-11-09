@@ -20,7 +20,7 @@ namespace Server.Bus.Packet
             });
         }
 
-        public void Publish(IPacket packet)
+        public void PublishAll(IPacket packet)
         {
             Publish(new DispatchPacketEvent
             {

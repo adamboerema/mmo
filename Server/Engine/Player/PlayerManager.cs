@@ -2,7 +2,6 @@
 using System.Numerics;
 using Common.Model.Character;
 using Common.Model.Shared;
-using Common.Packets.ServerToClient.Player;
 using Common.Utility;
 using Server.Bus.Packet;
 using Server.Component.Player;
@@ -12,16 +11,13 @@ namespace Server.Engine.Player
 {
     public class PlayerManager : IPlayerManager
     {
-        private IDispatchPacketBus _dispatchBus;
         private IPlayerStore _playerStore;
         private IPlayerDispatch _playerDispatch;
 
         public PlayerManager(
-            IDispatchPacketBus dispatchBus,
             IPlayerDispatch playerDispatch,
             IPlayerStore playersStore)
         {
-            _dispatchBus = dispatchBus;
             _playerDispatch = playerDispatch;
             _playerStore = playersStore;
         }
@@ -44,8 +40,8 @@ namespace Server.Engine.Player
 
         public void AddPlayer(PlayerComponent player)
         {
-            DispatchConnectPlayer(player);
-            DispatchOtherPlayers(player);
+            player.DispatchAsClient();
+            DispatchOtherPlayers(player.Id);
 
             // Store after dispatch to avoid duplicates
             _playerStore.Add(player);
@@ -53,46 +49,21 @@ namespace Server.Engine.Player
 
         public void RemovePlayer(string connectionId)
         {
+            var player = _playerStore.Get(connectionId);
+            player?.DispatchDisconnectPlayer();
             _playerStore.Remove(connectionId);
-            DispatchDisconnectPlayer(connectionId);
         }
 
         /// <summary>
         /// Dispatch all current player location to new player
         /// </summary>
         /// <param name="player">New Player to notify</param>
-        private void DispatchOtherPlayers(PlayerComponent player)
+        private void DispatchOtherPlayers(string connectionId)
         {
             foreach(var otherPlayer in _playerStore.GetAll().Values)
             {
-                Console.WriteLine($"OTHER PLAYER: {otherPlayer.Id}");
-                var packet = CreatePlayerConnectPacket(otherPlayer, false);
-                _dispatchBus.Publish(player.Id, packet);
+                otherPlayer.DispatchToOtherPlayer(connectionId);
             }
-        }
-
-        /// <summary>
-        /// Dispatch to all that player connected.
-        /// </summary>
-        /// <param name="player">Player model</param>
-        /// <param name="isClient">Same client that requested connection</param>
-        private void DispatchConnectPlayer(PlayerComponent player)
-        {
-            _dispatchBus.PublishExcept(player.Id, CreatePlayerConnectPacket(player, false));
-            _dispatchBus.Publish(player.Id, CreatePlayerConnectPacket(player, true));
-        }
-
-        /// <summary>
-        /// Dispatch to player disconnected
-        /// </summary>
-        /// <param name="connectionId"></param>
-        private void DispatchDisconnectPlayer(string connectionId)
-        {
-            var packet = new PlayerDisconnectPacket
-            {
-                PlayerId = connectionId
-            };
-            _dispatchBus.Publish(packet);
         }
 
         /// <summary>
@@ -110,26 +81,6 @@ namespace Server.Engine.Player
                 _playerStore.Update(player);
             }
         }
-
-        /// <summary>
-        /// Build the Player connect packet based on if it should be distributed
-        /// as the client connecting or the global packet
-        /// </summary>
-        /// <param name="player">Player model</param>
-        /// <param name="isClient">Is Player for the connecting client?</param>
-        /// <returns></returns>
-        private PlayerConnectPacket CreatePlayerConnectPacket(PlayerComponent player, bool isClient) =>
-            new PlayerConnectPacket
-            {
-                PlayerId = player.Id,
-                IsClient = isClient,
-                IsMoving = player.IsMoving,
-                Position = new Vector3(
-                        player.Coordinates.X,
-                        player.Coordinates.Y,
-                        player.Coordinates.Z),
-                MovementType = player.Direction
-            };
 
         /// <summary>
         /// Get new player object

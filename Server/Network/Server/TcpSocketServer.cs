@@ -15,7 +15,7 @@ namespace Server.Network.Server
     public class TcpSocketServer: IServer, IEventBusListener<ConnectionEvent>
     {
         private readonly IConnectionManager _connectionManager;
-        private readonly IPlayerManager _playerComponent;
+        private readonly IPlayerManager _playerManager;
         private readonly IReceiverPacketBus _receiverPacketBus;
         private readonly IConnectionBus _connectionBus;
         private readonly TcpListener _socket;
@@ -29,7 +29,7 @@ namespace Server.Network.Server
             IReceiverPacketBus receiverPacketBus)
         {
             _connectionManager = connectionManager;
-            _playerComponent = playerComponent;
+            _playerManager = playerComponent;
             _connectionBus = connectionBus;
             _receiverPacketBus = receiverPacketBus;
             _socket = new TcpListener(IPAddress.Any, configuration.Port);
@@ -80,11 +80,11 @@ namespace Server.Network.Server
             {
                 case ConnectionState.CONNECT:
                     Console.WriteLine($"Client Connected: {connectionId}");
-                    _playerComponent.InitializePlayer(connectionId);
+                    _playerManager.InitializePlayer(connectionId);
                     break;
                 case ConnectionState.DISCONNECT:
                     Console.WriteLine($"Client Disconnected: {connectionId}");
-                    _playerComponent.RemovePlayer(connectionId);
+                    _playerManager.RemovePlayer(connectionId);
                     _connectionManager.CloseConnection(connectionId);
                     break;
             }

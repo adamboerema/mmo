@@ -34,13 +34,40 @@ namespace Server.Network.Dispatch
                 MovementType = direction,
                 IsMoving = isMoving
             };
-            _dispatchPacketBus.Publish(packet);
+            _dispatchPacketBus.PublishAll(packet);
+        }
+
+        public void DispatchClientConnect(
+            string connectionId,
+            bool isMoving,
+            Vector3 position,
+            Direction direction)
+        {
+            var clientPacket = new PlayerConnectPacket
+            {
+                PlayerId = connectionId,
+                IsClient = true,
+                IsMoving = isMoving,
+                Position = position,
+                MovementType = direction
+            };
+
+            var allPlayerPacket = new PlayerConnectPacket
+            {
+                PlayerId = connectionId,
+                IsClient = false,
+                IsMoving = isMoving,
+                Position = position,
+                MovementType = direction
+            };
+
+            _dispatchPacketBus.Publish(connectionId, clientPacket);
+            _dispatchPacketBus.PublishExcept(connectionId, allPlayerPacket);
         }
 
         public void DispatchPlayerConnect(
             string connectionId,
             string playerId,
-            bool isClient,
             bool isMoving,
             Vector3 position,
             Direction direction)
@@ -48,7 +75,7 @@ namespace Server.Network.Dispatch
             var packet = new PlayerConnectPacket
             {
                 PlayerId = playerId,
-                IsClient = isClient,
+                IsClient = false,
                 IsMoving = isMoving,
                 Position = position,
                 MovementType = direction
@@ -62,8 +89,7 @@ namespace Server.Network.Dispatch
             {
                 PlayerId = playerId
             };
-            _dispatchPacketBus.Publish(packet);
+            _dispatchPacketBus.PublishAll(packet);
         }
-
     };
 }

@@ -19,20 +19,30 @@ namespace Server.Network.Dispatch
         /// <summary>
         /// Dispatch player connect
         /// </summary>
-        /// <param name="connectionId"></param>
-        /// <param name="playerId"></param>
-        /// <param name="isClient"></param>
-        /// <param name="isMoving"></param>
-        /// <param name="position"></param>
-        /// <param name="direction"></param>
+        /// <param name="connectionId">Connection id to the current player</param>
+        /// <param name="playerId">Player id connecting</param>
+        /// <param name="isMoving">Is Player moving</param>
+        /// <param name="position">Vector position of player</param>
+        /// <param name="direction">Direction of player</param>
         public void DispatchPlayerConnect(
             string connectionId,
             string playerId,
-            bool isClient,
             bool isMoving,
             Vector3 position,
             Direction direction);
 
+        /// <summary>
+        /// Dispatch player connect
+        /// </summary>
+        /// <param name="connectionId">Connection id to the current player</param>
+        /// <param name="isMoving">Is Player moving</param>
+        /// <param name="position">Vector position of player</param>
+        /// <param name="direction">Direction of player</param>
+        public void DispatchClientConnect(
+            string connectionId,
+            bool isMoving,
+            Vector3 position,
+            Direction direction);
 
         /// <summary>
         /// Dispatch player disconnect to all
