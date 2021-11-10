@@ -7,7 +7,7 @@ using CommonClient.Engine.Player;
 
 namespace CommonClient.Engine.Movement
 {
-    public class MovementManager: IMovementManager
+    public class MovementManager: IPlayerManager
     {
         private readonly IDispatchPacketBus _dispatchPacket;
         private readonly IPlayerStore _playerStore;

@@ -22,6 +22,11 @@ namespace CommonClient.Engine.Enemy
             _playerStore = playerStore;
         }
 
+        public void Update(GameTime gameTime)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SpawnEnemy(
             string enemyId,
             EnemyType enemyType,

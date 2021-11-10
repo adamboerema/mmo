@@ -4,17 +4,17 @@ using CommonClient.Engine.Movement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace CommonClient.Components.Movement
+namespace CommonClient.GameComponent.Input
 {
-    public class InputComponent: GameComponent
+    public class InputComponent: Microsoft.Xna.Framework.GameComponent
     {
-        private readonly IMovementManager _movementManager;
+        private readonly IPlayerManager _playerManager;
         private Direction _movementType = Direction.DOWN;
         private bool _isMoving = false;
 
         public InputComponent(Game game): base(game)
         {
-            _movementManager = GameServices.GetService<IMovementManager>();
+            _playerManager = GameServices.GetService<IPlayerManager>();
         }
 
         public override void Update(GameTime gameTime)
@@ -27,7 +27,7 @@ namespace CommonClient.Components.Movement
                 Console.WriteLine($"Changing to movement type: {currentMovementType} and {isMoving}");
                 _isMoving = isMoving;
                 _movementType = currentMovementType;
-                _movementManager.UpdateClientMovementInput(currentMovementType, isMoving);
+                _playerManager.UpdateClientMovementInput(currentMovementType, isMoving);
             }
             base.Update(gameTime);
         }

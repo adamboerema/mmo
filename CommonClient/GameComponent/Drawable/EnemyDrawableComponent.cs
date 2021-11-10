@@ -1,13 +1,13 @@
 ﻿using System;
 using Common.Utility;
-using CommonClient.Components.Camera;
+using CommonClient.GameComponent.Camera;
 using CommonClient.Engine.Enemy;
 using CommonClient.Engine.Player;
 using CommonClient.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace CommonClient.Components.Player
+namespace CommonClient.GameComponent.Player
 {
     public class EnemyDrawableComponent: DrawableGameComponent
     {

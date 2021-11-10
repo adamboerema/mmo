@@ -1,9 +1,9 @@
 ﻿using System;
 using Common.Model.Shared;
 
-namespace Server.Engine
+namespace Common.Component
 {
-    public interface IGameComponent
+    public interface IEngineComponent
     {
         public void Update(GameTick gameTime);
     }

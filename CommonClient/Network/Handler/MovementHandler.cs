@@ -7,9 +7,9 @@ namespace CommonClient.Network.Handler
 {
     public class MovementHandler: IPacketHandler<MovementOutputPacket>
     {
-        public IMovementManager _movementManager;
+        public IPlayerManager _movementManager;
 
-        public MovementHandler(IMovementManager movementManager)
+        public MovementHandler(IPlayerManager movementManager)
         {
             _movementManager = movementManager;
         }

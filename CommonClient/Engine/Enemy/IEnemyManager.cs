@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
+using Common.Component;
 using Common.Entity;
 using Common.Model.Shared;
+using Microsoft.Xna.Framework;
 
 namespace CommonClient.Engine.Enemy
 {
-    public interface IEnemyManager
+    public interface IEnemyManager: IEngineComponent
     {
         /// <summary>
         ///  Spawn the enemy

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace CommonClient.Components
+namespace CommonClient.GameComponent
 {
     public interface IDrawableGameComponent: IGameComponent
     {

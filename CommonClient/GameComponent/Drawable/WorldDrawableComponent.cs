@@ -1,10 +1,10 @@
 ﻿using System;
-using CommonClient.Components.Camera;
+using CommonClient.GameComponent.Camera;
 using CommonClient.Engine.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace CommonClient.Components.Player
+namespace CommonClient.GameComponent.Player
 {
     public class WorldDrawableComponent: DrawableGameComponent
     {

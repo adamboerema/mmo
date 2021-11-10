@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace CommonClient.Components.Camera
+namespace CommonClient.GameComponent.Camera
 {
     public class PlayerCamera: ICamera
     {

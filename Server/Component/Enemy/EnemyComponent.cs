@@ -48,6 +48,14 @@ namespace Server.Component.Enemy
         }
 
         /// <summary>
+        /// Initialize
+        /// </summary>
+        private void Initialize()
+        {
+            RespawnEnemy();
+        }
+
+        /// <summary>
         /// Game Tick
         /// </summary>
         /// <param name="gameTick"></param>
@@ -74,14 +82,6 @@ namespace Server.Component.Enemy
                 _movement.MovementSpeed,
                 _pathing.EngageTargetId,
                 _pathing.MovementDestination);
-        }
-
-        /// <summary>
-        /// Initialize
-        /// </summary>
-        private void Initialize()
-        {
-            RespawnEnemy();
         }
 
         /// <summary>

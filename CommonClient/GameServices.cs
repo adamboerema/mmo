@@ -81,8 +81,8 @@ namespace CommonClient
             serviceCollection.AddScoped<IEnemyStore, EnemyStore>();
 
             // Manager
-            serviceCollection.AddScoped<IPlayerManager, PlayerManager>();
-            serviceCollection.AddScoped<IMovementManager, MovementManager>();
+            serviceCollection.AddScoped<Engine.Player.IPlayerManager, PlayerManager>();
+            serviceCollection.AddScoped<Engine.Movement.IPlayerManager, MovementManager>();
             serviceCollection.AddScoped<IEnemyManager, EnemyManager>();
 
         }

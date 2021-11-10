@@ -18,13 +18,14 @@
     <None Remove="Engine\" />
     <None Remove="Engine\Player\" />
     <None Remove="Engine\Movement\" />
-    <None Remove="Components\" />
     <None Remove="Components\MovementManager\" />
     <None Remove="Components\Player\" />
-    <None Remove="Components\Camera\" />
     <None Remove="Extentions\" />
     <None Remove="Engine\Enemy\" />
     <None Remove="Extensions\" />
+    <None Remove="Component\" />
+    <None Remove="Component\Enemy\" />
+    <None Remove="Component\Player\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bus\" />
@@ -37,11 +38,11 @@
     <Folder Include="Engine\" />
     <Folder Include="Engine\Player\" />
     <Folder Include="Engine\Movement\" />
-    <Folder Include="Components\" />
-    <Folder Include="Components\Drawable\" />
-    <Folder Include="Components\Camera\" />
     <Folder Include="Engine\Enemy\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Component\" />
+    <Folder Include="Component\Enemy\" />
+    <Folder Include="Component\Player\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />

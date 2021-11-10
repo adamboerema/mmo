@@ -1,11 +1,11 @@
 ﻿using System;
-using Common.Entity;
+using Common.Component;;
 using Common.Model.Shared;
 using Server.Component.Player;
 
 namespace Server.Engine.Player
 {
-    public interface IPlayerManager: IGameComponent
+    public interface IPlayerManager: IEngineComponent
     {
         /// <summary>
         /// Add Player to the player pool

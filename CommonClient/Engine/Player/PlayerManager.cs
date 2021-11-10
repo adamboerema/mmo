@@ -4,16 +4,22 @@ using System.Numerics;
 using Common.Model;
 using Common.Model.Character;
 using Common.Model.Shared;
+using Common.Packets.ClientToServer.Movement;
+using CommonClient.Bus.Packet;
 
 namespace CommonClient.Engine.Player
 {
     public class PlayerManager: IPlayerManager
     {
         private IPlayerStore _playerStore;
+        private IDispatchPacketBus _dispatchPacketBus;
 
-        public PlayerManager(IPlayerStore playerStore)
+        public PlayerManager(
+            IPlayerStore playerStore,
+            IDispatchPacketBus dispatchPacketBus)
         {
             _playerStore = playerStore;
+            _dispatchPacketBus = dispatchPacketBus;
         }
 
         public void InitializePlayer(
@@ -28,6 +34,26 @@ namespace CommonClient.Engine.Player
                 position,
                 movementType);
             _playerStore.Add(player);
+        }
+
+        public void UpdateClientMovementInput(Direction direction, bool isMoving)
+        {
+            _playerStore.UpdateClientMovement(direction, isMoving);
+
+            _dispatchPacketBus.Publish(new PlayerMovementPacket
+            {
+                Direction = direction,
+                IsMoving = isMoving
+            });
+        }
+
+        public void UpdatePlayerCoordinatesOutput(
+            string playerId,
+            Vector3 coordinates,
+            Direction movementType,
+            bool isMoving)
+        {
+            _playerStore.UpdateMovement(playerId, coordinates, movementType, isMoving);
         }
 
         public void UpdatePlayer(ClientPlayerEntity model)

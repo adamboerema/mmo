@@ -4,7 +4,7 @@ using Common.Model.Shared;
 
 namespace CommonClient.Engine.Movement
 {
-    public interface IMovementManager
+    public interface IPlayerManager
     {
         public void UpdateClientMovementInput(Direction direction, bool isMoving);
 
