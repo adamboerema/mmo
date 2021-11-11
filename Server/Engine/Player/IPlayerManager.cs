@@ -1,7 +1,7 @@
 ﻿using System;
-using Common.Component;;
-using Common.Model.Shared;
+using Common.Component;
 using Server.Component.Player;
+using Common.Model.Shared;
 
 namespace Server.Engine.Player
 {

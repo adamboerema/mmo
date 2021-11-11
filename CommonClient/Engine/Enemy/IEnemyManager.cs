@@ -53,11 +53,5 @@ namespace CommonClient.Engine.Enemy
         /// </summary>
         /// <param name="enemyId">Id of enemy</param>
         public void DisengageEnemy(string enemyId);
-
-        /// <summary>
-        /// Get list of enemies
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<EnemyEntity> GetEnemies();
     }
 }

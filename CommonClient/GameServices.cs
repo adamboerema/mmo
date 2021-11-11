@@ -80,8 +80,8 @@ namespace CommonClient
             serviceCollection.AddScoped<IConnectionReceiver, ConnectionReceiver>();
 
             //Store
-            serviceCollection.AddScoped<IStore<string, PlayerComponent>, ComponentStore<PlayerComponent>>();
-            serviceCollection.AddScoped<IStore<string, EnemyComponent>, ComponentStore<EnemyComponent>>();
+            serviceCollection.AddScoped<ComponentStore<PlayerComponent>>();
+            serviceCollection.AddScoped<ComponentStore<EnemyComponent>>();
 
             // Manager
             serviceCollection.AddScoped<IPlayerManager, PlayerManager>();

@@ -5,8 +5,8 @@ using Microsoft.Extensions.Hosting;
 using Server.Auth;
 using Server.Bus.Connection;
 using Server.Bus.Packet;
-using Server.ComponentStore.Enemy;
-using Server.ComponentStore.Player;
+using Server.Component.Enemy;
+using Server.Component.Player;
 using Server.Configuration;
 using Server.Engine;
 using Server.Engine.Enemy;
@@ -60,8 +60,8 @@ namespace Server
                     services.AddScoped<IEnemyManager, EnemyManager>();
 
                     // Stores
-                    services.AddScoped<IStore<string, PlayerComponent>, ComponentStore<PlayerComponent>>();
-                    services.AddScoped<IStore<string, EnemyComponent>, ComponentStore<EnemyComponent>>();
+                    services.AddScoped<ComponentStore<PlayerComponent>>();
+                    services.AddScoped<ComponentStore<EnemyComponent>>();
 
                     // Receiver handlers
                     services.AddScoped<IHandlerRouter, HandlerRouter>();

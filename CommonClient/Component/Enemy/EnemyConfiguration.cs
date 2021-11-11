@@ -11,16 +11,16 @@ namespace CommonClient.Component.Enemy
 
         public EnemyType Type { get; init; }
 
-        public SpawnModel Spawn { get; init; }
-
         public PathingModel Pathing { get; init; }
 
         public MovementModel Movement { get; init; }
 
         public CharacterModel Character { get; init; }
 
-        public CombatModel Combat { get; init; }
-
         public CollisionModel Collision { get; init; }
+
+        public CombatModel CombatModel { get; init; }
+
+        public SpawnModel SpawnModel { get; init; }
     }
 }

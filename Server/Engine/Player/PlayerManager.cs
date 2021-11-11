@@ -4,19 +4,19 @@ using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Store;
 using Common.Utility;
-using Server.ComponentStore.Player;
+using Server.Component.Player;
 using Server.Network.Dispatch;
 
 namespace Server.Engine.Player
 {
     public class PlayerManager : IPlayerManager
     {
-        private IStore<string, PlayerComponent> _playerStore;
         private IPlayerDispatch _playerDispatch;
+        private ComponentStore<PlayerComponent> _playerStore;
 
         public PlayerManager(
             IPlayerDispatch playerDispatch,
-            IStore<string, PlayerComponent> playersStore)
+            ComponentStore<PlayerComponent> playersStore)
         {
             _playerDispatch = playerDispatch;
             _playerStore = playersStore;

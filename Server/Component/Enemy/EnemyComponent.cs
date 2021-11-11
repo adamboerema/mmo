@@ -27,12 +27,12 @@ namespace Server.Component.Enemy
         private CollisionModel _collision;
 
         private readonly IEnemyDispatch _enemyDispatch;
-        private readonly IStore<string, PlayerComponent> _playerStore;
+        private readonly ComponentStore<PlayerComponent> _playerStore;
 
         public EnemyComponent(
             EnemyConfiguration config,
             IEnemyDispatch enemyDispatch,
-            IStore<string, PlayerComponent> playerStore)
+            ComponentStore<PlayerComponent> playerStore)
         {
             Id = config.Id;
             Type = config.Type;

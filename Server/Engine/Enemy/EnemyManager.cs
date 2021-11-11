@@ -17,14 +17,14 @@ namespace Server.Engine.Enemy
     {
         private readonly IConnectionBus _connectionBus;
         private readonly IEnemyDispatch _enemyDispatch;
-        private readonly IStore<string, EnemyComponent> _enemyStore;
-        private readonly IStore<string, PlayerComponent> _playerStore;
+        private readonly ComponentStore<EnemyComponent> _enemyStore;
+        private readonly ComponentStore<PlayerComponent> _playerStore;
 
         public EnemyManager(
             IConnectionBus connectionBus,
             IEnemyDispatch enemyDispatch,
-            IStore<string, EnemyComponent> enemyStore,
-            IStore<string, PlayerComponent> playerStore)
+            ComponentStore<EnemyComponent> enemyStore,
+            ComponentStore<PlayerComponent> playerStore)
         {
             _connectionBus = connectionBus;
             _enemyDispatch = enemyDispatch;

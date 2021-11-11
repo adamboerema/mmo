@@ -21,7 +21,7 @@ namespace CommonClient.GameComponent.Player
         public EnemyDrawableComponent(Game game, ICamera camera): base(game)
         {
             _camera = camera;
-            _enemyStore = GameServices.GetService<IEnemyStore>();
+            _enemyStore = GameServices.GetService<I>();
             _playerStore = GameServices.GetService<IPlayerStore>();
         }
 

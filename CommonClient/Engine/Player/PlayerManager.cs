@@ -12,11 +12,11 @@ namespace CommonClient.Engine.Player
 {
     public class PlayerManager: IPlayerManager
     {
-        private IStore<string, PlayerComponent> _playerStore;
+        private ComponentStore<PlayerComponent> _playerStore;
         private IDispatchPacketBus _dispatchPacketBus;
 
         public PlayerManager(
-            IStore<string, PlayerComponent> playerStore,
+            ComponentStore<PlayerComponent> playerStore,
             IDispatchPacketBus dispatchPacketBus)
         {
             _playerStore = playerStore;
