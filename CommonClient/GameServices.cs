@@ -7,6 +7,7 @@ using CommonClient.Configuration;
 using CommonClient.Engine.Enemy;
 using CommonClient.Engine.Movement;
 using CommonClient.Engine.Player;
+using CommonClient.Network.Dispatch;
 using CommonClient.Network.Handler;
 using CommonClient.Network.Handler.Router;
 using CommonClient.Network.Receiver;
@@ -87,6 +88,8 @@ namespace CommonClient
             serviceCollection.AddScoped<IPlayerManager, PlayerManager>();
             serviceCollection.AddScoped<IEnemyManager, EnemyManager>();
 
+            // Dispatch
+            serviceCollection.AddScoped<IPlayerDispatch, PlayerDispatch>();
         }
 
         /// <summary>

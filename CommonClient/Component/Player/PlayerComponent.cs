@@ -22,6 +22,9 @@ namespace CommonClient.Component.Player
             PlayerConfiguration playerConfiguration,
             IPlayerDispatch playerDispatch)
         {
+            Id = playerConfiguration.Id;
+            _charater = playerConfiguration.Character;
+            _movement = playerConfiguration.Movement;
         }
 
         public void Update(GameTick gameTick, World world)
