@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Common.Component;
 using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Model.World;
@@ -9,7 +10,7 @@ namespace Server.Component.Player
 {
     public class PlayerComponent: IComponent
     {
-        public readonly string Id;
+        public string Id { get; init; }
         public readonly bool IsClient;
         public Vector3 Coordinates => _movement.Coordinates;
 

@@ -2,20 +2,21 @@
 using System.Numerics;
 using Common.Model.Character;
 using Common.Model.Shared;
+using Common.Store;
 using Common.Utility;
-using Server.Component.Player;
+using Server.ComponentStore.Player;
 using Server.Network.Dispatch;
 
 namespace Server.Engine.Player
 {
     public class PlayerManager : IPlayerManager
     {
-        private IPlayerStore _playerStore;
+        private IStore<string, PlayerComponent> _playerStore;
         private IPlayerDispatch _playerDispatch;
 
         public PlayerManager(
             IPlayerDispatch playerDispatch,
-            IPlayerStore playersStore)
+            IStore<string, PlayerComponent> playersStore)
         {
             _playerDispatch = playerDispatch;
             _playerStore = playersStore;

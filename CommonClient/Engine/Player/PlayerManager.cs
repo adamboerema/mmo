@@ -1,25 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Model;
 using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Packets.ClientToServer.Movement;
+using Common.Store;
 using CommonClient.Bus.Packet;
+using CommonClient.Component.Player;
 
 namespace CommonClient.Engine.Player
 {
     public class PlayerManager: IPlayerManager
     {
-        private IPlayerStore _playerStore;
+        private IStore<string, PlayerComponent> _playerStore;
         private IDispatchPacketBus _dispatchPacketBus;
 
         public PlayerManager(
-            IPlayerStore playerStore,
+            IStore<string, PlayerComponent> playerStore,
             IDispatchPacketBus dispatchPacketBus)
         {
             _playerStore = playerStore;
             _dispatchPacketBus = dispatchPacketBus;
+        }
+
+        public void Update(GameTick gameTime)
+        {
+            throw new NotImplementedException();
         }
 
         public void InitializePlayer(

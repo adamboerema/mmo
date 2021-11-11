@@ -2,13 +2,14 @@
 using System.Drawing;
 using Common.Bus;
 using Server.Bus.Connection;
-using Server.Engine.Player;
 using Common.Model.Behavior;
 using Common.Model.Shared;
 using Common.Model.Character;
 using Common.Utility;
 using Server.Component.Enemy;
 using Server.Network.Dispatch;
+using Common.Store;
+using Server.Component.Player;
 
 namespace Server.Engine.Enemy
 {
@@ -16,19 +17,19 @@ namespace Server.Engine.Enemy
     {
         private readonly IConnectionBus _connectionBus;
         private readonly IEnemyDispatch _enemyDispatch;
-        private readonly IEnemyStore _enemyStore;
-        private readonly IPlayerStore _playerStore;
+        private readonly IStore<string, EnemyComponent> _enemyStore;
+        private readonly IStore<string, PlayerComponent> _playerStore;
 
         public EnemyManager(
             IConnectionBus connectionBus,
             IEnemyDispatch enemyDispatch,
-            IEnemyStore enemyStore,
-            IPlayerStore pLayerStore)
+            IStore<string, EnemyComponent> enemyStore,
+            IStore<string, PlayerComponent> playerStore)
         {
             _connectionBus = connectionBus;
             _enemyDispatch = enemyDispatch;
             _enemyStore = enemyStore;
-            _playerStore = pLayerStore;
+            _playerStore = playerStore;
             _connectionBus.Subscribe(this);
             InitializeEnemies();
         }

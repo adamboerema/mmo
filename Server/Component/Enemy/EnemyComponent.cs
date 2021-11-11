@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Numerics;
+using Common.Component;
 using Common.Model.Behavior;
 using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Model.World;
+using Common.Store;
 using Common.Utility;
-using Server.Engine.Player;
+using Server.Component.Player;
 using Server.Network.Dispatch;
 
 namespace Server.Component.Enemy
 {
     public class EnemyComponent: IComponent
     {
-        public readonly string Id;
+        public string Id { get; init; }
         public readonly EnemyType Type;
 
         public Vector3 Coordinates => _movement.Coordinates;
@@ -25,12 +27,12 @@ namespace Server.Component.Enemy
         private CollisionModel _collision;
 
         private readonly IEnemyDispatch _enemyDispatch;
-        private readonly IPlayerStore _playerStore;
+        private readonly IStore<string, PlayerComponent> _playerStore;
 
         public EnemyComponent(
             EnemyConfiguration config,
             IEnemyDispatch enemyDispatch,
-            IPlayerStore playerStore)
+            IStore<string, PlayerComponent> playerStore)
         {
             Id = config.Id;
             Type = config.Type;

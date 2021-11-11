@@ -1,5 +1,8 @@
 ﻿using System;
+using Common.Store;
 using CommonClient.Bus.Packet;
+using CommonClient.Component.Enemy;
+using CommonClient.Component.Player;
 using CommonClient.Configuration;
 using CommonClient.Engine.Enemy;
 using CommonClient.Engine.Movement;
@@ -77,12 +80,11 @@ namespace CommonClient
             serviceCollection.AddScoped<IConnectionReceiver, ConnectionReceiver>();
 
             //Store
-            serviceCollection.AddScoped<IPlayerStore, PlayerStore>();
-            serviceCollection.AddScoped<IEnemyStore, EnemyStore>();
+            serviceCollection.AddScoped<IStore<string, PlayerComponent>, ComponentStore<PlayerComponent>>();
+            serviceCollection.AddScoped<IStore<string, EnemyComponent>, ComponentStore<EnemyComponent>>();
 
             // Manager
-            serviceCollection.AddScoped<Engine.Player.IPlayerManager, PlayerManager>();
-            serviceCollection.AddScoped<Engine.Movement.IPlayerManager, MovementManager>();
+            serviceCollection.AddScoped<IPlayerManager, PlayerManager>();
             serviceCollection.AddScoped<IEnemyManager, EnemyManager>();
 
         }

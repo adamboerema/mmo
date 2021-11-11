@@ -5,24 +5,26 @@ using Common.Entity;
 using Common.Model.Behavior;
 using Common.Model.Character;
 using Common.Model.Shared;
-using CommonClient.Engine.Player;
+using Common.Store;
+using CommonClient.Component.Enemy;
+using CommonClient.Component.Player;
 
 namespace CommonClient.Engine.Enemy
 {
     public class EnemyManager: IEnemyManager
     {
-        private readonly IEnemyStore _enemyStore;
-        private readonly IPlayerStore _playerStore;
+        private readonly IStore<string, EnemyComponent> _enemyStore;
+        private readonly IStore<string, PlayerComponent> _playerStore;
 
         public EnemyManager(
-            IEnemyStore enemyStore,
-            IPlayerStore playerStore)
+            IStore<string, EnemyComponent> enemyStore,
+            IStore<string, PlayerComponent> playerStore)
         {
             _enemyStore = enemyStore;
             _playerStore = playerStore;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTick gameTime)
         {
             throw new NotImplementedException();
         }
