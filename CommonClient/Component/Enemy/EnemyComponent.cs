@@ -20,6 +20,8 @@ namespace CommonClient.ComponentStore.Enemy
         private MovementModel _movement;
         private PathingModel _pathing;
         private CharacterModel _character;
+        private CollisionModel _collision;
+        private CombatModel _combat;
 
         private ComponentStore<PlayerComponent> _playerStore;
 
@@ -32,6 +34,8 @@ namespace CommonClient.ComponentStore.Enemy
             _movement = enemyConfiguration.Movement;
             _pathing = enemyConfiguration.Pathing;
             _character = enemyConfiguration.Character;
+            _collision = enemyConfiguration.Collision;
+            _combat = enemyConfiguration.CombatModel;
 
             _playerStore = playerStore;
         }
@@ -48,6 +52,19 @@ namespace CommonClient.ComponentStore.Enemy
                         player.Coordinates,
                         _movement.MovementSpeed);
                 }
+            }
+
+            var distance = MovementUtility.GetAbsoluteDistanceToPoint(
+                _movement.Coordinates,
+                _pathing.MovementDestination);
+
+            var targetDistance = _pathing.EngageTargetId == null
+                ? _collision.GetCollisionDistance()
+                : _combat.GetAttackDistance(_collision.GetCollisionDistance());
+
+            if (distance > targetDistance)
+            {
+                _movement.MoveToPoint(_pathing.MovementDestination, gameTick.ElapsedTime);
             }
         }
 

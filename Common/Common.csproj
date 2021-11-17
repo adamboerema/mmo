@@ -28,7 +28,6 @@
     <Folder Include="Model\Character\" />
     <Folder Include="Model\Shared\" />
     <Folder Include="Model\World\" />
-    <Folder Include="Entity\" />
     <Folder Include="Component\" />
   </ItemGroup>
   <ItemGroup>
@@ -56,7 +55,6 @@
     <None Remove="Model\Character\" />
     <None Remove="Model\Shared\" />
     <None Remove="Model\World\" />
-    <None Remove="Entity\" />
     <None Remove="Component\" />
   </ItemGroup>
 </Project>

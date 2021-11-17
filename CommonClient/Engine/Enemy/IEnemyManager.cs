@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Common.Component;
-using Common.Entity;
 using Common.Model.Shared;
 
 namespace CommonClient.Engine.Enemy
