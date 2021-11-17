@@ -5,8 +5,8 @@ using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Store;
 using Common.Utility;
-using CommonClient.Component.Enemy;
-using CommonClient.Component.Player;
+using CommonClient.ComponentStore.Enemy;
+using CommonClient.ComponentStore.Player;
 
 namespace CommonClient.Engine.Enemy
 {
@@ -29,6 +29,7 @@ namespace CommonClient.Engine.Enemy
             foreach(var enemy in _enemyStore.GetAll().Values)
             {
                 enemy.Update(gameTime, world);
+                _enemyStore.Update(enemy);
             }
         }
 
@@ -131,7 +132,8 @@ namespace CommonClient.Engine.Enemy
                         AttackRange = 30,
                         AttackSpeed = 1
                     }
-                });
+                },
+                _playerStore);
         }
     }
 }

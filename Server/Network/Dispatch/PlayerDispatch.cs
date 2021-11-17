@@ -3,7 +3,9 @@ using System.Numerics;
 using Common.Model.Shared;
 using Common.Packets.ServerToClient.Movement;
 using Common.Packets.ServerToClient.Player;
+using Common.Store;
 using Server.Bus.Packet;
+using Server.Component.Player;
 using Server.Engine.Player;
 
 namespace Server.Network.Dispatch
@@ -11,11 +13,11 @@ namespace Server.Network.Dispatch
     public class PlayerDispatch: IPlayerDispatch
     {
         IDispatchPacketBus _dispatchPacketBus;
-        IPlayerStore _playerStore;
+        ComponentStore<PlayerComponent> _playerStore;
 
         public PlayerDispatch(
             IDispatchPacketBus dispatchPacketBus,
-            IPlayerStore playerStore)
+            ComponentStore<PlayerComponent> playerStore)
         {
             _dispatchPacketBus = dispatchPacketBus;
             _playerStore = playerStore;

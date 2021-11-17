@@ -3,83 +3,62 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
 using Common.Model.Shared;
+using Common.Store;
+using CommonClient.ComponentStore.Player;
 using CommonClient.Engine.Player;
 
 namespace CommonClient.Store
 {
-    public class PlayerStore: IPlayerStore
+    public class PlayerStore: ComponentStore<PlayerComponent>
     {
-        private ConcurrentDictionary<string, ClientPlayerEntity> _players
-            = new ConcurrentDictionary<string, ClientPlayerEntity>();
 
         private string _clientPlayerId;
 
-        public ClientPlayerEntity Get(string playerId)
-        {
-            _players.TryGetValue(playerId, out var player);
-            return player;
-        }
-
-        public void Add(ClientPlayerEntity model)
+        public override void Add(PlayerComponent component)
         {
             // Store reference to client player id
-            if(model.IsClient)
+            if(component.IsClient)
             {
-                _clientPlayerId = model.Id;
+                _clientPlayerId = component.Id;
             }
-            _players[model.Id] = model;
+            base.Add(component);
         }
 
-        public IDictionary<string, ClientPlayerEntity> GetAll()
+        public PlayerComponent GetClientPlayer()
         {
-            return _players;
+            return base.Get(_clientPlayerId);
         }
 
-        public void Remove(string id)
-        {
-            _players.TryRemove(id, out _);
-        }
+        //public void UpdateMovement(
+        //    string playerId,
+        //    Vector3 coordinates,
+        //    Direction direction,
+        //    bool isMoving)
+        //{
+        //    var player = Get(playerId);
+        //    if(player != null)
+        //    {
+        //        player.UpdateCoordinates(coordinates, direction, isMoving);
+        //        Update(player);
+        //    }
+        //}
 
-        public void Update(ClientPlayerEntity model)
-        {
-            _players.TryUpdate(model.Id, model, _players[model.Id]);
-        }
+        //public void UpdateClientCoordinates(
+        //    Vector3 coordinates,
+        //    Direction movementType,
+        //    bool isMoving)
+        //{
+        //    UpdateMovement(_clientPlayerId, coordinates, movementType, isMoving);
+        //}
 
-        public ClientPlayerEntity GetClientPlayer()
-        {
-            return Get(_clientPlayerId);
-        }
-
-        public void UpdateMovement(
-            string playerId,
-            Vector3 coordinates,
-            Direction direction,
-            bool isMoving)
-        {
-            var player = Get(playerId);
-            if(player != null)
-            {
-                player.UpdateCoordinates(coordinates, direction, isMoving);
-                Update(player);
-            }
-        }
-
-        public void UpdateClientCoordinates(
-            Vector3 coordinates,
-            Direction movementType,
-            bool isMoving)
-        {
-            UpdateMovement(_clientPlayerId, coordinates, movementType, isMoving);
-        }
-
-        public void UpdateClientMovement(Direction direction, bool isMoving)
-        {
-            var clientPlayer = GetClientPlayer();
-            if(clientPlayer != null)
-            {
-                clientPlayer.UpdateDirection(direction, isMoving);
-                Update(clientPlayer);
-            }
-        }
+        //public void UpdateClientMovement(Direction direction, bool isMoving)
+        //{
+        //    var clientPlayer = GetClientPlayer();
+        //    if(clientPlayer != null)
+        //    {
+        //        clientPlayer.UpdateDirection(direction, isMoving);
+        //        Update(clientPlayer);
+        //    }
+        //}
     }
 }

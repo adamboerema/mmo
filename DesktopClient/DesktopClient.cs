@@ -1,10 +1,9 @@
 ﻿using System;
-using Common.Packets.ClientToServer.Auth;
 using CommonClient;
-using CommonClient.Bus.Packet;
-using CommonClient.Components.Camera;
-using CommonClient.Components.Movement;
-using CommonClient.Components.Player;
+using CommonClient.GameComponent;
+using CommonClient.GameComponent.Camera;
+using CommonClient.GameComponent.Drawable;
+using CommonClient.GameComponent.Input;
 using DesktopClient.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

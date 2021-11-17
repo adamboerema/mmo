@@ -1,16 +1,18 @@
 ﻿using System;
-using Common.Utility;
 using CommonClient.GameComponent.Camera;
-using CommonClient.Engine.Player;
 using CommonClient.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Common.Store;
+using CommonClient.ComponentStore.Player;
+using CommonClient.Engine.Player;
 
-namespace CommonClient.GameComponent.Player
+namespace CommonClient.GameComponent.Drawable
 {
     public class PlayerDrawableComponent : DrawableGameComponent
     {
         private SpriteBatch _spriteBatch;
+        private ComponentStore<PlayerComponent> _playerStore;
         private IPlayerManager _playerManager;
         private Texture2D _clientPlayerTexture;
         private Texture2D _playerTexture;
@@ -20,6 +22,7 @@ namespace CommonClient.GameComponent.Player
         {
             _camera = camera;
             _playerManager = GameServices.GetService<IPlayerManager>();
+            _playerStore = GameServices.GetService<ComponentStore<PlayerComponent>>();
         }
 
         public override void Initialize()
@@ -44,31 +47,25 @@ namespace CommonClient.GameComponent.Player
 
         public override void Update(GameTime gameTime)
         {
-            var players = _playerManager.GetPlayers();
-
-            foreach (var player in players)
+            var clientPlayer = _playerManager.GetClientPlayer();
+            if(clientPlayer != null)
             {
-                if (player.IsClient)
-                {
-                    var position = player.Coordinates;
-                    var vectorPosition = new Vector3(position.X, position.Y, 0);
-                    _camera.UpdatePosition(
-                        vectorPosition,
-                        _clientPlayerTexture.Width,
-                        _clientPlayerTexture.Height);
-                }
-
-                player.Update(gameTime.ToGameTick(), WorldUtility.GetWorld());
-                _playerManager.UpdatePlayer(player);
+                var position = clientPlayer.Coordinates;
+                var clientPosition = new Vector3(position.X, position.Y, 0);
+                _camera.UpdatePosition(
+                    clientPosition,
+                    _clientPlayerTexture.Width,
+                    _clientPlayerTexture.Height);
             }
+
+            _playerManager.Update(gameTime.ToGameTick());
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin(transformMatrix: _camera.GetPosition());
-            var players = _playerManager.GetPlayers();
-            foreach(var player in players)
+            foreach(var player in _playerStore.GetAll().Values)
             {
                 var texture = player.IsClient
                     ? _clientPlayerTexture
@@ -85,9 +82,9 @@ namespace CommonClient.GameComponent.Player
         /// Draw player with coordinates
         /// </summary>
         /// <param name="playerModel"></param>
-        private void DrawPlayer(ClientPlayerEntity playerModel, Texture2D texture)
+        private void DrawPlayer(PlayerComponent player, Texture2D texture)
         {
-            var coordinates = playerModel.Coordinates;
+            var coordinates = player.Coordinates;
 
             _spriteBatch.Draw(
                 texture,

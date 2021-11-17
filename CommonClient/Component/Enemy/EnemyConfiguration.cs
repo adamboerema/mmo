@@ -3,7 +3,7 @@ using Common.Model.Behavior;
 using Common.Model.Character;
 using Common.Model.Shared;
 
-namespace CommonClient.Component.Enemy
+namespace CommonClient.ComponentStore.Enemy
 {
     public class EnemyConfiguration
     {

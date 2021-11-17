@@ -1,31 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
 using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Packets.ClientToServer.Movement;
 using Common.Store;
-using CommonClient.Bus.Packet;
-using CommonClient.Component.Player;
+using CommonClient.ComponentStore.Player;
+using CommonClient.Network.Dispatch;
 
 namespace CommonClient.Engine.Player
 {
     public class PlayerManager: IPlayerManager
     {
+        private PlayerComponent _clientPlayer;
         private ComponentStore<PlayerComponent> _playerStore;
-        private IDispatchPacketBus _dispatchPacketBus;
+        private IPlayerDispatch _playerDispatch;
 
         public PlayerManager(
             ComponentStore<PlayerComponent> playerStore,
-            IDispatchPacketBus dispatchPacketBus)
+            IPlayerDispatch playerDispatch)
         {
             _playerStore = playerStore;
-            _dispatchPacketBus = dispatchPacketBus;
+            _playerDispatch = playerDispatch;
+        }
+
+        public PlayerComponent GetClientPlayer()
+        {
+            return _clientPlayer;
         }
 
         public void Update(GameTick gameTime)
         {
-            throw new NotImplementedException();
+            // TODO: Add update
         }
 
         public void InitializePlayer(
@@ -40,17 +45,27 @@ namespace CommonClient.Engine.Player
                 position,
                 movementType);
             _playerStore.Add(player);
+
+            if (isClient)
+            {
+                _clientPlayer = player;
+            }
         }
 
         public void UpdateClientMovementInput(Direction direction, bool isMoving)
         {
-            _playerStore.UpdateClientMovement(direction, isMoving);
-
-            _dispatchPacketBus.Publish(new PlayerMovementPacket
+            if(_clientPlayer != null)
             {
-                Direction = direction,
-                IsMoving = isMoving
-            });
+                //_clientPlayer
+            }
+
+            //_playerStore.UpdateClientMovement(direction, isMoving);
+
+            //_dispatchPacketBus.Publish(new PlayerMovementPacket
+            //{
+            //    Direction = direction,
+            //    IsMoving = isMoving
+            //});
         }
 
         public void UpdatePlayerCoordinatesOutput(
@@ -59,12 +74,9 @@ namespace CommonClient.Engine.Player
             Direction movementType,
             bool isMoving)
         {
-            _playerStore.UpdateMovement(playerId, coordinates, movementType, isMoving);
-        }
+            var player = _playerStore.Get(playerId);
 
-        public void UpdatePlayer(ClientPlayerEntity model)
-        {
-            _playerStore.Update(model);
+            //_playerStore.UpdateMovement(playerId, coordinates, movementType, isMoving);
         }
 
         public void RemovePlayer(string playerId)
@@ -72,41 +84,35 @@ namespace CommonClient.Engine.Player
             _playerStore.Remove(playerId);
         }
 
-        public IEnumerable<ClientPlayerEntity> GetPlayers()
-        {
-            return _playerStore.GetAll().Values;
-        }
-
-        public ClientPlayerEntity GetClientPlayer()
-        {
-            return _playerStore.GetClientPlayer();
-        }
-
         /// <summary>
         /// Create 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private ClientPlayerEntity CreateNewPlayer(
+        private PlayerComponent CreateNewPlayer(
             string playerId,
             bool isClient,
             Vector3 position,
             Direction movementType)
         {
-            return new ClientPlayerEntity(
-                id: playerId,
-                isClient: isClient,
-                characterModel: new CharacterModel
+            return new PlayerComponent(
+                new PlayerConfiguration
                 {
-                    Name = "test"
+                    Id = playerId,
+                    IsClient = isClient,
+                    Character = new CharacterModel
+                    {
+                        Name = "test"
+                    },
+                    Movement = new MovementModel
+                    {
+                        Direction = movementType,
+                        Coordinates = position,
+                        IsMoving = false,
+                        MovementSpeed = 0.2f
+                    }
                 },
-                movementModel: new MovementModel
-                {
-                    Direction = movementType,
-                    Coordinates = position,
-                    IsMoving = false,
-                    MovementSpeed = 0.2f
-                });
+                _playerDispatch);
         }
     }
 }

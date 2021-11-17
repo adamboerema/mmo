@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Numerics;
 using Common.Component;
 using Common.Model.Shared;
+using CommonClient.ComponentStore.Player;
 
 namespace CommonClient.Engine.Player
 {
     public interface IPlayerManager: IEngineComponent
     {
+        public PlayerComponent GetClientPlayer();
+
         public void InitializePlayer(
             string playerId,
             bool isClient,
@@ -24,13 +27,7 @@ namespace CommonClient.Engine.Player
             Direction direction,
             bool isMoving);
 
-        public void UpdatePlayer(ClientPlayerEntity playerModel);
-
         public void RemovePlayer(string playerId);
-
-        public IEnumerable<ClientPlayerEntity> GetPlayers();
-
-        public ClientPlayerEntity GetClientPlayer();
 
     }
 }

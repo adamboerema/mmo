@@ -6,11 +6,12 @@ using Common.Model.Shared;
 using Common.Model.World;
 using CommonClient.Network.Dispatch;
 
-namespace CommonClient.Component.Player
+namespace CommonClient.ComponentStore.Player
 {
     public class PlayerComponent: IComponent
     {
         public string Id { get; init; }
+        public bool IsClient { get; init; }
         public Vector3 Coordinates => _movement.Coordinates;
 
         private CharacterModel _charater;
@@ -23,6 +24,7 @@ namespace CommonClient.Component.Player
             IPlayerDispatch playerDispatch)
         {
             Id = playerConfiguration.Id;
+            IsClient = playerConfiguration.IsClient;
             _charater = playerConfiguration.Character;
             _movement = playerConfiguration.Movement;
         }
@@ -31,5 +33,6 @@ namespace CommonClient.Component.Player
         {
             // Update here
         }
+
     }
 }

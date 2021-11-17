@@ -1,6 +1,6 @@
 ﻿using System;
 using Common.Model.Shared;
-using CommonClient.Engine.Movement;
+using CommonClient.Engine.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Model.Character;
 
-namespace CommonClient.Component.Player
+namespace CommonClient.ComponentStore.Player
 {
     public class PlayerConfiguration
     {

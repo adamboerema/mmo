@@ -1,19 +1,19 @@
 ﻿using System;
-using Common.Utility;
 using CommonClient.GameComponent.Camera;
-using CommonClient.Engine.Enemy;
-using CommonClient.Engine.Player;
-using CommonClient.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using CommonClient.ComponentStore.Enemy;
+using Common.Store;
+using CommonClient.Engine.Enemy;
+using CommonClient.Extensions;
 
-namespace CommonClient.GameComponent.Player
+namespace CommonClient.GameComponent
 {
     public class EnemyDrawableComponent: DrawableGameComponent
     {
         private readonly ICamera _camera;
-        private readonly IEnemyStore _enemyStore;
-        private readonly IPlayerStore _playerStore;
+        private readonly IEnemyManager _enemyManager;
+        private readonly ComponentStore<EnemyComponent> _enemyStore;
 
         private Texture2D _enemyTexture;
         private SpriteBatch _spriteBatch;
@@ -21,8 +21,8 @@ namespace CommonClient.GameComponent.Player
         public EnemyDrawableComponent(Game game, ICamera camera): base(game)
         {
             _camera = camera;
-            _enemyStore = GameServices.GetService<I>();
-            _playerStore = GameServices.GetService<IPlayerStore>();
+            _enemyStore = GameServices.GetService<ComponentStore<EnemyComponent>>();
+            _enemyManager = GameServices.GetService<IEnemyManager>();
         }
 
         public override void Initialize()
@@ -41,19 +41,7 @@ namespace CommonClient.GameComponent.Player
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var enemy in _enemyStore.GetAll().Values)
-            {
-                if(enemy.EngageTargetId != null)
-                {
-                    var player = _playerStore.Get(enemy.EngageTargetId);
-                    if(player != null)
-                    {
-                        enemy.PathToPoint(player.Coordinates);
-                    }
-                }
-
-                enemy.Update(gameTime.ToGameTick(), WorldUtility.GetWorld());
-            }
+            _enemyManager.Update(gameTime.ToGameTick());
             base.Update(gameTime);
         }
 

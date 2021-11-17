@@ -3,14 +3,12 @@ using CommonClient.GameComponent.Camera;
 using CommonClient.Engine.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using CommonClient.Extensions;
 
-namespace CommonClient.GameComponent.Player
+namespace CommonClient.GameComponent.Drawable
 {
     public class WorldDrawableComponent: DrawableGameComponent
     {
-
-        private readonly IPlayerManager _playerManager;
-
         private ICamera _camera;
         private SpriteBatch _spriteBatch;
         private Texture2D _background;
@@ -18,7 +16,6 @@ namespace CommonClient.GameComponent.Player
         public WorldDrawableComponent(Game game, ICamera camera): base (game)
         {
             _camera = camera;
-            _playerManager = GameServices.GetService<IPlayerManager>();
         }
 
         public override void Initialize()

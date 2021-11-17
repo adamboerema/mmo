@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Numerics;
 using Common.Packets.ServerToClient.Movement;
-using CommonClient.Engine.Movement;
+using CommonClient.Engine.Player;
 
 namespace CommonClient.Network.Handler
 {
