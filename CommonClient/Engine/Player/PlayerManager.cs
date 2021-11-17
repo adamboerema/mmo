@@ -29,6 +29,7 @@ namespace CommonClient.Engine.Player
             foreach (var player in _playerStore.GetAll().Values)
             {
                 player.Update(gameTime, world);
+                _playerStore.Update(player);
             }
         }
 
