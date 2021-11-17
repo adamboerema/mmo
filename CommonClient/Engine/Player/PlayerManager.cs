@@ -2,8 +2,8 @@
 using System.Numerics;
 using Common.Model.Character;
 using Common.Model.Shared;
-using Common.Packets.ClientToServer.Movement;
 using Common.Store;
+using Common.Utility;
 using CommonClient.ComponentStore.Player;
 using CommonClient.Network.Dispatch;
 
@@ -23,14 +23,18 @@ namespace CommonClient.Engine.Player
             _playerDispatch = playerDispatch;
         }
 
+        public void Update(GameTick gameTime)
+        {
+            var world = WorldUtility.GetWorld();
+            foreach (var player in _playerStore.GetAll().Values)
+            {
+                player.Update(gameTime, world);
+            }
+        }
+
         public PlayerComponent GetClientPlayer()
         {
             return _clientPlayer;
-        }
-
-        public void Update(GameTick gameTime)
-        {
-            // TODO: Add update
         }
 
         public void InitializePlayer(
@@ -56,16 +60,8 @@ namespace CommonClient.Engine.Player
         {
             if(_clientPlayer != null)
             {
-                //_clientPlayer
+                _clientPlayer.UpdateDirection(direction, isMoving);
             }
-
-            //_playerStore.UpdateClientMovement(direction, isMoving);
-
-            //_dispatchPacketBus.Publish(new PlayerMovementPacket
-            //{
-            //    Direction = direction,
-            //    IsMoving = isMoving
-            //});
         }
 
         public void UpdatePlayerCoordinatesOutput(
@@ -75,8 +71,7 @@ namespace CommonClient.Engine.Player
             bool isMoving)
         {
             var player = _playerStore.Get(playerId);
-
-            //_playerStore.UpdateMovement(playerId, coordinates, movementType, isMoving);
+            player.UpdateCoordinates(coordinates, movementType, isMoving);
         }
 
         public void RemovePlayer(string playerId)
