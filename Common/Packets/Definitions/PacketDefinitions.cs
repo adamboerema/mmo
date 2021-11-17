@@ -18,7 +18,7 @@ namespace Common.Definitions
             { PacketType.PLAYER_CONNECTED, new PlayerConnectPacket() },
             { PacketType.PLAYER_DISCONNECTED, new PlayerDisconnectPacket() },
             { PacketType.MOVEMENT_OUTPUT, new MovementOutputPacket() },
-            { PacketType.MOVEMENT_INPUT, new MovementInputPacket() },
+            { PacketType.MOVEMENT_INPUT, new PlayerMovementPacket() },
             { PacketType.ENEMY_SPAWN, new EnemySpawnPacket() },
             { PacketType.ENEMY_MOVEMENT, new EnemyMovementPacket() },
             { PacketType.ENEMY_ENGAGE, new EnemyEngagePacket() },

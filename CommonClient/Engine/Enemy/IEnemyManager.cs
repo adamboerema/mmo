@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Common.Entity;
+using Common.Component;
 using Common.Model.Shared;
 
 namespace CommonClient.Engine.Enemy
 {
-    public interface IEnemyManager
+    public interface IEnemyManager: IEngineComponent
     {
         /// <summary>
         ///  Spawn the enemy
@@ -52,11 +52,5 @@ namespace CommonClient.Engine.Enemy
         /// </summary>
         /// <param name="enemyId">Id of enemy</param>
         public void DisengageEnemy(string enemyId);
-
-        /// <summary>
-        /// Get list of enemies
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<EnemyEntity> GetEnemies();
     }
 }

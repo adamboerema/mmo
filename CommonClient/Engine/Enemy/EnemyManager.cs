@@ -1,25 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
-using Common.Entity;
 using Common.Model.Behavior;
 using Common.Model.Character;
 using Common.Model.Shared;
-using CommonClient.Engine.Player;
+using Common.Store;
+using Common.Utility;
+using CommonClient.ComponentStore.Enemy;
+using CommonClient.ComponentStore.Player;
 
 namespace CommonClient.Engine.Enemy
 {
     public class EnemyManager: IEnemyManager
     {
-        private readonly IEnemyStore _enemyStore;
-        private readonly IPlayerStore _playerStore;
+        private readonly ComponentStore<EnemyComponent> _enemyStore;
+        private readonly ComponentStore<PlayerComponent> _playerStore;
 
         public EnemyManager(
-            IEnemyStore enemyStore,
-            IPlayerStore playerStore)
+            ComponentStore<EnemyComponent> enemyStore,
+            ComponentStore<PlayerComponent> playerStore)
         {
             _enemyStore = enemyStore;
             _playerStore = playerStore;
+        }
+
+        public void Update(GameTick gameTime)
+        {
+            var world = WorldUtility.GetWorld();
+            foreach(var enemy in _enemyStore.GetAll().Values)
+            {
+                enemy.Update(gameTime, world);
+                _enemyStore.Update(enemy);
+            }
         }
 
         public void SpawnEnemy(
@@ -73,14 +84,9 @@ namespace CommonClient.Engine.Enemy
             var enemy = _enemyStore.Get(enemyId);
             if (enemy != null)
             {
-                enemy.DisengageCharacter();
+                enemy.Disengage();
                 _enemyStore.Update(enemy);
             }
-        }
-
-        public IEnumerable<EnemyEntity> GetEnemies()
-        {
-            return _enemyStore.GetAll().Values;
         }
 
         /// <summary>
@@ -90,7 +96,7 @@ namespace CommonClient.Engine.Enemy
         /// <param name="enemyType">enemy type</param>
         /// <param name="position">position</param>
         /// <returns></returns>
-        private EnemyEntity CreateEnemy(
+        private EnemyComponent CreateEnemy(
             string enemyId,
             EnemyType enemyType,
             string targetId,
@@ -98,36 +104,36 @@ namespace CommonClient.Engine.Enemy
             Vector3 movementDestination,
             float movementSpeed)
         {
-            return new EnemyEntity(
-                id: enemyId,
-                type: enemyType,
-                spawnModel: new SpawnModel
+            return new EnemyComponent(
+                new EnemyConfiguration
                 {
-                    IsAlive = true
+                    Id = enemyId,
+                    Type = enemyType,
+                    Character = new CharacterModel
+                    {
+                        Name = "Enemy"
+                    },
+                    Pathing = new PathingModel
+                    {
+                        MovementDestination = movementDestination,
+                        EngageTargetId = targetId
+                    },
+                    Movement = new MovementModel
+                    {
+                        Coordinates = position,
+                        MovementSpeed = movementSpeed
+                    },
+                    Collision = new CollisionModel
+                    {
+                        Bounds = new Bounds(10, 10)
+                    },
+                    CombatModel = new CombatModel
+                    {
+                        AttackRange = 30,
+                        AttackSpeed = 1
+                    }
                 },
-                pathingModel: new PathingModel
-                {
-                    MovementDestination = movementDestination,
-                    EngageTargetId = targetId
-                },
-                characterModel: new CharacterModel
-                {
-                    Name = "Test"
-                },
-                collisionModel: new CollisionModel
-                {
-                    Bounds = new Bounds(10, 10)
-                },
-                movementModel: new MovementModel
-                {
-                    Coordinates = position,
-                    MovementSpeed = movementSpeed,
-                },
-                combatModel: new CombatModel
-                {
-                    AttackRange = 30,
-                    AttackSpeed = 1
-                }) ;
+                _playerStore);
         }
     }
 }

@@ -9,14 +9,14 @@ namespace Server.Network.Router
     public class HandlerRouter: IHandlerRouter
     {
         private AuthHandler _authHandler;
-        private MovementHandler _movementHandler;
+        private PlayerHandler _playerHandler;
 
         public HandlerRouter(
             AuthHandler authHandler,
-            MovementHandler movementHandler)
+            PlayerHandler movementHandler)
         {
             _authHandler = authHandler;
-            _movementHandler = movementHandler;
+            _playerHandler = movementHandler;
         }
 
         public void Route(string connectionId, IPacket handlerPacket)
@@ -26,8 +26,8 @@ namespace Server.Network.Router
                 case LoginRequestPacket packet:
                     _authHandler.Handle(connectionId, packet);
                     break;
-                case MovementInputPacket packet:
-                    _movementHandler.Handle(connectionId, packet);
+                case PlayerMovementPacket packet:
+                    _playerHandler.Handle(connectionId, packet);
                     break;
             }
         }

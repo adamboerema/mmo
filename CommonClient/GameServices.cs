@@ -1,14 +1,16 @@
 ﻿using System;
+using Common.Store;
 using CommonClient.Bus.Packet;
+using CommonClient.ComponentStore.Enemy;
+using CommonClient.ComponentStore.Player;
 using CommonClient.Configuration;
 using CommonClient.Engine.Enemy;
-using CommonClient.Engine.Movement;
 using CommonClient.Engine.Player;
+using CommonClient.Network.Dispatch;
 using CommonClient.Network.Handler;
 using CommonClient.Network.Handler.Router;
 using CommonClient.Network.Receiver;
 using CommonClient.Network.Socket;
-using CommonClient.Store;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CommonClient
@@ -77,14 +79,15 @@ namespace CommonClient
             serviceCollection.AddScoped<IConnectionReceiver, ConnectionReceiver>();
 
             //Store
-            serviceCollection.AddScoped<IPlayerStore, PlayerStore>();
-            serviceCollection.AddScoped<IEnemyStore, EnemyStore>();
+            serviceCollection.AddScoped<ComponentStore<PlayerComponent>>();
+            serviceCollection.AddScoped<ComponentStore<EnemyComponent>>();
 
             // Manager
             serviceCollection.AddScoped<IPlayerManager, PlayerManager>();
-            serviceCollection.AddScoped<IMovementManager, MovementManager>();
             serviceCollection.AddScoped<IEnemyManager, EnemyManager>();
 
+            // Dispatch
+            serviceCollection.AddScoped<IPlayerDispatch, PlayerDispatch>();
         }
 
         /// <summary>

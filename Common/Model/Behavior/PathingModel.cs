@@ -25,9 +25,32 @@ namespace Common.Model.Behavior
         public Vector3 MovementDestination { get; set; }
 
         /// <summary>
+        /// Engage target id at point
+        /// </summary>
+        /// <param name="targetId"></param>
+        /// <param name="coordinates"></param>
+        public void EngageToPoint(string targetId, Vector3 coordinates)
+        {
+            EngageTargetId = targetId;
+            LastMovementTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            MovementDestination = coordinates;
+        }
+
+        /// <summary>
+        /// Disengage to point
+        /// </summary>
+        /// <param name="coordinates"></param>
+        public void DisengagetoPoint(Vector3 coordinates)
+        {
+            EngageTargetId = null;
+            LastDisengageTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+            MovementDestination = coordinates;
+        }
+
+        /// <summary>
         /// Is target within engage range
         /// </summary>
-         /// <param name="currentPosition">Current position of entity</param>
+        /// <param name="currentPosition">Current position of entity</param>
         /// <param name="target">Target to check range on</param>
         /// <returns></returns>
         public bool ShouldEngage(Vector3 currentPosition, Vector3 target)

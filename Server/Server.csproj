@@ -19,21 +19,27 @@
     <Folder Include="Bus\Packet\" />
     <Folder Include="Bus\Connection\" />
     <Folder Include="Engine\Player\" />
-    <Folder Include="Engine\Movement\" />
     <Folder Include="Login\" />
     <Folder Include="Engine\Enemy\" />
     <Folder Include="Network\Router\" />
+    <Folder Include="Component\" />
+    <Folder Include="Network\Dispatch\" />
+    <Folder Include="Component\Enemy\" />
+    <Folder Include="Component\Player\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Bus\Packet\" />
     <None Remove="Bus\Connection\" />
     <None Remove="Engine\Player\" />
-    <None Remove="Engine\Movement\" />
     <None Remove="Auth\" />
     <None Remove="Microsoft.Extensions.DependencyInjection" />
     <None Remove="Network\Handler\Module\" />
     <None Remove="Network\Handler\Factory\" />
     <None Remove="Engine\Npc\" />
     <None Remove="Network\Router\" />
+    <None Remove="Components\" />
+    <None Remove="Network\Dispatcher\" />
+    <None Remove="Component\Enemy\" />
+    <None Remove="Component\Player\" />
   </ItemGroup>
 </Project>

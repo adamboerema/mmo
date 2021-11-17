@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Numerics;
 using Common.Packets.ServerToClient.Movement;
-using CommonClient.Engine.Movement;
+using CommonClient.Engine.Player;
 
 namespace CommonClient.Network.Handler
 {
     public class MovementHandler: IPacketHandler<MovementOutputPacket>
     {
-        public IMovementManager _movementManager;
+        public IPlayerManager _movementManager;
 
-        public MovementHandler(IMovementManager movementManager)
+        public MovementHandler(IPlayerManager movementManager)
         {
             _movementManager = movementManager;
         }
