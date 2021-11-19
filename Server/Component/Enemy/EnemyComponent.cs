@@ -181,7 +181,12 @@ namespace Server.Component.Enemy
         /// <param name="elapsedTime"></param>
         private void AttackTarget(GameTick gameTime)
         {
-            // TODO: attack logic
+            var target = _playerStore.Get(_pathing.EngageTargetId);
+            var isValidTarget = target != null;
+            if(isValidTarget && _combat.ShouldAttack(gameTime.Timestamp))
+            {
+                _combat.Attack();
+            }
         }
 
         /// <summary>

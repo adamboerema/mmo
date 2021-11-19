@@ -22,13 +22,24 @@ namespace Common.Model.Behavior
         public float GetAttackDistance(float offset) => AttackRange + offset;
 
         /// <summary>
-        /// 
+        /// Should entity attack target
         /// </summary>
         /// <param name="location"></param>
         /// <param name="timestamp"></param>
         /// <returns></returns>
-        public void ShouldAttack(Vector3 location, double timestamp)
+        public bool ShouldAttack(double timestamp)
         {
+            var attackTime = LastAttackTime + AttackSpeed;
+            return IsAttacking && timestamp > attackTime;
+        }
+
+        /// <summary>
+        /// Start attacking the target
+        /// </summary>
+        public void Attack()
+        {
+            IsAttacking = true;
+            LastAttackTime = DateTimeOffset.Now.ToUnixTimeSeconds();
         }
     }
 }
