@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Definitions;
 using Common.Packets.ClientToServer.Auth;
-using Common.Packets.ClientToServer.Movement;
+using Common.Packets.ClientToServer.Player;
 using Server.Network.Handler;
 
 namespace Server.Network.Router

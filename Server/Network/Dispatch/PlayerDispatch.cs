@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Common.Model.Shared;
-using Common.Packets.ServerToClient.Movement;
+using Common.Packets.ServerToClient.Player;
 using Common.Packets.ServerToClient.Player;
 using Common.Store;
 using Server.Bus.Packet;
@@ -29,7 +29,7 @@ namespace Server.Network.Dispatch
             Direction direction,
             bool isMoving)
         {
-            var packet = new MovementOutputPacket
+            var packet = new PlayerMovementOutputPacket
             {
                 PlayerId = playerId,
                 Position = coordinates,

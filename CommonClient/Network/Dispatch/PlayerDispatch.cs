@@ -1,6 +1,6 @@
 ﻿using System;
 using Common.Model.Shared;
-using Common.Packets.ClientToServer.Movement;
+using Common.Packets.ClientToServer.Player;
 using CommonClient.Bus.Packet;
 
 namespace CommonClient.Network.Dispatch

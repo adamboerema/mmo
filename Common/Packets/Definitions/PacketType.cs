@@ -4,21 +4,23 @@ namespace Common.Definitions
     public enum PacketType : int
     {
         // Login
-        LOGIN_REQUEST = 0,
-        LOGIN_RESPONSE = 1,
+        LOGIN_REQUEST,
+        LOGIN_RESPONSE,
 
         // Player
-        PLAYER_CONNECTED = 2,
-        PLAYER_DISCONNECTED = 3,
-
-        // Movement
-        MOVEMENT_OUTPUT = 4,
-        MOVEMENT_INPUT = 5,
+        PLAYER_CONNECTED,
+        PLAYER_DISCONNECTED,
+        PLAYER_ATTACK_OUTPUT,
+        PLAYER_ATTACK_START,
+        PLAYER_ATTACK_END,
+        PLAYER_MOVEMENT_OUTPUT,
+        PLAYER_MOVEMENT_INPUT,
 
         // Enemy
-        ENEMY_SPAWN = 6,
-        ENEMY_MOVEMENT = 7,
-        ENEMY_ENGAGE = 8,
-        ENEMY_DISENGAGE = 9
+        ENEMY_SPAWN,
+        ENEMY_MOVEMENT,
+        ENEMY_ENGAGE,
+        ENEMY_DISENGAGE,
+        ENEMY_ATTACK,
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Packets.ClientToServer.Movement;
+using Common.Packets.ClientToServer.Player;
 using Server.Engine.Player;
 
 namespace Server.Network.Handler
