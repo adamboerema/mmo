@@ -64,6 +64,16 @@ namespace Server.Network.Dispatch
         /// </summary>
         /// <param name="id"></param>
         public void DispatchEnemyDisenage(string id);
-       
+
+        /// <summary>
+        /// Dispatch enemy attack
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="targetId"></param>
+        /// <param name="damage"></param>
+        public void DispatchEnemyAttack(
+            string id,
+            string targetId,
+            int damage);
     }
 }

@@ -49,5 +49,16 @@ namespace Server.Network.Dispatch
         /// </summary>
         /// <param name="playerId"></param>
         public void DispatchPlayerDisconnect(string playerId);
+
+        /// <summary>
+        /// Dispatch player attack damage
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="targetId"></param>
+        /// <param name="damage"></param>
+        public void DispatchPlayerAttack(
+            string playerId,
+            string targetId,
+            int damage);
     }
 }

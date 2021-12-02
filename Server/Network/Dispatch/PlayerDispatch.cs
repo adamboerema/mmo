@@ -93,5 +93,19 @@ namespace Server.Network.Dispatch
             };
             _dispatchPacketBus.PublishAll(packet);
         }
+
+        public void DispatchPlayerAttack(
+            string playerId,
+            string targetId,
+            int damage)
+        {
+            var packet = new PlayerAttackOutputPacket
+            {
+                PlayerId = playerId,
+                TargetId = targetId,
+                Damage = damage
+            };
+            _dispatchPacketBus.PublishAll(packet);
+        }
     };
 }

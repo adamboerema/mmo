@@ -13,12 +13,19 @@ namespace Common.Packets.ServerToClient.Player
 
         public IPacket ReadData(PacketReader packetReader)
         {
-            throw new NotImplementedException();
+            PlayerId = packetReader.ReadString();
+            TargetId = packetReader.ReadString();
+            Damage = packetReader.ReadInteger();
+            return this;
         }
 
         public byte[] WriteData(PacketWriter packetWriter)
         {
-            throw new NotImplementedException();
+            packetWriter.WriteInteger((int) Id);
+            packetWriter.WriteString(PlayerId);
+            packetWriter.WriteString(TargetId);
+            packetWriter.WriteInteger(Damage);
+            return packetWriter.ToBytes();
         }
     }
 }

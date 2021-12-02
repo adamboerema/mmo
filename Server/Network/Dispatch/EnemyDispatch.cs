@@ -86,5 +86,19 @@ namespace Server.Network.Dispatch
             };
             _dispatchPacketBus.PublishAll(packet);
         }
+
+        public void DispatchEnemyAttack(
+            string id,
+            string targetId,
+            int damage)
+        {
+            var packet = new EnemyAttackPacket
+            {
+                EnemyId = id,
+                TargetId = targetId,
+                Damage = damage,
+            };
+            _dispatchPacketBus.PublishAll(packet);
+        }
     }
 }
