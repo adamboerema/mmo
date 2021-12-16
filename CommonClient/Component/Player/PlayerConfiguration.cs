@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Model.Behavior;
 using Common.Model.Character;
 
 namespace CommonClient.ComponentStore.Player
@@ -13,5 +14,6 @@ namespace CommonClient.ComponentStore.Player
 
         public MovementModel Movement { get; init; }
 
+        public CollisionModel Collision { get; init; }
     }
 }

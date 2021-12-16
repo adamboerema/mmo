@@ -8,7 +8,8 @@ namespace CommonClient.Network.Handler
         IPacketHandler<EnemySpawnPacket>,
         IPacketHandler<EnemyMovementPacket>,
         IPacketHandler<EnemyEngagePacket>,
-        IPacketHandler<EnemyDisengagePacket>
+        IPacketHandler<EnemyDisengagePacket>,
+        IPacketHandler<EnemyAttackPacket>
     {
         private readonly IEnemyManager _enemyManager;
 
@@ -47,6 +48,14 @@ namespace CommonClient.Network.Handler
         public void Handle(EnemyDisengagePacket packet)
         {
             _enemyManager.DisengageEnemy(packet.EnemyId);
+        }
+
+        public void Handle(EnemyAttackPacket packet)
+        {
+            _enemyManager.AttackEnemy(
+                packet.EnemyId,
+                packet.TargetId,
+                packet.Damage);
         }
     }
 }

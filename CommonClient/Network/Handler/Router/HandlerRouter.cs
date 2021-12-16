@@ -2,7 +2,6 @@
 using Common.Definitions;
 using Common.Packets.ServerToClient.Enemy;
 using Common.Packets.ServerToClient.Player;
-using Common.Packets.ServerToClient.Player;
 
 namespace CommonClient.Network.Handler.Router
 {
