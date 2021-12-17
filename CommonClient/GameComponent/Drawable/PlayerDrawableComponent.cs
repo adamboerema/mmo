@@ -101,6 +101,10 @@ namespace CommonClient.GameComponent.Drawable
                 Color.White);
         }
 
+        /// <summary>
+        /// Draws name centered above the player
+        /// </summary>
+        /// <param name="player"></param>
         private void DrawName(PlayerComponent player)
         {
             var margin = 10;
