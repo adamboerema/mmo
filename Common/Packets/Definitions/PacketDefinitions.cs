@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Packets.ClientToServer.Auth;
-using Common.Packets.ClientToServer.Movement;
+using Common.Packets.ClientToServer.Player;
 using Common.Packets.ServerToClient.Auth;
 using Common.Packets.ServerToClient.Enemy;
-using Common.Packets.ServerToClient.Movement;
 using Common.Packets.ServerToClient.Player;
 
 namespace Common.Definitions
@@ -17,12 +16,16 @@ namespace Common.Definitions
             { PacketType.LOGIN_RESPONSE, new LoginResponsePacket() },
             { PacketType.PLAYER_CONNECTED, new PlayerConnectPacket() },
             { PacketType.PLAYER_DISCONNECTED, new PlayerDisconnectPacket() },
-            { PacketType.MOVEMENT_OUTPUT, new MovementOutputPacket() },
-            { PacketType.MOVEMENT_INPUT, new PlayerMovementPacket() },
+            { PacketType.PLAYER_ATTACK_START, new PlayerAttackStartPacket() },
+            { PacketType.PLAYER_ATTACK_END, new PlayerAttackEndPacket() },
+            { PacketType.PLAYER_ATTACK_OUTPUT, new PlayerAttackOutputPacket() },
+            { PacketType.PLAYER_MOVEMENT_OUTPUT, new PlayerMovementOutputPacket() },
+            { PacketType.PLAYER_MOVEMENT_INPUT, new PlayerMovementPacket() },
             { PacketType.ENEMY_SPAWN, new EnemySpawnPacket() },
             { PacketType.ENEMY_MOVEMENT, new EnemyMovementPacket() },
             { PacketType.ENEMY_ENGAGE, new EnemyEngagePacket() },
-            { PacketType.ENEMY_DISENGAGE, new EnemyDisengagePacket() }
+            { PacketType.ENEMY_DISENGAGE, new EnemyDisengagePacket() },
+            { PacketType.ENEMY_ATTACK, new EnemyAttackPacket() }
         };
     }
 }

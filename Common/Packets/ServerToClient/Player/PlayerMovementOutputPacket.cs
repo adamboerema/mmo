@@ -4,11 +4,11 @@ using Common.Definitions;
 using Common.Network.IO;
 using Common.Model.Shared;
 
-namespace Common.Packets.ServerToClient.Movement
+namespace Common.Packets.ServerToClient.Player
 {
-    public class MovementOutputPacket: IPacket
+    public class PlayerMovementOutputPacket: IPacket
     {
-        public PacketType Id => PacketType.MOVEMENT_OUTPUT;
+        public PacketType Id => PacketType.PLAYER_MOVEMENT_OUTPUT;
 
         public string PlayerId { get; set; }
         public Vector3 Position { get; set; }

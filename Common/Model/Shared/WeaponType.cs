@@ -1,8 +1,8 @@
 ﻿using System;
 namespace Common.Model.Shared
 {
-    public enum EnemyType: int
+    public enum WeaponType: int
     {
-        TEST
+        MELEE
     }
 }

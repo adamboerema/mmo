@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Common.Model.Behavior;
 using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Store;
@@ -106,6 +107,10 @@ namespace CommonClient.Engine.Player
                         Coordinates = position,
                         IsMoving = false,
                         MovementSpeed = 0.2f
+                    },
+                    Collision = new CollisionModel
+                    {
+                        Bounds = new Bounds(10, 10)
                     }
                 },
                 _playerDispatch);

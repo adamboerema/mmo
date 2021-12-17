@@ -52,5 +52,16 @@ namespace CommonClient.Engine.Enemy
         /// </summary>
         /// <param name="enemyId">Id of enemy</param>
         public void DisengageEnemy(string enemyId);
+
+        /// <summary>
+        /// Enemy attacks player
+        /// </summary>
+        /// <param name="enemyId">Id of the enemy</param>
+        /// <param name="targetId">Id of the character</param>
+        /// <param name="damage">Damage inflicted</param>
+        public void AttackEnemy(
+            string enemyId,
+            string targetId,
+            int damage);
     }
 }

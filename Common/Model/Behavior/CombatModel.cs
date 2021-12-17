@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Common.Model.Shared;
 using Common.Utility;
 
 namespace Common.Model.Behavior
@@ -30,7 +31,7 @@ namespace Common.Model.Behavior
         public bool ShouldAttack(double timestamp)
         {
             var attackTime = LastAttackTime + AttackSpeed;
-            return IsAttacking && timestamp > attackTime;
+            return timestamp > attackTime;
         }
 
         /// <summary>
@@ -40,6 +41,17 @@ namespace Common.Model.Behavior
         {
             IsAttacking = true;
             LastAttackTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+        }
+
+        /// <summary>
+        /// Get the attack damage
+        /// </summary>
+        /// <param name="weaponType"></param>
+        /// <returns></returns>
+        public int GetAttackDamage(WeaponType weaponType)
+        {
+            // TODO calculate damage here
+            return 10;
         }
     }
 }

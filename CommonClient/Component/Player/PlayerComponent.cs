@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Common.Component;
+using Common.Model.Behavior;
 using Common.Model.Character;
 using Common.Model.Shared;
 using Common.Model.World;
@@ -12,10 +13,15 @@ namespace CommonClient.ComponentStore.Player
     {
         public string Id { get; init; }
         public bool IsClient { get; init; }
-        public Vector3 Coordinates => _movement.Coordinates;
 
-        private CharacterModel _charater;
+        public Vector3 Coordinates => _movement.Coordinates;
+        public Bounds Bounds => _collision.Bounds;
+        public string Name => _character.Name;
+
+        private CollisionModel _collision;
+        private CharacterModel _character;
         private MovementModel _movement;
+
 
         private IPlayerDispatch _playerDispatch;
 
@@ -25,11 +31,12 @@ namespace CommonClient.ComponentStore.Player
         {
             Id = playerConfiguration.Id;
             IsClient = playerConfiguration.IsClient;
-            _charater = playerConfiguration.Character;
+            _character = playerConfiguration.Character;
             _movement = playerConfiguration.Movement;
-
+            _collision = playerConfiguration.Collision;
             _playerDispatch = playerDispatch;
         }
+
 
         public void Update(GameTick gameTick, World world)
         {
@@ -64,6 +71,15 @@ namespace CommonClient.ComponentStore.Player
             _movement.Direction = direction;
             _movement.IsMoving = isMoving;
             _playerDispatch.DispatchPlayerMovement(direction, isMoving);
+        }
+
+        /// <summary>
+        /// Lower health of player
+        /// </summary>
+        /// <param name="damage"></param>
+        public void ReceiveDamage(int damage)
+        {
+            _character.Health -= damage;
         }
     }
 }

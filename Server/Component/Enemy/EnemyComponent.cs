@@ -186,6 +186,12 @@ namespace Server.Component.Enemy
             if(isValidTarget && _combat.ShouldAttack(gameTime.Timestamp))
             {
                 _combat.Attack();
+                var attackDamage = _combat.GetAttackDamage(WeaponType.MELEE);
+                _enemyDispatch.DispatchEnemyAttack(
+                    Id,
+                    target.Id,
+                    attackDamage);
+
             }
         }
 

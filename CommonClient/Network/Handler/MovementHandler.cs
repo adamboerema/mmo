@@ -1,10 +1,10 @@
 ﻿using System;
-using Common.Packets.ServerToClient.Movement;
+using Common.Packets.ServerToClient.Player;
 using CommonClient.Engine.Player;
 
 namespace CommonClient.Network.Handler
 {
-    public class MovementHandler: IPacketHandler<MovementOutputPacket>
+    public class MovementHandler: IPacketHandler<PlayerMovementOutputPacket>
     {
         public IPlayerManager _movementManager;
 
@@ -13,7 +13,7 @@ namespace CommonClient.Network.Handler
             _movementManager = movementManager;
         }
 
-        public void Handle(MovementOutputPacket packet)
+        public void Handle(PlayerMovementOutputPacket packet)
         {
             Console.WriteLine($"Movement Packet: {packet.Position} {packet.MovementType}");
             _movementManager.UpdatePlayerCoordinatesOutput(

@@ -3,11 +3,11 @@ using Common.Definitions;
 using Common.Network.IO;
 using Common.Model.Shared;
 
-namespace Common.Packets.ClientToServer.Movement
+namespace Common.Packets.ClientToServer.Player
 {
     public class PlayerMovementPacket: IPacket
     {
-        public PacketType Id => PacketType.MOVEMENT_INPUT;
+        public PacketType Id => PacketType.PLAYER_MOVEMENT_INPUT;
 
         public Direction Direction { get; set; }
 

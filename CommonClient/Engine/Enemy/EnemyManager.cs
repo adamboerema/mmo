@@ -89,6 +89,16 @@ namespace CommonClient.Engine.Enemy
             }
         }
 
+        public void AttackEnemy(
+            string enemyId,
+            string targetId,
+            int damage)
+        {
+            var enemy = _enemyStore.Get(enemyId);
+            var player = _playerStore.Get(targetId);
+
+        }
+
         /// <summary>
         /// Create base enemy model
         /// </summary>

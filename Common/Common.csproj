@@ -19,7 +19,7 @@
     <Folder Include="Packets\ServerToClient\Auth\" />
     <Folder Include="Packets\ServerToClient\Movement\" />
     <Folder Include="Packets\ServerToClient\Player\" />
-    <Folder Include="Packets\ClientToServer\Movement\" />
+    <Folder Include="Packets\ClientToServer\Player\" />
     <Folder Include="Packets\Definitions\" />
     <Folder Include="Store\" />
     <Folder Include="Packets\ServerToClient\Enemy\" />

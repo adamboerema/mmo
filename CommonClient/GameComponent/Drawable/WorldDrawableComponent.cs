@@ -27,7 +27,7 @@ namespace CommonClient.GameComponent.Drawable
 
         override protected void LoadContent()
         {
-            _background = Game.Content.Load<Texture2D>("bg_rock_dirt");
+            _background = Game.Content.Load<Texture2D>("environment/bg_rock_dirt");
         }
 
         public override void Draw(GameTime gameTime)

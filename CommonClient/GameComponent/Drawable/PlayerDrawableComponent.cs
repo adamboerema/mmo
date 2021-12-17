@@ -11,12 +11,14 @@ namespace CommonClient.GameComponent.Drawable
 {
     public class PlayerDrawableComponent : DrawableGameComponent
     {
-        private SpriteBatch _spriteBatch;
         private ComponentStore<PlayerComponent> _playerStore;
         private IPlayerManager _playerManager;
+        private ICamera _camera;
+
+        private SpriteBatch _spriteBatch;
+        private SpriteFont _mainFont;
         private Texture2D _clientPlayerTexture;
         private Texture2D _playerTexture;
-        private ICamera _camera;
 
         public PlayerDrawableComponent(Game game, ICamera camera): base(game)
         {
@@ -45,6 +47,12 @@ namespace CommonClient.GameComponent.Drawable
             base.Initialize();
         }
 
+        protected override void LoadContent()
+        {
+            _mainFont = Game.Content.Load<SpriteFont>("font/main");
+            base.LoadContent();
+        }
+
         public override void Update(GameTime gameTime)
         {
             var clientPlayer = _playerManager.GetClientPlayer();
@@ -71,6 +79,7 @@ namespace CommonClient.GameComponent.Drawable
                     ? _clientPlayerTexture
                     : _playerTexture;
 
+                DrawName(player);
                 DrawPlayer(player, texture);
             }
             _spriteBatch.End();
@@ -89,6 +98,27 @@ namespace CommonClient.GameComponent.Drawable
             _spriteBatch.Draw(
                 texture,
                 new Vector2(coordinates.X, coordinates.Y),
+                Color.White);
+        }
+
+        /// <summary>
+        /// Draws name centered above the player
+        /// </summary>
+        /// <param name="player"></param>
+        private void DrawName(PlayerComponent player)
+        {
+            var margin = 10;
+            var textSize = _mainFont.MeasureString(player.Name);
+            var textXMargin = (textSize.X / 2) - (player.Bounds.Width / 2);
+            var textYMargin = player.Bounds.Height + margin;
+            var nameLocation = new Vector2(
+                player.Coordinates.X - textXMargin,
+                player.Coordinates.Y - textYMargin);
+
+            _spriteBatch.DrawString(
+                _mainFont,
+                player.Name,
+                nameLocation,
                 Color.White);
         }
     }

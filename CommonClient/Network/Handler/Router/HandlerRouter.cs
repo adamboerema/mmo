@@ -1,7 +1,6 @@
 ﻿using System;
 using Common.Definitions;
 using Common.Packets.ServerToClient.Enemy;
-using Common.Packets.ServerToClient.Movement;
 using Common.Packets.ServerToClient.Player;
 
 namespace CommonClient.Network.Handler.Router
@@ -27,7 +26,7 @@ namespace CommonClient.Network.Handler.Router
             switch (handlerPacket)
             {
                 // Movement
-                case MovementOutputPacket packet:
+                case PlayerMovementOutputPacket packet:
                     _movementHandler.Handle(packet);
                     break;
 
